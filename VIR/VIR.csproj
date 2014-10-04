@@ -1,0 +1,504 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{797FFE03-7455-480D-87BC-5DAB4E611EAC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MainProgramm</RootNamespace>
+    <AssemblyName>VIR</AssemblyName>
+    <ApplicationIcon>Vir_Icon.ico</ApplicationIcon>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win32_x86\dotnet\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win32_x86\dotnet\CrystalDecisions.ReportSource.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win32_x86\dotnet\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win32_x86\dotnet\CrystalDecisions.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="FormattedTextBox, Version=1.0.2685.22315, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>G:\VIR\FormattedTextBox\FormattedTextBox\bin\Release\FormattedTextBox.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.ConnectionInfo, Version=9.0.242.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.Smo, Version=9.0.242.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="SqlInterface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SqlInterface\SqlInterface\bin\Debug\SqlInterface.dll</HintPath>
+    </Reference>
+    <Reference Include="SqlServers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SqlServers\SqlServers\bin\Release\SqlServers.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\WINDOWS\assembly\GAC_MSIL\System.Web.Services\2.0.0.0__b03f5f7f11d50a3a\System.Web.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Ujfak, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Ujfak\Ujfak\bin\Debug\Ujfak.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Adatbevitel\SemaMegtekint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Adatbevitel\SemaMegtekint.Designer.cs">
+      <DependentUpon>SemaMegtekint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Adatbevitel\Kiegyenlites.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Adatbevitel\Kiegyenlites.Designer.cs">
+      <DependentUpon>Kiegyenlites.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Adatbevitel\Partnerform.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Adatbevitel\Partnerform.Designer.cs">
+      <DependentUpon>Partnerform.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Adatbevitel\PartnerMenetKozben.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Adatbevitel\PartnerMenetKozben.Designer.cs">
+      <DependentUpon>PartnerMenetKozben.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Adatbevitel\PenzMozgas.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Adatbevitel\PenzMozgas.Designer.cs">
+      <DependentUpon>PenzMozgas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Adatbevitel\Szamla.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Adatbevitel\Szamla.Designer.cs">
+      <DependentUpon>Szamla.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Könyvtár\ClassGyujtemeny.cs" />
+    <Compile Include="Könyvtár\PrintForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Könyvtár\PrintForm.Designer.cs">
+      <DependentUpon>PrintForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lekérdezések\AfaLista.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lekérdezések\AfaLista.Designer.cs">
+      <DependentUpon>AfaLista.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lekérdezések\AlSzamlak.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Lekérdezések\AlSzamlak.Designer.cs">
+      <DependentUpon>AlSzamlak.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lekérdezések\BevetKiad.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lekérdezések\BevetKiad.Designer.cs">
+      <DependentUpon>BevetKiad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lekérdezések\Bizonylatok.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lekérdezések\Bizonylatok.Designer.cs">
+      <DependentUpon>Bizonylatok.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lekérdezések\Eredmeny.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lekérdezések\Eredmeny.Designer.cs">
+      <DependentUpon>Eredmeny.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lekérdezések\Penzforgalom.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lekérdezések\Penzforgalom.Designer.cs">
+      <DependentUpon>Penzforgalom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Lekérdezések\Szamlak.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Lekérdezések\Szamlak.Designer.cs">
+      <DependentUpon>Szamlak.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Listák\AfaListaLista.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AfaListaLista.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Listák\BevetelKiadasLista.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BevetelKiadasLista.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Listák\BevetKiadLista.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BevetKiadLista.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Listák\BizonylatokLista.cs">
+      <DependentUpon>BizonylatokLista.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Listák\EredmenyLista.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EredmenyLista.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Listák\Kintlevöseg.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Kintlevöseg.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Listák\PenzForgalomLista.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PenzForgalomLista.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MainProgramm\AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainProgramm\AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainProgramm\Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainProgramm\Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainProgramm\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainProgramm\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainProgramm\SajatMenu.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Adatbevitel\SemaMegtekint.resx">
+      <DependentUpon>SemaMegtekint.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Adatbevitel\Kiegyenlites.resx">
+      <DependentUpon>Kiegyenlites.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Adatbevitel\Partnerform.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Partnerform.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Adatbevitel\PartnerMenetKozben.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PartnerMenetKozben.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Adatbevitel\PenzMozgas.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PenzMozgas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Adatbevitel\Szamla.resx">
+      <DependentUpon>Szamla.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Könyvtár\PrintForm.resx">
+      <DependentUpon>PrintForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lekérdezések\AfaLista.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AfaLista.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lekérdezések\AlSzamlak.resx">
+      <DependentUpon>AlSzamlak.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lekérdezések\BevetKiad.resx">
+      <DependentUpon>BevetKiad.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lekérdezések\Bizonylatok.resx">
+      <DependentUpon>Bizonylatok.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lekérdezések\Eredmeny.resx">
+      <DependentUpon>Eredmeny.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lekérdezések\Penzforgalom.resx">
+      <DependentUpon>Penzforgalom.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lekérdezések\Szamlak.resx">
+      <DependentUpon>Szamlak.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listák\AfaListaLista.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>AfaListaLista.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listák\BevetelKiadasLista.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BevetelKiadasLista.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listák\BevetKiadLista.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BevetKiadLista.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listák\BizonylatokLista.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>BizonylatokLista.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listák\EredmenyLista.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>EredmenyLista.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listák\Kintlevöseg.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Kintlevöseg.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listák\PenzForgalomLista.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PenzForgalomLista.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainProgramm\AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainProgramm\Login.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainProgramm\MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Törzsadatok\Rendszer.resx">
+      <DependentUpon>Rendszer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Törzsadatok\Dolgozo.resx">
+      <DependentUpon>Dolgozo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Törzsadatok\Elokalk.resx">
+      <DependentUpon>Elokalk.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Törzsadatok\KtgFelosztas.resx">
+      <DependentUpon>KtgFelosztas.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Törzsadatok\KodForm.resx">
+      <DependentUpon>KodForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Törzsadatok\Kodtablak.resx">
+      <DependentUpon>Kodtablak.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Törzsadatok\Rendszer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Törzsadatok\Rendszer.designer.cs">
+      <DependentUpon>Rendszer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Törzsadatok\Dolgozo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Törzsadatok\Dolgozo.designer.cs">
+      <DependentUpon>Dolgozo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Törzsadatok\Elokalk.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Törzsadatok\Elokalk.Designer.cs">
+      <DependentUpon>Elokalk.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Törzsadatok\KtgFelosztas.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Törzsadatok\KtgFelosztas.Designer.cs">
+      <DependentUpon>KtgFelosztas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Törzsadatok\KodForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Törzsadatok\KodForm.Designer.cs">
+      <DependentUpon>KodForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Törzsadatok\Kodtablak.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Törzsadatok\Kodtablak.Designer.cs">
+      <DependentUpon>Kodtablak.cs</DependentUpon>
+    </Compile>
+    <Compile Include="virDataSet.cs">
+      <DependentUpon>virDataSet.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="virDataSet.Designer.cs">
+      <DependentUpon>virDataSet.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="virDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>virDataSet1.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Resources\SixisLogo.png" />
+    <None Include="virDataSet.xsc">
+      <DependentUpon>virDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="virDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>virDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="virDataSet.xss">
+      <DependentUpon>virDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="virDataSet1.xsc">
+      <DependentUpon>virDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="virDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>virDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="virDataSet1.xss">
+      <DependentUpon>virDataSet1.xsd</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{967B4E0D-AD0C-4609-AB67-0FA40C0206D8}" />
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Vir_Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

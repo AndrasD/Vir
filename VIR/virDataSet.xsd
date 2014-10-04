@@ -1,0 +1,486 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="virDataSet" targetNamespace="http://tempuri.org/virDataSet.xsd" xmlns:mstns="http://tempuri.org/virDataSet.xsd" xmlns="http://tempuri.org/virDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="1" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection ConnectionStringObject="Dsn=MySqlODBCvir;uid=root;pwd=a" IsAppSettingsProperty="False" Modifier="Assembly" Name="ODBC.localhost via TCP/IP.vir" Provider="System.Data.Odbc">
+          </Connection>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="virConnectionString" ConnectionStringObject="" IsAppSettingsProperty="True" Modifier="Assembly" Name="virConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.MainProgramm.Properties.Settings.GlobalReference.Default.virConnectionString" Provider="System.Data.SqlClient">
+          </Connection>
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="PenzForgalomTableAdapter" GeneratorDataComponentClassName="PenzForgalomTableAdapter" Name="PenzForgalom" UserDataComponentName="PenzForgalomTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="virConnectionString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="False" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="False" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="True">
+                    <CommandText>SELECT     szamla.AZONOSITO, szamla.DATUM, szamla.VS as jel, szamla_tetel.BRUTTO AS brutton, szamla_tetel.BRUTTO AS bruttoc, partner.azonosito as partner, szamla.megjegyzes
+FROM         szamla, szamla_tetel, partner
+WHERE     szamla.ID = szamla_tetel.ID
+ and szamla.pid = partner.pid</CommandText>
+                    <Parameters>
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="AZONOSITO" DataSetColumn="AZONOSITO" />
+              <Mapping SourceColumn="DATUM" DataSetColumn="DATUM" />
+              <Mapping SourceColumn="jel" DataSetColumn="jel" />
+              <Mapping SourceColumn="brutton" DataSetColumn="brutton" />
+              <Mapping SourceColumn="bruttoc" DataSetColumn="bruttoc" />
+              <Mapping SourceColumn="partner" DataSetColumn="partner" />
+              <Mapping SourceColumn="megjegyzes" DataSetColumn="megjegyzes" />
+            </Mappings>
+            <Sources>
+            </Sources>
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="HaviBontasTableAdapter" GeneratorDataComponentClassName="HaviBontasTableAdapter" Name="HaviBontas" UserDataComponentName="HaviBontasTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="virConnectionString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="False" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="False" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="True">
+                    <CommandText>select '' as kod, '' as Megnevezes, 
+0.0 as Januar, 
+0.0 as Februar,
+0.0 as Marcius,
+0.0 as Aprilis,
+0.0 as Majus,
+0.0 as Junius,
+0.0 as Julius,
+0.0 as Augusztus,
+0.0 as Szeptember,
+0.0 as Oktober,
+0.0 as November,
+0.0 as December 
+</CommandText>
+                    <Parameters>
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="kod" DataSetColumn="kod" />
+              <Mapping SourceColumn="Megnevezes" DataSetColumn="Megnevezes" />
+              <Mapping SourceColumn="Januar" DataSetColumn="Januar" />
+              <Mapping SourceColumn="Februar" DataSetColumn="Februar" />
+              <Mapping SourceColumn="Marcius" DataSetColumn="Marcius" />
+              <Mapping SourceColumn="Aprilis" DataSetColumn="Aprilis" />
+              <Mapping SourceColumn="Majus" DataSetColumn="Majus" />
+              <Mapping SourceColumn="Junius" DataSetColumn="Junius" />
+              <Mapping SourceColumn="Julius" DataSetColumn="Julius" />
+              <Mapping SourceColumn="Augusztus" DataSetColumn="Augusztus" />
+              <Mapping SourceColumn="Szeptember" DataSetColumn="Szeptember" />
+              <Mapping SourceColumn="Oktober" DataSetColumn="Oktober" />
+              <Mapping SourceColumn="November" DataSetColumn="November" />
+              <Mapping SourceColumn="December" DataSetColumn="December" />
+            </Mappings>
+            <Sources>
+            </Sources>
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="EredmenyTableAdapter" GeneratorDataComponentClassName="EredmenyTableAdapter" Name="Eredmeny" UserDataComponentName="EredmenyTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="virConnectionString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="False" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="False" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="True">
+                    <CommandText>SELECT     '' AS TK, '' AS Termekkod, '' AS Megnevezes, 0.0 AS Januar, 0.0 AS Februar, 0.0 AS Marcius, 0.0 AS Aprilis, 0.0 AS Majus, 0.0 AS Junius, 0.0 AS Julius, 0.0 AS Augusztus, 0.0 AS Szeptember, 0.0 AS Oktober, 0.0 AS November, 0.0 AS December, '' as BKE</CommandText>
+                    <Parameters>
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="Termekkod" DataSetColumn="Termekkod" />
+              <Mapping SourceColumn="Megnevezes" DataSetColumn="Megnevezes" />
+              <Mapping SourceColumn="Januar" DataSetColumn="Januar" />
+              <Mapping SourceColumn="Februar" DataSetColumn="Februar" />
+              <Mapping SourceColumn="Marcius" DataSetColumn="Marcius" />
+              <Mapping SourceColumn="Aprilis" DataSetColumn="Aprilis" />
+              <Mapping SourceColumn="Majus" DataSetColumn="Majus" />
+              <Mapping SourceColumn="Junius" DataSetColumn="Junius" />
+              <Mapping SourceColumn="Julius" DataSetColumn="Julius" />
+              <Mapping SourceColumn="Augusztus" DataSetColumn="Augusztus" />
+              <Mapping SourceColumn="Szeptember" DataSetColumn="Szeptember" />
+              <Mapping SourceColumn="Oktober" DataSetColumn="Oktober" />
+              <Mapping SourceColumn="November" DataSetColumn="November" />
+              <Mapping SourceColumn="December" DataSetColumn="December" />
+              <Mapping SourceColumn="BKE" DataSetColumn="BKE" />
+              <Mapping SourceColumn="TK" DataSetColumn="TK" />
+            </Mappings>
+            <Sources>
+            </Sources>
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="KintlevösegTableAdapter" GeneratorDataComponentClassName="KintlevösegTableAdapter" Name="Kintlevöseg" UserDataComponentName="KintlevösegTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="virConnectionString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="False" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="True" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="True">
+                    <CommandText>SELECT     szamla.AZONOSITO, partner.AZONOSITO AS partner, szamla.DATUM_TELJ, szamla.DATUM_FIZ, szamla.DATUM
+FROM         szamla INNER JOIN
+                      partner ON szamla.PID = partner.PID
+WHERE     (szamla.VS = ' ')</CommandText>
+                    <Parameters>
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="AZONOSITO" DataSetColumn="AZONOSITO" />
+              <Mapping SourceColumn="partner" DataSetColumn="partner" />
+              <Mapping SourceColumn="DATUM_TELJ" DataSetColumn="DATUM_TELJ" />
+              <Mapping SourceColumn="DATUM_FIZ" DataSetColumn="DATUM_FIZ" />
+              <Mapping SourceColumn="DATUM" DataSetColumn="DATUM" />
+            </Mappings>
+            <Sources>
+            </Sources>
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="AfaListaTableAdapter" GeneratorDataComponentClassName="AfaListaTableAdapter" Name="AfaLista" UserDataComponentName="AfaListaTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="virConnectionString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="False" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="False" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="True">
+                    <CommandText>SELECT     szamla.AZONOSITO, szamla.DATUM, szamla.VS AS jel, szamla_tetel.BRUTTO AS osszeg, 
+                      partner.AZONOSITO AS partner, szamla.MEGJEGYZES, szamla_tetel.AFA, szamla_tetel.AFAKULCS
+FROM         szamla INNER JOIN
+                      szamla_tetel ON szamla.ID = szamla_tetel.ID INNER JOIN
+                      partner ON szamla.PID = partner.PID</CommandText>
+                    <Parameters>
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="AZONOSITO" DataSetColumn="AZONOSITO" />
+              <Mapping SourceColumn="DATUM" DataSetColumn="DATUM" />
+              <Mapping SourceColumn="jel" DataSetColumn="jel" />
+              <Mapping SourceColumn="partner" DataSetColumn="partner" />
+              <Mapping SourceColumn="MEGJEGYZES" DataSetColumn="MEGJEGYZES" />
+              <Mapping SourceColumn="AFA" DataSetColumn="AFA" />
+              <Mapping SourceColumn="AFAKULCS" DataSetColumn="AFAKULCS" />
+              <Mapping SourceColumn="osszeg" DataSetColumn="osszeg" />
+            </Mappings>
+            <Sources>
+            </Sources>
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="BevetKiadTableAdapter" GeneratorDataComponentClassName="BevetKiadTableAdapter" Name="BevetKiad" UserDataComponentName="BevetKiadTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="virConnectionString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="False" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="False" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="True">
+                    <CommandText>SELECT     kodtab.KOD, partner.AZONOSITO AS Partner, szamla.DATUM_TELJ AS TeljDatum, szamla_tetel.NETTO, szamla_tetel.BRUTTO, 
+                      szamla_tetel.SZOVEG
+FROM         szamla INNER JOIN
+                      szamla_tetel ON szamla.ID = szamla_tetel.ID INNER JOIN
+                      partner ON szamla.PID = partner.PID INNER JOIN
+                      kodtab ON szamla_tetel.MEGNID = kodtab.SORSZAM
+WHERE     (szamla.ID = 0)</CommandText>
+                    <Parameters>
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="KOD" DataSetColumn="KOD" />
+              <Mapping SourceColumn="Partner" DataSetColumn="Partner" />
+              <Mapping SourceColumn="TeljDatum" DataSetColumn="TeljDatum" />
+              <Mapping SourceColumn="NETTO" DataSetColumn="NETTO" />
+              <Mapping SourceColumn="BRUTTO" DataSetColumn="BRUTTO" />
+              <Mapping SourceColumn="SZOVEG" DataSetColumn="SZOVEG" />
+            </Mappings>
+            <Sources>
+            </Sources>
+          </TableAdapter>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="BizonylatokTableAdapter" GeneratorDataComponentClassName="BizonylatokTableAdapter" Name="Bizonylatok" UserDataComponentName="BizonylatokTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="virConnectionString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="False" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="True" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="True">
+                    <CommandText>SELECT     szamla.AZONOSITO, szamla.DATUM, szamla.VS AS jel, szamla_tetel.NETTO AS netto, szamla_tetel.AFA AS afa, szamla_tetel.BRUTTO AS brutto, 
+                      partner.AZONOSITO AS partner, szamla.MEGJEGYZES
+FROM         szamla INNER JOIN
+                      szamla_tetel ON szamla.ID = szamla_tetel.ID INNER JOIN
+                      partner ON szamla.PID = partner.PID</CommandText>
+                    <Parameters>
+                    </Parameters>
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="AZONOSITO" DataSetColumn="AZONOSITO" />
+              <Mapping SourceColumn="DATUM" DataSetColumn="DATUM" />
+              <Mapping SourceColumn="jel" DataSetColumn="jel" />
+              <Mapping SourceColumn="netto" DataSetColumn="netto" />
+              <Mapping SourceColumn="afa" DataSetColumn="afa" />
+              <Mapping SourceColumn="brutto" DataSetColumn="brutto" />
+              <Mapping SourceColumn="partner" DataSetColumn="partner" />
+              <Mapping SourceColumn="MEGJEGYZES" DataSetColumn="MEGJEGYZES" />
+            </Mappings>
+            <Sources>
+            </Sources>
+          </TableAdapter>
+        </Tables>
+        <Sources>
+        </Sources>
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="virDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="virDataSet" msprop:Generator_DataSetName="virDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="PenzForgalom" msprop:Generator_UserTableName="PenzForgalom" msprop:Generator_RowDeletedName="PenzForgalomRowDeleted" msprop:Generator_RowChangedName="PenzForgalomRowChanged" msprop:Generator_RowClassName="PenzForgalomRow" msprop:Generator_RowChangingName="PenzForgalomRowChanging" msprop:Generator_RowEvArgName="PenzForgalomRowChangeEvent" msprop:Generator_RowEvHandlerName="PenzForgalomRowChangeEventHandler" msprop:Generator_TableClassName="PenzForgalomDataTable" msprop:Generator_TableVarName="tablePenzForgalom" msprop:Generator_RowDeletingName="PenzForgalomRowDeleting" msprop:Generator_TablePropName="PenzForgalom">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="AZONOSITO" msprop:Generator_UserColumnName="AZONOSITO" msprop:Generator_ColumnVarNameInTable="columnAZONOSITO" msprop:Generator_ColumnPropNameInRow="AZONOSITO" msprop:Generator_ColumnPropNameInTable="AZONOSITOColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="45" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DATUM" msprop:Generator_UserColumnName="DATUM" msprop:Generator_ColumnVarNameInTable="columnDATUM" msprop:Generator_ColumnPropNameInRow="DATUM" msprop:Generator_ColumnPropNameInTable="DATUMColumn" type="xs:dateTime" />
+              <xs:element name="jel" msprop:Generator_UserColumnName="jel" msprop:Generator_ColumnVarNameInTable="columnjel" msprop:Generator_ColumnPropNameInRow="jel" msprop:Generator_ColumnPropNameInTable="jelColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="brutton" msprop:Generator_UserColumnName="brutton" msprop:Generator_ColumnVarNameInTable="columnbrutton" msprop:Generator_ColumnPropNameInRow="brutton" msprop:Generator_ColumnPropNameInTable="bruttonColumn" type="xs:decimal" />
+              <xs:element name="bruttoc" msprop:Generator_UserColumnName="bruttoc" msprop:Generator_ColumnVarNameInTable="columnbruttoc" msprop:Generator_ColumnPropNameInRow="bruttoc" msprop:Generator_ColumnPropNameInTable="bruttocColumn" type="xs:decimal" />
+              <xs:element name="partner" msprop:Generator_UserColumnName="partner" msprop:Generator_ColumnPropNameInRow="partner" msprop:Generator_ColumnVarNameInTable="columnpartner" msprop:Generator_ColumnPropNameInTable="partnerColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="megjegyzes" msprop:Generator_UserColumnName="megjegyzes" msprop:Generator_ColumnVarNameInTable="columnmegjegyzes" msprop:Generator_ColumnPropNameInRow="megjegyzes" msprop:Generator_ColumnPropNameInTable="megjegyzesColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="5000" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="HaviBontas" msprop:Generator_UserTableName="HaviBontas" msprop:Generator_RowDeletedName="HaviBontasRowDeleted" msprop:Generator_RowChangedName="HaviBontasRowChanged" msprop:Generator_RowClassName="HaviBontasRow" msprop:Generator_RowChangingName="HaviBontasRowChanging" msprop:Generator_RowEvArgName="HaviBontasRowChangeEvent" msprop:Generator_RowEvHandlerName="HaviBontasRowChangeEventHandler" msprop:Generator_TableClassName="HaviBontasDataTable" msprop:Generator_TableVarName="tableHaviBontas" msprop:Generator_RowDeletingName="HaviBontasRowDeleting" msprop:Generator_TablePropName="HaviBontas">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="kod" msdata:ReadOnly="true" msprop:Generator_UserColumnName="kod" msprop:Generator_ColumnVarNameInTable="columnkod" msprop:Generator_ColumnPropNameInRow="kod" msprop:Generator_ColumnPropNameInTable="kodColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Megnevezes" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Megnevezes" msprop:Generator_ColumnVarNameInTable="columnMegnevezes" msprop:Generator_ColumnPropNameInRow="Megnevezes" msprop:Generator_ColumnPropNameInTable="MegnevezesColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Januar" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Januar" msprop:Generator_ColumnVarNameInTable="columnJanuar" msprop:Generator_ColumnPropNameInRow="Januar" msprop:Generator_ColumnPropNameInTable="JanuarColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Februar" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Februar" msprop:Generator_ColumnVarNameInTable="columnFebruar" msprop:Generator_ColumnPropNameInRow="Februar" msprop:Generator_ColumnPropNameInTable="FebruarColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Marcius" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Marcius" msprop:Generator_ColumnVarNameInTable="columnMarcius" msprop:Generator_ColumnPropNameInRow="Marcius" msprop:Generator_ColumnPropNameInTable="MarciusColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Aprilis" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Aprilis" msprop:Generator_ColumnVarNameInTable="columnAprilis" msprop:Generator_ColumnPropNameInRow="Aprilis" msprop:Generator_ColumnPropNameInTable="AprilisColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Majus" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Majus" msprop:Generator_ColumnVarNameInTable="columnMajus" msprop:Generator_ColumnPropNameInRow="Majus" msprop:Generator_ColumnPropNameInTable="MajusColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Junius" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Junius" msprop:Generator_ColumnVarNameInTable="columnJunius" msprop:Generator_ColumnPropNameInRow="Junius" msprop:Generator_ColumnPropNameInTable="JuniusColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Julius" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Julius" msprop:Generator_ColumnVarNameInTable="columnJulius" msprop:Generator_ColumnPropNameInRow="Julius" msprop:Generator_ColumnPropNameInTable="JuliusColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Augusztus" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Augusztus" msprop:Generator_ColumnVarNameInTable="columnAugusztus" msprop:Generator_ColumnPropNameInRow="Augusztus" msprop:Generator_ColumnPropNameInTable="AugusztusColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Szeptember" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Szeptember" msprop:Generator_ColumnVarNameInTable="columnSzeptember" msprop:Generator_ColumnPropNameInRow="Szeptember" msprop:Generator_ColumnPropNameInTable="SzeptemberColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Oktober" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Oktober" msprop:Generator_ColumnVarNameInTable="columnOktober" msprop:Generator_ColumnPropNameInRow="Oktober" msprop:Generator_ColumnPropNameInTable="OktoberColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="November" msdata:ReadOnly="true" msprop:Generator_UserColumnName="November" msprop:Generator_ColumnVarNameInTable="columnNovember" msprop:Generator_ColumnPropNameInRow="November" msprop:Generator_ColumnPropNameInTable="NovemberColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="December" msdata:ReadOnly="true" msprop:Generator_UserColumnName="December" msprop:Generator_ColumnVarNameInTable="columnDecember" msprop:Generator_ColumnPropNameInRow="December" msprop:Generator_ColumnPropNameInTable="DecemberColumn" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Eredmeny" msprop:Generator_UserTableName="Eredmeny" msprop:Generator_RowDeletedName="EredmenyRowDeleted" msprop:Generator_RowChangedName="EredmenyRowChanged" msprop:Generator_RowClassName="EredmenyRow" msprop:Generator_RowChangingName="EredmenyRowChanging" msprop:Generator_RowEvArgName="EredmenyRowChangeEvent" msprop:Generator_RowEvHandlerName="EredmenyRowChangeEventHandler" msprop:Generator_TableClassName="EredmenyDataTable" msprop:Generator_TableVarName="tableEredmeny" msprop:Generator_RowDeletingName="EredmenyRowDeleting" msprop:Generator_TablePropName="Eredmeny">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TK" msprop:Generator_UserColumnName="TK" msprop:Generator_ColumnVarNameInTable="columnTK" msprop:Generator_ColumnPropNameInRow="TK" msprop:Generator_ColumnPropNameInTable="TKColumn" type="xs:string" minOccurs="0" />
+              <xs:element name="Termekkod" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Termekkod" msprop:Generator_ColumnPropNameInRow="Termekkod" msprop:Generator_ColumnVarNameInTable="columnTermekkod" msprop:Generator_ColumnPropNameInTable="TermekkodColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Megnevezes" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Megnevezes" msprop:Generator_ColumnVarNameInTable="columnMegnevezes" msprop:Generator_ColumnPropNameInRow="Megnevezes" msprop:Generator_ColumnPropNameInTable="MegnevezesColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Januar" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Januar" msprop:Generator_ColumnVarNameInTable="columnJanuar" msprop:Generator_ColumnPropNameInRow="Januar" msprop:Generator_ColumnPropNameInTable="JanuarColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Februar" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Februar" msprop:Generator_ColumnVarNameInTable="columnFebruar" msprop:Generator_ColumnPropNameInRow="Februar" msprop:Generator_ColumnPropNameInTable="FebruarColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Marcius" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Marcius" msprop:Generator_ColumnVarNameInTable="columnMarcius" msprop:Generator_ColumnPropNameInRow="Marcius" msprop:Generator_ColumnPropNameInTable="MarciusColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Aprilis" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Aprilis" msprop:Generator_ColumnVarNameInTable="columnAprilis" msprop:Generator_ColumnPropNameInRow="Aprilis" msprop:Generator_ColumnPropNameInTable="AprilisColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Majus" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Majus" msprop:Generator_ColumnVarNameInTable="columnMajus" msprop:Generator_ColumnPropNameInRow="Majus" msprop:Generator_ColumnPropNameInTable="MajusColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Junius" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Junius" msprop:Generator_ColumnVarNameInTable="columnJunius" msprop:Generator_ColumnPropNameInRow="Junius" msprop:Generator_ColumnPropNameInTable="JuniusColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Julius" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Julius" msprop:Generator_ColumnVarNameInTable="columnJulius" msprop:Generator_ColumnPropNameInRow="Julius" msprop:Generator_ColumnPropNameInTable="JuliusColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Augusztus" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Augusztus" msprop:Generator_ColumnVarNameInTable="columnAugusztus" msprop:Generator_ColumnPropNameInRow="Augusztus" msprop:Generator_ColumnPropNameInTable="AugusztusColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Szeptember" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Szeptember" msprop:Generator_ColumnVarNameInTable="columnSzeptember" msprop:Generator_ColumnPropNameInRow="Szeptember" msprop:Generator_ColumnPropNameInTable="SzeptemberColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Oktober" msdata:ReadOnly="true" msprop:Generator_UserColumnName="Oktober" msprop:Generator_ColumnVarNameInTable="columnOktober" msprop:Generator_ColumnPropNameInRow="Oktober" msprop:Generator_ColumnPropNameInTable="OktoberColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="November" msdata:ReadOnly="true" msprop:Generator_UserColumnName="November" msprop:Generator_ColumnVarNameInTable="columnNovember" msprop:Generator_ColumnPropNameInRow="November" msprop:Generator_ColumnPropNameInTable="NovemberColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="December" msdata:ReadOnly="true" msprop:Generator_UserColumnName="December" msprop:Generator_ColumnVarNameInTable="columnDecember" msprop:Generator_ColumnPropNameInRow="December" msprop:Generator_ColumnPropNameInTable="DecemberColumn" type="xs:decimal" minOccurs="0" />
+              <xs:element name="BKE" msdata:ReadOnly="true" msprop:Generator_UserColumnName="BKE" msprop:Generator_ColumnVarNameInTable="columnBKE" msprop:Generator_ColumnPropNameInRow="BKE" msprop:Generator_ColumnPropNameInTable="BKEColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Kintlevöseg" msprop:Generator_UserTableName="Kintlevöseg" msprop:Generator_RowDeletedName="KintlevösegRowDeleted" msprop:Generator_RowChangedName="KintlevösegRowChanged" msprop:Generator_RowClassName="KintlevösegRow" msprop:Generator_RowChangingName="KintlevösegRowChanging" msprop:Generator_RowEvArgName="KintlevösegRowChangeEvent" msprop:Generator_RowEvHandlerName="KintlevösegRowChangeEventHandler" msprop:Generator_TableClassName="KintlevösegDataTable" msprop:Generator_TableVarName="tableKintlevöseg" msprop:Generator_RowDeletingName="KintlevösegRowDeleting" msprop:Generator_TablePropName="Kintlevöseg">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="AZONOSITO" msprop:Generator_UserColumnName="AZONOSITO" msprop:Generator_ColumnPropNameInRow="AZONOSITO" msprop:Generator_ColumnVarNameInTable="columnAZONOSITO" msprop:Generator_ColumnPropNameInTable="AZONOSITOColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="45" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="partner" msprop:Generator_UserColumnName="partner" msprop:Generator_ColumnPropNameInRow="partner" msprop:Generator_ColumnVarNameInTable="columnpartner" msprop:Generator_ColumnPropNameInTable="partnerColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DATUM_TELJ" msprop:Generator_UserColumnName="DATUM_TELJ" msprop:Generator_ColumnPropNameInRow="DATUM_TELJ" msprop:Generator_ColumnVarNameInTable="columnDATUM_TELJ" msprop:Generator_ColumnPropNameInTable="DATUM_TELJColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DATUM_FIZ" msprop:Generator_UserColumnName="DATUM_FIZ" msprop:Generator_ColumnPropNameInRow="DATUM_FIZ" msprop:Generator_ColumnVarNameInTable="columnDATUM_FIZ" msprop:Generator_ColumnPropNameInTable="DATUM_FIZColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DATUM" msprop:Generator_UserColumnName="DATUM" msprop:Generator_ColumnPropNameInRow="DATUM" msprop:Generator_ColumnVarNameInTable="columnDATUM" msprop:Generator_ColumnPropNameInTable="DATUMColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="OSSZEG" msprop:Generator_UserColumnName="OSSZEG" msprop:Generator_ColumnPropNameInRow="OSSZEG" msprop:Generator_ColumnVarNameInTable="columnOSSZEG" msprop:Generator_ColumnPropNameInTable="OSSZEGColumn" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="AfaLista" msprop:Generator_UserTableName="AfaLista" msprop:Generator_RowDeletedName="AfaListaRowDeleted" msprop:Generator_RowChangedName="AfaListaRowChanged" msprop:Generator_RowClassName="AfaListaRow" msprop:Generator_RowChangingName="AfaListaRowChanging" msprop:Generator_RowEvArgName="AfaListaRowChangeEvent" msprop:Generator_RowEvHandlerName="AfaListaRowChangeEventHandler" msprop:Generator_TableClassName="AfaListaDataTable" msprop:Generator_TableVarName="tableAfaLista" msprop:Generator_RowDeletingName="AfaListaRowDeleting" msprop:Generator_TablePropName="AfaLista">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="AZONOSITO" msprop:Generator_UserColumnName="AZONOSITO" msprop:Generator_ColumnVarNameInTable="columnAZONOSITO" msprop:Generator_ColumnPropNameInRow="AZONOSITO" msprop:Generator_ColumnPropNameInTable="AZONOSITOColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="45" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DATUM" msprop:Generator_UserColumnName="DATUM" msprop:Generator_ColumnVarNameInTable="columnDATUM" msprop:Generator_ColumnPropNameInRow="DATUM" msprop:Generator_ColumnPropNameInTable="DATUMColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="jel" msprop:Generator_UserColumnName="jel" msprop:Generator_ColumnVarNameInTable="columnjel" msprop:Generator_ColumnPropNameInRow="jel" msprop:Generator_ColumnPropNameInTable="jelColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="partner" msprop:Generator_UserColumnName="partner" msprop:Generator_ColumnVarNameInTable="columnpartner" msprop:Generator_ColumnPropNameInRow="partner" msprop:Generator_ColumnPropNameInTable="partnerColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MEGJEGYZES" msprop:Generator_UserColumnName="MEGJEGYZES" msprop:Generator_ColumnVarNameInTable="columnMEGJEGYZES" msprop:Generator_ColumnPropNameInRow="MEGJEGYZES" msprop:Generator_ColumnPropNameInTable="MEGJEGYZESColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="5000" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="AFA" msprop:Generator_UserColumnName="AFA" msprop:Generator_ColumnVarNameInTable="columnAFA" msprop:Generator_ColumnPropNameInRow="AFA" msprop:Generator_ColumnPropNameInTable="AFAColumn" type="xs:decimal" />
+              <xs:element name="AFAKULCS" msprop:Generator_UserColumnName="AFAKULCS" msprop:Generator_ColumnVarNameInTable="columnAFAKULCS" msprop:Generator_ColumnPropNameInRow="AFAKULCS" msprop:Generator_ColumnPropNameInTable="AFAKULCSColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="osszeg" msprop:Generator_UserColumnName="osszeg" msprop:Generator_ColumnPropNameInRow="osszeg" msprop:Generator_ColumnVarNameInTable="columnosszeg" msprop:Generator_ColumnPropNameInTable="osszegColumn" type="xs:decimal" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="BevetKiad" msprop:Generator_UserTableName="BevetKiad" msprop:Generator_RowDeletedName="BevetKiadRowDeleted" msprop:Generator_RowChangedName="BevetKiadRowChanged" msprop:Generator_RowClassName="BevetKiadRow" msprop:Generator_RowChangingName="BevetKiadRowChanging" msprop:Generator_RowEvArgName="BevetKiadRowChangeEvent" msprop:Generator_RowEvHandlerName="BevetKiadRowChangeEventHandler" msprop:Generator_TableClassName="BevetKiadDataTable" msprop:Generator_TableVarName="tableBevetKiad" msprop:Generator_RowDeletingName="BevetKiadRowDeleting" msprop:Generator_TablePropName="BevetKiad">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="KOD" msprop:Generator_UserColumnName="KOD" msprop:Generator_ColumnVarNameInTable="columnKOD" msprop:Generator_ColumnPropNameInRow="KOD" msprop:Generator_ColumnPropNameInTable="KODColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="30" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Partner" msprop:Generator_UserColumnName="Partner" msprop:Generator_ColumnVarNameInTable="columnPartner" msprop:Generator_ColumnPropNameInRow="Partner" msprop:Generator_ColumnPropNameInTable="PartnerColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TeljDatum" msprop:Generator_UserColumnName="TeljDatum" msprop:Generator_ColumnVarNameInTable="columnTeljDatum" msprop:Generator_ColumnPropNameInRow="TeljDatum" msprop:Generator_ColumnPropNameInTable="TeljDatumColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="NETTO" msprop:Generator_UserColumnName="NETTO" msprop:Generator_ColumnVarNameInTable="columnNETTO" msprop:Generator_ColumnPropNameInRow="NETTO" msprop:Generator_ColumnPropNameInTable="NETTOColumn" type="xs:decimal" />
+              <xs:element name="BRUTTO" msprop:Generator_UserColumnName="BRUTTO" msprop:Generator_ColumnVarNameInTable="columnBRUTTO" msprop:Generator_ColumnPropNameInRow="BRUTTO" msprop:Generator_ColumnPropNameInTable="BRUTTOColumn" type="xs:decimal" />
+              <xs:element name="SZOVEG" msprop:Generator_UserColumnName="SZOVEG" msprop:Generator_ColumnVarNameInTable="columnSZOVEG" msprop:Generator_ColumnPropNameInRow="SZOVEG" msprop:Generator_ColumnPropNameInTable="SZOVEGColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="45" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Bizonylatok" msprop:Generator_UserTableName="Bizonylatok" msprop:Generator_RowDeletedName="BizonylatokRowDeleted" msprop:Generator_TableClassName="BizonylatokDataTable" msprop:Generator_RowChangedName="BizonylatokRowChanged" msprop:Generator_RowClassName="BizonylatokRow" msprop:Generator_RowChangingName="BizonylatokRowChanging" msprop:Generator_RowEvArgName="BizonylatokRowChangeEvent" msprop:Generator_RowEvHandlerName="BizonylatokRowChangeEventHandler" msprop:Generator_TablePropName="Bizonylatok" msprop:Generator_TableVarName="tableBizonylatok" msprop:Generator_RowDeletingName="BizonylatokRowDeleting">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="AZONOSITO" msprop:Generator_UserColumnName="AZONOSITO" msprop:Generator_ColumnPropNameInRow="AZONOSITO" msprop:Generator_ColumnVarNameInTable="columnAZONOSITO" msprop:Generator_ColumnPropNameInTable="AZONOSITOColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="45" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DATUM" msprop:Generator_UserColumnName="DATUM" msprop:Generator_ColumnPropNameInRow="DATUM" msprop:Generator_ColumnVarNameInTable="columnDATUM" msprop:Generator_ColumnPropNameInTable="DATUMColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="jel" msprop:Generator_UserColumnName="jel" msprop:Generator_ColumnPropNameInRow="jel" msprop:Generator_ColumnVarNameInTable="columnjel" msprop:Generator_ColumnPropNameInTable="jelColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="netto" msprop:Generator_UserColumnName="netto" msprop:Generator_ColumnPropNameInRow="netto" msprop:Generator_ColumnVarNameInTable="columnnetto" msprop:Generator_ColumnPropNameInTable="nettoColumn" type="xs:decimal" />
+              <xs:element name="afa" msprop:Generator_UserColumnName="afa" msprop:Generator_ColumnPropNameInRow="afa" msprop:Generator_ColumnVarNameInTable="columnafa" msprop:Generator_ColumnPropNameInTable="afaColumn" type="xs:decimal" />
+              <xs:element name="brutto" msprop:Generator_UserColumnName="brutto" msprop:Generator_ColumnPropNameInRow="brutto" msprop:Generator_ColumnVarNameInTable="columnbrutto" msprop:Generator_ColumnPropNameInTable="bruttoColumn" type="xs:decimal" />
+              <xs:element name="partner" msprop:Generator_UserColumnName="partner" msprop:Generator_ColumnPropNameInRow="partner" msprop:Generator_ColumnVarNameInTable="columnpartner" msprop:Generator_ColumnPropNameInTable="partnerColumn">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MEGJEGYZES" msprop:Generator_UserColumnName="MEGJEGYZES" msprop:Generator_ColumnPropNameInRow="MEGJEGYZES" msprop:Generator_ColumnVarNameInTable="columnMEGJEGYZES" msprop:Generator_ColumnPropNameInTable="MEGJEGYZESColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="5000" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
