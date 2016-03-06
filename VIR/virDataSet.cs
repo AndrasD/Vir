@@ -1,4 +1,5 @@
-﻿namespace MainProgramm {
+﻿namespace MainProgramm
+{
 
 
     partial class virDataSet
