@@ -61,9 +61,9 @@
             this.rendben.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.rendben.ImageIndex = 0;
             this.rendben.ImageList = this.imageList;
-            this.rendben.Location = new System.Drawing.Point(72, 169);
+            this.rendben.Location = new System.Drawing.Point(53, 169);
             this.rendben.Name = "rendben";
-            this.rendben.Size = new System.Drawing.Size(84, 27);
+            this.rendben.Size = new System.Drawing.Size(104, 27);
             this.rendben.TabIndex = 3;
             this.rendben.Text = "Rendben";
             this.rendben.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -77,9 +77,9 @@
             this.megsem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.megsem.ImageIndex = 1;
             this.megsem.ImageList = this.imageList;
-            this.megsem.Location = new System.Drawing.Point(162, 169);
+            this.megsem.Location = new System.Drawing.Point(166, 169);
             this.megsem.Name = "megsem";
-            this.megsem.Size = new System.Drawing.Size(84, 27);
+            this.megsem.Size = new System.Drawing.Size(104, 27);
             this.megsem.TabIndex = 4;
             this.megsem.Text = "Mégsem";
             this.megsem.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -90,7 +90,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(100, 41);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(70, 16);
+            this.label1.Size = new System.Drawing.Size(86, 19);
             this.label1.TabIndex = 2;
             this.label1.Text = "Azonosító:";
             // 
@@ -99,7 +99,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(100, 69);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(49, 16);
+            this.label2.Size = new System.Drawing.Size(60, 19);
             this.label2.TabIndex = 3;
             this.label2.Text = "Jelszó:";
             // 
@@ -108,7 +108,7 @@
             this.textUser.Location = new System.Drawing.Point(205, 38);
             this.textUser.MaxLength = 30;
             this.textUser.Name = "textUser";
-            this.textUser.Size = new System.Drawing.Size(124, 22);
+            this.textUser.Size = new System.Drawing.Size(124, 26);
             this.textUser.TabIndex = 0;
             // 
             // textPWD
@@ -116,7 +116,7 @@
             this.textPWD.Location = new System.Drawing.Point(205, 66);
             this.textPWD.MaxLength = 15;
             this.textPWD.Name = "textPWD";
-            this.textPWD.Size = new System.Drawing.Size(124, 22);
+            this.textPWD.Size = new System.Drawing.Size(124, 26);
             this.textPWD.TabIndex = 1;
             this.textPWD.UseSystemPasswordChar = true;
             this.textPWD.Leave += new System.EventHandler(this.textPWD_Leave);
@@ -127,7 +127,7 @@
             this.button1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button1.ImageList = this.imageList;
-            this.button1.Location = new System.Drawing.Point(252, 169);
+            this.button1.Location = new System.Drawing.Point(279, 169);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(104, 27);
             this.button1.TabIndex = 5;
@@ -141,7 +141,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(101, 97);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(26, 16);
+            this.label3.Size = new System.Drawing.Size(32, 19);
             this.label3.TabIndex = 9;
             this.label3.Text = "Év:";
             // 
@@ -151,14 +151,14 @@
             this.comboConn.FormattingEnabled = true;
             this.comboConn.Location = new System.Drawing.Point(205, 95);
             this.comboConn.Name = "comboConn";
-            this.comboConn.Size = new System.Drawing.Size(124, 24);
+            this.comboConn.Size = new System.Drawing.Size(124, 26);
             this.comboConn.TabIndex = 10;
             this.comboConn.ValueMember = "connstring";
             // 
             // Bejelentkezes
             // 
             this.AcceptButton = this.rendben;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.megsem;
@@ -178,8 +178,8 @@
             this.Name = "Bejelentkezes";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Bejelentkezés";
-            this.Load += new System.EventHandler(this.Bejelentkezes_Load);
             this.Activated += new System.EventHandler(this.Bejelentkezes_Activated);
+            this.Load += new System.EventHandler(this.Bejelentkezes_Load);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

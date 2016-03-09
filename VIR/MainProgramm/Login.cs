@@ -70,9 +70,9 @@ namespace MainProgramm.Bejelentkezes
         private void Bejelentkezes_Load(object sender, EventArgs e)
         {
             int pozicio = -1;
-            int pozCR = -1;
+//            int pozCR = -1;
             int start = -1;
-            int hossz = -1;
+//            int hossz = -1;
             string line = "";
 
             this.textUser.Focus();
