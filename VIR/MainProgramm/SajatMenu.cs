@@ -13,189 +13,178 @@ namespace MainProgramm.SajatMenu
 {
     public class MyMenuArray
     {
-        public int maxMagassag = 527;
-        public int maxSzelesseg = 200;
-        public int bilMagassag = 30;  ///23
-        public int lvMagassag = 457;
-        public int elemszam;
-        public Control Control;
+        public int bilMagassag = 30;
         public string[] Buttonstrings;
-        public MyMenu[] menuArr;
+        public System.Windows.Forms.Control Control;
         public object[] Elemek;
+        public int elemszam;
+        public int lvMagassag = 0x1c9;
+        public int maxMagassag = 0x20f;
+        public int maxSzelesseg = 200;
+        public MyMenu[] menuArr;
 
-
-        public MyMenuArray(string[] buttonstrings, object[] elemek, Control control)
+        public MyMenuArray(string[] buttonstrings, object[] elemek, System.Windows.Forms.Control control)
         {
-            elemszam = buttonstrings.Length;
-            Buttonstrings = buttonstrings;
-            Elemek = elemek;
-            Control = control;
-            maxMagassag = Control.Size.Height;
-            maxSzelesseg = Control.Size.Width;
-            lvMagassag = maxMagassag - (elemszam * bilMagassag) - 1;
-            Control.SizeChanged += new EventHandler(Control_SizeChanged);
-            MyMenuInicializalas();
-            //ControlSizeChange();
-
+            this.elemszam = buttonstrings.Length;
+            this.Buttonstrings = buttonstrings;
+            this.Elemek = elemek;
+            this.Control = control;
+            this.maxMagassag = this.Control.Size.Height;
+            this.maxSzelesseg = this.Control.Size.Width;
+            this.lvMagassag = (this.maxMagassag - (this.elemszam * this.bilMagassag)) - 1;
+            this.Control.SizeChanged += new EventHandler(this.Control_SizeChanged);
+            this.MyMenuInicializalas();
         }
 
-        private void MyMenuInicializalas()
+        private void button_Click(object sender, EventArgs e)
         {
-            menuArr = new MyMenu[elemszam];
-            for (int i = 0; i < elemszam; i++)
+            Button button = (Button)sender;
+            MyMenu tag = (MyMenu)button.Tag;
+            for (int i = 0; i < this.elemszam; i++)
             {
-                menuArr[i] = new MyMenu(this, i);
-                menuArr[i].button.Click += new System.EventHandler(button_Click);
-
-                menuArr[i].bill_felso_kor = i * bilMagassag;
-                menuArr[i].list_poz       = (i + 1) * bilMagassag;
-                if (i == 0)
-                {
-                    menuArr[i].bill_also_kor = 0;
-                    menuArr[i].bill_felul = true;
-                    menuArr[i].list.Visible = true;
-                }
-                else
-                {
-                    menuArr[i].bill_also_kor = maxMagassag - ((elemszam - i) * bilMagassag);
-                    menuArr[i].bill_felul = false;
-                    menuArr[i].list.Visible = false;
-                }
-
-                menuArr[i].button.Anchor = ((AnchorStyles)((AnchorStyles.Left | AnchorStyles.Right)));
-                menuArr[i].button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-                menuArr[i].button.FlatAppearance.BorderSize = 0;
-                menuArr[i].button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
-                menuArr[i].button.Location = new Point(0, menuArr[i].bill_also_kor);
-                menuArr[i].button.Size = new System.Drawing.Size(maxSzelesseg, bilMagassag);
-                menuArr[i].button.Text = Buttonstrings[i];
-                menuArr[i].button.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-                menuArr[i].button.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold);
-                menuArr[i].button.BackColor = System.Drawing.Color.LightSteelBlue;
-                menuArr[i].button.Cursor = System.Windows.Forms.Cursors.Hand;
-
-                menuArr[i].list.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-                menuArr[i].list.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-                menuArr[i].list.Activation = System.Windows.Forms.ItemActivation.OneClick;
-                menuArr[i].list.BorderStyle = System.Windows.Forms.BorderStyle.None;
-                menuArr[i].list.FullRowSelect = true;
-                menuArr[i].list.HoverSelection = false;
-                menuArr[i].list.HideSelection = false;
-                menuArr[i].list.LabelWrap = false;
-                menuArr[i].list.ShowGroups = false;
-                menuArr[i].list.ShowItemToolTips = true;
-                menuArr[i].list.TabIndex = 0;
-                menuArr[i].list.UseCompatibleStateImageBehavior = false;
-                menuArr[i].list.View = System.Windows.Forms.View.List;
-                menuArr[i].list.Size = new Size(maxSzelesseg, lvMagassag);
-                menuArr[i].list.Location = new Point(0, menuArr[i].list_poz);
-                menuArr[i].list.BackColor = System.Drawing.Color.FromArgb(((System.Byte)(255)), ((System.Byte)(255)), ((System.Byte)(235)));
+                this.menuArr[i].ButtonClick(tag.menuindex);
             }
         }
 
         public void Control_SizeChanged(object sender, EventArgs e)
         {
-            ControlSizeChange();
+            this.ControlSizeChange();
         }
 
         public void ControlSizeChange()
         {
-            maxMagassag = Control.Size.Height;
-            maxSzelesseg = Control.Size.Width;
-            lvMagassag = maxMagassag - (elemszam * bilMagassag) - 1;
-            for (int i = 0; i < elemszam; i++)
+            this.maxMagassag = this.Control.Size.Height;
+            this.maxSzelesseg = this.Control.Size.Width;
+            this.lvMagassag = (this.maxMagassag - (this.elemszam * this.bilMagassag)) - 1;
+            for (int i = 0; i < this.elemszam; i++)
             {
-                menuArr[i].ControlSizeChanged();
+                this.menuArr[i].ControlSizeChanged();
             }
         }
 
-        private void button_Click(object sender, System.EventArgs e)
+        private void MyMenuInicializalas()
         {
-            Button b = (Button)sender;
-            MyMenu menu = (MyMenu)b.Tag;
-            for (int i = 0; i < elemszam; i++)
+            this.menuArr = new MyMenu[this.elemszam];
+            for (int i = 0; i < this.elemszam; i++)
             {
-                MyMenu menui = menuArr[i];
-                menui.ButtonClick(menu.menuindex);
-
+                this.menuArr[i] = new MyMenu(this, i);
+                this.menuArr[i].button.Click += new EventHandler(this.button_Click);
+                this.menuArr[i].bill_felso_kor = i * this.bilMagassag;
+                this.menuArr[i].list_poz = (i + 1) * this.bilMagassag;
+                if (i == 0)
+                {
+                    this.menuArr[i].bill_also_kor = 0;
+                    this.menuArr[i].bill_felul = true;
+                    this.menuArr[i].list.Visible = true;
+                }
+                else
+                {
+                    this.menuArr[i].bill_also_kor = this.maxMagassag - ((this.elemszam - i) * this.bilMagassag);
+                    this.menuArr[i].bill_felul = false;
+                    this.menuArr[i].list.Visible = false;
+                }
+                this.menuArr[i].button.Anchor = AnchorStyles.Right | AnchorStyles.Left;
+                this.menuArr[i].button.FlatStyle = FlatStyle.Flat;
+                this.menuArr[i].button.FlatAppearance.BorderSize = 0;
+                this.menuArr[i].button.FlatAppearance.MouseOverBackColor = Color.WhiteSmoke;
+                this.menuArr[i].button.Location = new Point(0, this.menuArr[i].bill_also_kor);
+                this.menuArr[i].button.Size = new Size(this.maxSzelesseg, this.bilMagassag);
+                this.menuArr[i].button.Text = this.Buttonstrings[i];
+                this.menuArr[i].button.TextAlign = ContentAlignment.MiddleLeft;
+                this.menuArr[i].button.Font = new Font("Arial", 8.25f, FontStyle.Bold);
+                this.menuArr[i].button.BackColor = Color.LightSteelBlue;
+                this.menuArr[i].button.Cursor = Cursors.Hand;
+                this.menuArr[i].list.Anchor = AnchorStyles.Right | AnchorStyles.Left;
+                this.menuArr[i].list.Font = new Font("Arial", 9f, FontStyle.Regular, GraphicsUnit.Point, 0);
+                this.menuArr[i].list.Activation = ItemActivation.OneClick;
+                this.menuArr[i].list.BorderStyle = BorderStyle.None;
+                this.menuArr[i].list.FullRowSelect = true;
+                this.menuArr[i].list.HoverSelection = false;
+                this.menuArr[i].list.HideSelection = false;
+                this.menuArr[i].list.LabelWrap = false;
+                this.menuArr[i].list.ShowGroups = false;
+                this.menuArr[i].list.ShowItemToolTips = true;
+                this.menuArr[i].list.TabIndex = 0;
+                this.menuArr[i].list.UseCompatibleStateImageBehavior = false;
+                this.menuArr[i].list.View = View.List;
+                this.menuArr[i].list.Size = new Size(this.maxSzelesseg, this.lvMagassag);
+                this.menuArr[i].list.Location = new Point(0, this.menuArr[i].list_poz);
+                this.menuArr[i].list.BackColor = Color.FromArgb(0xff, 0xff, 0xeb);
             }
         }
     }
 
     public class MyMenu
     {
-        //       public int menuElem;
-        //       public string[] menuButton;
-        //       public string[][] listViewArray;
-        //       public string[][] newFormArr;
-        //       public string[][] aktFormArr;
-        public MyMenuArray MenuArray;
+        public int bill_also_kor;
+        public int bill_felso_kor;
+        public bool bill_felul;
         public Button button = new Button();
         public ListView list = new ListView();
-        public int bill_felso_kor;
-        public int bill_also_kor;
-        public bool bill_felul;
         public int list_poz;
+        public MyMenuArray MenuArray;
         public int menuindex;
 
         public MyMenu(MyMenuArray menuarr, int menuind)
         {
-            MenuArray = menuarr;
-            menuindex = menuind;
-            MenuArray.Control.Controls.Add(button);
-            button.Tag = this;
-            MenuArray.Control.Controls.Add(list);
-            list.Tag = this;
-            button.TabStop = false;
-            list.TabStop = false;
-            object[] listelemek = (object[])MenuArray.Elemek[menuindex];
-            for (int i = 0; i < listelemek.Length; i++)
+            this.MenuArray = menuarr;
+            this.menuindex = menuind;
+            this.MenuArray.Control.Controls.Add(this.button);
+            this.button.Tag = this;
+            this.MenuArray.Control.Controls.Add(this.list);
+            this.list.Tag = this;
+            this.button.TabStop = false;
+            this.list.TabStop = false;
+            object[] objArray = (object[])this.MenuArray.Elemek[this.menuindex];
+            for (int i = 0; i < objArray.Length; i++)
             {
-                ListViewItem listViewItem = new ListViewItem();
-                list.Items.Add(listViewItem);
-                object[] egyelem = (object[])listelemek[i];
-  //              object egyalelem =egyelem[0];
-                listViewItem.Text = egyelem[0].ToString();
-                listViewItem.Tag = egyelem[1];
+                ListViewItem item = new ListViewItem();
+                this.list.Items.Add(item);
+                object[] objArray2 = (object[])objArray[i];
+                item.Text = objArray2[0].ToString();
+                item.Tag = objArray2[1];
+            }
+        }
+
+        public void ButtonClick(int bill)
+        {
+            int menuindex = this.menuindex;
+            if (menuindex < bill)
+            {
+                this.list.Visible = false;
+                this.button.Location = new Point(0, this.bill_felso_kor);
+                this.bill_felul = true;
+            }
+            if (menuindex == bill)
+            {
+                this.button.Location = new Point(0, this.bill_felso_kor);
+                this.bill_felul = true;
+                this.list.Visible = true;
+            }
+            if (menuindex > bill)
+            {
+                this.list.Visible = false;
+                this.button.Location = new Point(0, this.bill_also_kor);
+                this.bill_felul = false;
             }
         }
 
         public void ControlSizeChanged()
         {
-            bill_felso_kor = menuindex * MenuArray.bilMagassag;
-            bill_also_kor = MenuArray.maxMagassag - ((MenuArray.elemszam - menuindex) * MenuArray.bilMagassag);
-            list_poz = (menuindex + 1) * MenuArray.bilMagassag;
-            if (bill_felul)
-                button.Location = new Point(0, bill_felso_kor);
+            this.bill_felso_kor = this.menuindex * this.MenuArray.bilMagassag;
+            this.bill_also_kor = this.MenuArray.maxMagassag - ((this.MenuArray.elemszam - this.menuindex) * this.MenuArray.bilMagassag);
+            this.list_poz = (this.menuindex + 1) * this.MenuArray.bilMagassag;
+            if (this.bill_felul)
+            {
+                this.button.Location = new Point(0, this.bill_felso_kor);
+            }
             else
-                button.Location = new Point(0, bill_also_kor);
-            list.Size = new Size(MenuArray.maxSzelesseg, MenuArray.lvMagassag);
-            list.Location = new Point(0, list_poz);
+            {
+                this.button.Location = new Point(0, this.bill_also_kor);
+            }
+            this.list.Size = new Size(this.MenuArray.maxSzelesseg, this.MenuArray.lvMagassag);
+            this.list.Location = new Point(0, this.list_poz);
         }
-
-        public void ButtonClick(int bill)
-        {
-            int i = menuindex;
-            if (i < bill)
-            {
-                list.Visible = false;
-                button.Location = new Point(0, bill_felso_kor);
-                bill_felul = true;
-            }
-            if (i == bill)
-            {
-                button.Location = new Point(0, bill_felso_kor);
-                bill_felul = true;
-                list.Visible = true;
-            }
-            if (i > bill)
-            {
-                list.Visible = false;
-                button.Location = new Point(0, bill_also_kor);
-                bill_felul = false;
-            }
-        }
-
     }
 }
 

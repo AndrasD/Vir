@@ -50,6 +50,9 @@ namespace VIR
         private Control aktualControl = null;
         private string   user;
         private string   pwd;
+        private string programok = "";
+        private string szint;
+
         //public  Server svr = new Server();
 
         private Fak fak;
@@ -86,15 +89,13 @@ namespace VIR
 
         public MainForm()
         {
-            Screen sc = Screen.PrimaryScreen;
-            if (sc.Bounds.Size.Width == 1024 && sc.Bounds.Size.Height == 768)
+            Screen primaryScreen = Screen.PrimaryScreen;
+            if ((primaryScreen.Bounds.Size.Width == 0x400) && (primaryScreen.Bounds.Size.Height == 0x300))
             {
-                this.WindowState = FormWindowState.Maximized;
+                base.WindowState = FormWindowState.Maximized;
             }
-
-            InitializeComponent();
+            this.InitializeComponent();
         }
-
 
         /// <summary>
         /// Amikor a MainForm betöltödik
@@ -103,41 +104,38 @@ namespace VIR
         /// <param name="e"></param>
         private void VIR_Load(object sender, EventArgs e)
         {
-            if (ConfigFileRead())
+            if (this.ConfigFileRead())
             {
-                createConnection();
+                this.createConnection();
             }
             else
-                this.Close();
-#if debug
-            user = "Dallos András";
-            pwd = "dallos";
-            this.userLoad();
-            this.menuBeallit();
-#else
-            bejelentkezes.Connection = this.myconn;
-            if (bejelentkezes.ShowDialog() == DialogResult.Cancel)
-                this.Close();
+            {
+                base.Close();
+            }
+            this.bejelentkezes.Connection = this.myconn;
+            if (this.bejelentkezes.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+            {
+                base.Close();
+            }
             else
             {
-                user = bejelentkezes.User;
-                pwd = bejelentkezes.Pwd;
-                jogosultsag = bejelentkezes.Jogosultsag;
-
-                myconn.Close();
-                myconn.ConnectionString = bejelentkezes.ConnectionValue;
-                rendszerconn = myconn.ConnectionString;
-                createConnection();
-                adatEv.Text = adatEv.Text + bejelentkezes.ConnectionText;
-
+                this.user = this.bejelentkezes.User;
+                this.pwd = this.bejelentkezes.Pwd;
+                this.jogosultsag = this.bejelentkezes.Jogosultsag;
+                this.programok = this.bejelentkezes.Programok;
+                this.myconn.Close();
+                this.myconn.ConnectionString = this.bejelentkezes.ConnectionValue;
+                this.rendszerconn = this.myconn.ConnectionString;
+                this.createConnection();
+                this.adatEv.Text = this.adatEv.Text + this.bejelentkezes.ConnectionText;
                 this.userLoad();
                 this.menuBeallit();
-                if (jogosultsag != "1")
+                if (this.jogosultsag != "1")
+                {
                     this.import.Enabled = false;
+                }
             }
-#endif
-            myconn.Close();
-
+            this.myconn.Close();
         }
 
         #region Tulajdonságok (Get és Set)
@@ -175,7 +173,6 @@ namespace VIR
         public void pBSkip()
         {
             this.progressBar.PerformStep();
-            //for (int i = 0; i < 100000000; i++) ;
         }
 
         /// <summary>
@@ -208,7 +205,7 @@ namespace VIR
         public void pbLezaras(int val)
         {
             this.progressBar.Visible = false;
-            this.pbUzenet(String.Empty);
+            this.pbUzenet(string.Empty);
             this.progressBar.Value = val;
         }
         #endregion
@@ -217,70 +214,62 @@ namespace VIR
 
         private bool ConfigFileRead()
         {
-            StreamWriter sw;
-            bool ret = true;
-
             try
             {
-                string sourceDir = Directory.GetCurrentDirectory();
-                string sourceFile = sourceDir + "\\sxs_config.ini";
-
-                if (!File.Exists(sourceFile) || File.ReadAllText(sourceFile) == String.Empty)
+                string path = Directory.GetCurrentDirectory() + @"\sxs_config.ini";
+                if (!(File.Exists(path) && (File.ReadAllText(path) != string.Empty)))
                 {
-                    myconn.ConnectionString = rendszerconn;
-                    sw = File.CreateText(sourceFile);
-                    sw.WriteLine("[SysConnString] := " + myconn.ConnectionString);
-                    sw.Close();
-                    ret = true;
+                    this.myconn.ConnectionString = this.rendszerconn;
+                    StreamWriter writer = File.CreateText(path);
+                    writer.WriteLine("[SysConnString] := " + this.myconn.ConnectionString);
+                    writer.Close();
+                    return true;
                 }
-                else
-                {
-                    myconn.ConnectionString = Gyujt.StringFromConfig("[SysConnString]");
-                    rendszerconn = myconn.ConnectionString;
-                    ret = true;
-                }
+                this.myconn.ConnectionString = this.Gyujt.StringFromConfig("[SysConnString]");
+                this.rendszerconn = this.myconn.ConnectionString;
+                return true;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                MessageBox.Show(e.ToString(), "Hiba a path megállapításánál.");
-                ret = false;
+                MessageBox.Show(exception.ToString(), "Hiba a path megadásánál.");
+                return false;
             }
-
-            return ret;
         }
 
         private void createConnection()
         {
             try
             {
-                myconn.Open();
+                this.myconn.Open();
             }
-            catch (Exception err)
+            catch (Exception exception)
             {
-                MessageBox.Show("Adatbázis kapcsolódási hiba.\r\n Hibás Dolgozó/Jelszó.\r\n"+myconn.ConnectionString+"\r\n"+ err.Message);
-                this.Close();
+                MessageBox.Show("Adatbázis kapcsolódási hiba.\r\n Hibás Dolgozó/Jelszó.\r\n" + this.myconn.ConnectionString + "\r\n" + exception.Message);
+                base.Close();
             }
         }
 
         private void userLoad()
         {
-            tableUser_info = bejelentkezes.UserTable;
-            if (tableUser_info.Rows.Count > 0)
-                this.labelUser.Text = tableUser_info.Rows[0]["dolgozo_nev"].ToString();
+            this.tableUser_info = this.bejelentkezes.UserTable;
+            if (this.tableUser_info.Rows.Count > 0)
+            {
+                this.labelUser.Text = this.tableUser_info.Rows[0]["dolgozo_nev"].ToString();
+                this.labelPrg.Text = this.tableUser_info.Rows[0]["programok"].ToString();
+                this.szint = this.tableUser_info.Rows[0]["szint"].ToString();
+            }
         }
 
         private void menuBeallit()
         {
-            modkezdetedatum = Convert.ToDateTime(DateTime.Today.ToShortDateString().Substring(0, 8) + ".01");
-            fak = new Fak(this, rendszerconn, panel4, "Sql");
-            fak.Cegadatok(rendszerconn, modkezdetedatum);
-            fak.Formfaclose();
-            panel1.Visible = false;
-            MenuInicializalas();
-            panel1.Visible = true;
+            this.modkezdetedatum = Convert.ToDateTime(DateTime.Today.ToShortDateString().Substring(0, 8) + ".01");
+            this.fak = new Fak(this, this.rendszerconn, this.panel4, "Sql");
+            this.fak.Cegadatok(this.rendszerconn, this.modkezdetedatum);
+            this.fak.Formfaclose();
+            this.panel1.Visible = false;
+            this.MenuInicializalas();
+            this.panel1.Visible = true;
         }
-
-
 
         /// <summary>
         /// A fömenü inicializálása.
@@ -290,223 +279,216 @@ namespace VIR
         /// </summary>
         private void MenuInicializalas()
         {
-            tagbank = fak.GetKodtab("R", "Bank");
-            tagpenztar = fak.GetKodtab("C", "PENZT");
-            tagtermekfo = fak.GetKodtab("C", "Termfocsop");
-            tagtermekal = fak.GetKodtab("C", "Termalcsop");
-            tagtermek = fak.GetKodtab("C", "Term");
-            tagkoltsegfo = fak.GetKodtab("C", "Koltfocsop");
-            tagkoltsegal = fak.GetKodtab("C", "Koltalcsop");
-            tagkoltseg = fak.GetKodtab("C", "Kolt");
-            tagafa = fak.GetKodtab("C", "AFA");
-            tagpartner = fak.GetTablaTag("C", "PARTNER");
-            tagpartnertetel = fak.GetTablaTag("C", "PARTNER_FOLYOSZ");
-            tagszamla = fak.GetTablaTag("C", "SZAMLA");
-            tagszlatetel = fak.GetTablaTag("T", "SZAMLA_TETEL");
-            tagpenzmozg = fak.GetTablaTag("C", "PENZMOZG");
-            tagelokalkulacio = fak.GetTablaTag("C", "ELOKALKULACIO");
-            tagktgfelosztas = fak.GetTablaTag("C", "KTGFELOSZTAS");
-            tagcegek = fak.GetKodtab("C", "Ceg");
-
-            Osszefinfo oszefinfo = new Osszefinfo();
-            Tablainfo  jogosinfo = ((MyTag)fak.GetKodtab("R", "Jog")).AdatTablainfo;
-            string jogid="";
-            for (int i=0;i<jogosinfo.Adattabla.Rows.Count;i++)
+            int num;
+            this.tagbank = this.fak.GetKodtab("R", "Bank");
+            this.tagpenztar = this.fak.GetKodtab("C", "PENZT");
+            this.tagtermekfo = this.fak.GetKodtab("C", "Termfocsop");
+            this.tagtermekal = this.fak.GetKodtab("C", "Termalcsop");
+            this.tagtermek = this.fak.GetKodtab("C", "Term");
+            this.tagkoltsegfo = this.fak.GetKodtab("C", "Koltfocsop");
+            this.tagkoltsegal = this.fak.GetKodtab("C", "Koltalcsop");
+            this.tagkoltseg = this.fak.GetKodtab("C", "Kolt");
+            this.tagafa = this.fak.GetKodtab("C", "AFA");
+            this.tagpartner = this.fak.GetTablaTag("C", "PARTNER");
+            this.tagpartnertetel = this.fak.GetTablaTag("C", "PARTNER_FOLYOSZ");
+            this.tagszamla = this.fak.GetTablaTag("C", "SZAMLA");
+            this.tagszlatetel = this.fak.GetTablaTag("T", "SZAMLA_TETEL");
+            this.tagpenzmozg = this.fak.GetTablaTag("C", "PENZMOZG");
+            this.tagelokalkulacio = this.fak.GetTablaTag("C", "ELOKALKULACIO");
+            this.tagktgfelosztas = this.fak.GetTablaTag("C", "KTGFELOSZTAS");
+            this.tagcegek = this.fak.GetKodtab("C", "Ceg");
+            Osszefinfo osszefinfo = new Osszefinfo();
+            Tablainfo adatTablainfo = this.fak.GetKodtab("R", "Jog").AdatTablainfo;
+            string str = "";
+            for (num = 0; num < adatTablainfo.Adattabla.Rows.Count; num++)
             {
-                DataRow dr=jogosinfo.Adattabla.Rows[i];
-                if(dr["KOD"].ToString()==jogosultsag)
+                DataRow row = adatTablainfo.Adattabla.Rows[num];
+                if (row["KOD"].ToString() == this.jogosultsag)
                 {
-                    jogid=dr["SORSZAM"].ToString();
+                    str = row["SORSZAM"].ToString();
                     break;
                 }
             }
-//            Tablainfo fomeninfo = ((MyTag)fak.GetKodtab("R", "Fömenü")).AdatTablainfo;
-//            Tablainfo meninfo = ((MyTag)fak.GetKodtab("R", "Menü")).AdatTablainfo;
- //           Tablainfo fomminfo = ((MyTag)fak.GetOsszef("R", "Fomm")).AdatTablainfo;
-            Tablainfo fommjoginfo = ((MyTag)fak.GetOsszef("R", "Fommjog")).AdatTablainfo;
-            oszefinfo.Osszefinfotolt(fommjoginfo.Tablatag, fak);
-            object[] ob1 = new object[] { new object[] { "", "" }, jogid };
-//            oszefinfo.GetOsszef(ob1);
-            TreeView tv = oszefinfo.GetAktualosszef(ob1);
-            menubutton=new string[tv.Nodes.Count];
-            menuElem = menubutton.Length;
-            menuelemek = new object[menuElem];
-            for (int i = 0; i < menubutton.Length; i++)
+            Tablainfo tablainfo2 = this.fak.GetOsszef("R", "Fommjog").AdatTablainfo;
+            osszefinfo.Osszefinfotolt(tablainfo2.Tablatag, this.fak);
+            object[] idparamok = new object[] { new object[] { "", "" }, str };
+            TreeView aktualosszef = osszefinfo.GetAktualosszef(idparamok);
+            this.menubutton = new string[aktualosszef.Nodes.Count];
+            this.menuElem = this.menubutton.Length;
+            this.menuelemek = new object[this.menuElem];
+            for (num = 0; num < this.menubutton.Length; num++)
             {
-                menubutton[i] = tv.Nodes[i].Text;
-                menuelemek[i] = new object[tv.Nodes[i].Nodes.Count];
-                for (int k = 0; k < tv.Nodes[i].Nodes.Count; k++)
+                this.menubutton[num] = aktualosszef.Nodes[num].Text;
+                this.menuelemek[num] = new object[aktualosszef.Nodes[num].Nodes.Count];
+                for (int i = 0; i < aktualosszef.Nodes[num].Nodes.Count; i++)
                 {
-                    TreeNode tn=tv.Nodes[i].Nodes[k];
-                    string menuszov=tn.Text;
-                    switch (menuszov)
+                    TreeNode node = aktualosszef.Nodes[num].Nodes[i];
+                    string text = node.Text;
+                    switch (text)
                     {
                         case "Bevétel - Vevö":
-                            ((object[])menuelemek[i])[k] =new object[] { menuszov, new object[] { "Szamla", new MyTag[] { tagszamla, tagszlatetel }, "V" } };
-                            break;
-                        case "Kiadás - Szállitó":
-                            ((object[])menuelemek[i])[k] =new object[] { menuszov, new object[] { "Szamla", new MyTag[] { tagszamla, tagszlatetel }, "S" } };
-                            break;
-                        case "Pénzmozgás":
-                            ((object[])menuelemek[i])[k] = new object[] { menuszov, new object[] { "PenzMozgas", new MyTag[] { tagpenzmozg, tagpartner, tagpartnertetel, tagpenztar } } };
-                            break;
-                        case "Kiegyenlítés - Vevö":
-                            ((object[])menuelemek[i])[k] = new object[] { menuszov, new object[] { "Kiegyenlites", new MyTag[] { tagszamla, tagszlatetel }, "V" } };
-                            break;
-                        case "Kiegyenlítés - Szállító":
-                            ((object[])menuelemek[i])[k] = new object[] { menuszov, new object[] { "Kiegyenlites", new MyTag[] { tagszamla, tagszlatetel }, "S" } };
-                            break;
-                        case "Bevételek":
-                            ((object[])menuelemek[i])[k] = new object[]{menuszov ,new object[]{"Szamlak",new MyTag[]{tagtermekfo,tagtermekal,tagtermek},"V"}};
-                            break;
-                        case "Kiadások":
-                            ((object[])menuelemek[i])[k] = new object[]{menuszov,new object[]{"Szamlak",new MyTag[]{tagkoltsegfo,tagkoltsegal,tagkoltseg},"S"}};
-                            break;
-                        case "Bevétel-Kiadás":
-                            ((object[])menuelemek[i])[k] = new object[] { menuszov, new object[] { "BevetKiad", new MyTag[] { tagtermekfo, tagtermekal, tagtermek }} };
-                            break;
-                         case "Eredmény":
-                            ((object[])menuelemek[i])[k] = new object[]{menuszov,new object[]{"Eredmeny",new MyTag[]{tagktgfelosztas,tagtermek,tagkoltseg,tagtermekfo,tagtermekal,tagkoltsegfo,tagkoltsegal}}};
-                            break;
-                        //case "Termékenkénti kiadás":
-                        //    ((object[])menuelemek[i])[k] = new object[] { menuszov, new object[] { "" } };
-                        //    break;
-                        //case "Termékenkénti eredmény":
-                        //    ((object[])menuelemek[i])[k] = new object[] { menuszov, new object[] { "" } };
-                        //    break;
-                        case "Pénzforgalom":
-                            ((object[])menuelemek[i])[k] = new object[] { menuszov, new object[] { "Penzforgalom", new MyTag[] { tagszamla, tagszlatetel, tagpenzmozg, tagpartner, tagpartnertetel } } };
-                            break;
-                        case "Áfalista":
-                            ((object[])menuelemek[i])[k] = new object[] { menuszov, new object[] { "AfaLista", new MyTag[] { tagszamla, tagszlatetel, tagpenzmozg, tagpartner, tagpartnertetel } } };
-                            break;
-                        case "Bizonylatok":
-                            ((object[])menuelemek[i])[k] = new object[] { menuszov, new object[] { "Bizonylatok", new MyTag[] { tagszamla, tagszlatetel, tagpenzmozg, tagpartner, tagpartnertetel } } };
-                            break;
-                        case "Pénzintézetek":
-                            ((object[])menuelemek[i])[k] = new object[]{menuszov,new object[]{"Kodtablak",new MyTag[]{tagbank}}};
-                            break;
-                        case "Pénztárak":
-                            ((object[])menuelemek[i])[k] = new object[]{menuszov,new object[]{"Kodtablak",new MyTag[]{tagpenztar}}};
-                            break;
-                        case "Termékföcsoportok":
-                            ((object[])menuelemek[i])[k] = new object[]{menuszov,new object[]{"Kodtablak",new MyTag[]{tagtermekfo,tagtermekal}}};
-                            break;
-                        case "Termékalcsoportok":
-                            ((object[])menuelemek[i])[k] = new object[]{menuszov,new object[]{"Kodform",new MyTag[]{tagtermekfo,tagtermekal,tagtermek}}};
-                            break;
-                        case "Termékek":
-                            ((object[])menuelemek[i])[k] = new object[]{menuszov,new object[]{"Kodform",new MyTag[]{tagtermekal,tagtermek}}};
-                            break;
-                        case "Költségföcsoportok":
-                            ((object[])menuelemek[i])[k] = new object[]{menuszov,new object[]{"Kodtablak",new MyTag[]{tagkoltsegfo,tagkoltsegal}}};
-                            break;
-                        case "Költségalcsoportok":
-                            ((object[])menuelemek[i])[k] = new object[]{menuszov,new object[]{"Kodform",new MyTag[]{tagkoltsegfo,tagkoltsegal,tagkoltseg}}};
-                            break;
-                        case "Költségek":
-                            ((object[])menuelemek[i])[k] = new object[]{menuszov,new object[]{"Kodform",new MyTag[]{tagkoltsegal,tagkoltseg}}};
-                            break;
-                        case "Partnerek":
-                            ((object[])menuelemek[i])[k] = new object[]{menuszov,new object[]{"Partnerform",new MyTag[]{tagpartner,tagpartnertetel}}};
-                            break;
-                        case "ÁFA kulcsok":
-                            ((object[])menuelemek[i])[k] = new object[]{menuszov,new object[]{"Kodtablak",new MyTag[]{tagafa}}};
-                            break;
-                        case "Elökalkuláció":
-                            ((object[])menuelemek[i])[k] = new object[]{menuszov,new object[]{"Elokalkulacio", new MyTag[]{tagelokalkulacio,tagtermek,tagkoltsegfo,tagkoltsegal,tagkoltseg}}};
-                            break;
-                        case "Költségfelosztás":
-                            ((object[])menuelemek[i])[k] = new object[] { menuszov, new object[] { "KtgFelosztas", new MyTag[] { tagktgfelosztas, tagkoltsegal, tagkoltsegfo, tagkoltsegal, tagkoltseg } } };
-                            break;
-                        case "Dolgozók":
-                            ((object[])menuelemek[i])[k] = new object[] { menuszov, new object[] { "Dolgozo", new MyTag[] { tagcegek } } };
-                            break;
-                        case "Rendszer":
-                            ((object[])menuelemek[i])[k] = new object[] { menuszov, new object[] { "Rendszer", new MyTag[] { tagcegek } } };
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Szamla", new MyTag[] { this.tagszamla, this.tagszlatetel }, "V", this.szint } };
                             break;
 
-                    }        
+                        case "Kiadás - Szállitó":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Szamla", new MyTag[] { this.tagszamla, this.tagszlatetel }, "S", this.szint } };
+                            break;
+
+                        case "Pénzmozgás":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "PenzMozgas", new MyTag[] { this.tagpenzmozg, this.tagpartner, this.tagpartnertetel, this.tagpenztar }, this.szint } };
+                            break;
+
+                        case "Kiegyenlítés - Vevö":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Kiegyenlites", new MyTag[] { this.tagszamla, this.tagszlatetel }, "V" } };
+                            break;
+
+                        case "Kiegyenlítés - Szállító":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Kiegyenlites", new MyTag[] { this.tagszamla, this.tagszlatetel }, "S" } };
+                            break;
+
+                        case "Bevételek":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Szamlak", new MyTag[] { this.tagtermekfo, this.tagtermekal, this.tagtermek }, "V" } };
+                            break;
+
+                        case "Kiadások":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Szamlak", new MyTag[] { this.tagkoltsegfo, this.tagkoltsegal, this.tagkoltseg }, "S" } };
+                            break;
+
+                        case "Bevétel-Kiadás":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "BevetKiad", new MyTag[] { this.tagtermekfo, this.tagtermekal, this.tagtermek } } };
+                            break;
+
+                        case "Eredmény":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Eredmeny", new MyTag[] { this.tagktgfelosztas, this.tagtermek, this.tagkoltseg, this.tagtermekfo, this.tagtermekal, this.tagkoltsegfo, this.tagkoltsegal } } };
+                            break;
+
+                        case "Pénzforgalom":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Penzforgalom", new MyTag[] { this.tagszamla, this.tagszlatetel, this.tagpenzmozg, this.tagpartner, this.tagpartnertetel }, this.szint } };
+                            break;
+
+                        case "Áfalista":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "AfaLista", new MyTag[] { this.tagszamla, this.tagszlatetel, this.tagpenzmozg, this.tagpartner, this.tagpartnertetel }, this.szint } };
+                            break;
+
+                        case "Bizonylatok":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Bizonylatok", new MyTag[] { this.tagszamla, this.tagszlatetel, this.tagpenzmozg, this.tagpartner, this.tagpartnertetel } } };
+                            break;
+
+                        case "Pénzintézetek":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Kodtablak", new MyTag[] { this.tagbank } } };
+                            break;
+
+                        case "Pénztárak":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Kodtablak", new MyTag[] { this.tagpenztar } } };
+                            break;
+
+                        case "Termékföcsoportok":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Kodtablak", new MyTag[] { this.tagtermekfo, this.tagtermekal } } };
+                            break;
+
+                        case "Termékalcsoportok":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Kodform", new MyTag[] { this.tagtermekfo, this.tagtermekal, this.tagtermek } } };
+                            break;
+
+                        case "Termékek":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Kodform", new MyTag[] { this.tagtermekal, this.tagtermek } } };
+                            break;
+
+                        case "Költségföcsoportok":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Kodtablak", new MyTag[] { this.tagkoltsegfo, this.tagkoltsegal } } };
+                            break;
+
+                        case "Költségalcsoportok":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Kodform", new MyTag[] { this.tagkoltsegfo, this.tagkoltsegal, this.tagkoltseg } } };
+                            break;
+
+                        case "Költségek":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Kodform", new MyTag[] { this.tagkoltsegal, this.tagkoltseg } } };
+                            break;
+
+                        case "Partnerek":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Partnerform", new MyTag[] { this.tagpartner, this.tagpartnertetel } } };
+                            break;
+
+                        case "ÁFA kulcsok":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Kodtablak", new MyTag[] { this.tagafa } } };
+                            break;
+
+                        case "Elökalkuláció":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Elokalkulacio", new MyTag[] { this.tagelokalkulacio, this.tagtermek, this.tagkoltsegfo, this.tagkoltsegal, this.tagkoltseg } } };
+                            break;
+
+                        case "Költségfelosztás":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "KtgFelosztas", new MyTag[] { this.tagktgfelosztas, this.tagkoltsegal, this.tagkoltsegfo, this.tagkoltsegal, this.tagkoltseg } } };
+                            break;
+
+                        case "Dolgozók":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Dolgozo", new MyTag[] { this.tagcegek } } };
+                            break;
+
+                        case "Rendszer":
+                            ((object[])this.menuelemek[num])[i] = new object[] { text, new object[] { "Rendszer", new MyTag[] { this.tagcegek } } };
+                            break;
+                    }
                 }
             }
-            MyMenuArray = new MyMenuArray(menubutton, menuelemek, panel1);
-            menuArr = MyMenuArray.menuArr;
-            for (int i = 0; i < menuElem; i++)
+            this.MyMenuArray = new MainProgramm.SajatMenu.MyMenuArray(this.menubutton, this.menuelemek, this.panel1);
+            this.menuArr = this.MyMenuArray.menuArr;
+            for (num = 0; num < this.menuElem; num++)
             {
-                MyMenu egyelem = menuArr[i];
-                egyelem.list.Click += listViewMenu_Click;
+                MyMenu menu = this.menuArr[num];
+                menu.list.Click += new EventHandler(this.listViewMenu_Click);
             }
         }
 
         private bool Userabortkerdes()
         {
-            if (useraktiv)
+            if (this.useraktiv)
             {
-                string szoveg="";
-                for(int i=0;i<aktualTag.Length;i++)
+                int num;
+                string str = "";
+                for (num = 0; num < this.aktualTag.Length; num++)
                 {
-                    Egyallapotinfo egyall = aktualTag[i].AdatTablainfo.GetEgyallapotinfo(aktualControl);
-                    if (egyall != null )
+                    Egyallapotinfo egyallapotinfo = this.aktualTag[num].AdatTablainfo.GetEgyallapotinfo(this.aktualControl);
+                    if (egyallapotinfo != null)
                     {
-                        if(egyall.Modositott)
-                             szoveg += aktualTag[i].Szoveg + "\n";
-//                    if (panel6.Controls[0].Name=="Szamla")
- //                   {
-//                        if(((Szamla)panel6.Controls[0]).Modositott)
- //                           szoveg += aktualTag[i].Szoveg + "\n";
+                        if (egyallapotinfo.Modositott)
+                        {
+                            str = str + this.aktualTag[num].Szoveg + "\n";
+                        }
                     }
                     else
                     {
-                        Adattablak egyadattabla = (Adattablak)aktualTag[i].AdatTablainfo.Initselinfo.Adattablak[0];
-                        //Adattablak egyadattabla = (Adattablak)akttabinfo.Initselinfo.Adattablak[akttabinfo.Initselinfo.Aktualadattablaindex];
-                        if (egyadattabla.Added || egyadattabla.Deleted || egyadattabla.Modified || egyadattabla.Rowadded)
-                            szoveg += aktualTag[i].Szoveg + "\n";
+                        Adattablak adattablak = (Adattablak)this.aktualTag[num].AdatTablainfo.Initselinfo.Adattablak[0];
+                        if (((adattablak.Added || adattablak.Deleted) || adattablak.Modified) || adattablak.Rowadded)
+                        {
+                            str = str + this.aktualTag[num].Szoveg + "\n";
+                        }
                     }
                 }
-                if (szoveg == "")
+                if (str == "")
                 {
-                    panel6.Controls[0].VisibleChanged -= usercontrol_VisibleChanged;
-                    panel6.Controls.Clear();
+                    this.panel6.Controls[0].VisibleChanged -= new EventHandler(this.usercontrol_VisibleChanged);
+                    this.panel6.Controls.Clear();
                     return false;
                 }
-                else
+                for (num = 0; num < this.aktualTag.Length; num++)
                 {
-                    for (int i = 0; i < aktualTag.Length; i++)
+                    this.fak.ForceAdattolt(this.aktualTag[num].AdatTablainfo);
+                    Egyallapotinfo egyallapotinfo2 = this.aktualTag[num].AdatTablainfo.GetEgyallapotinfo(this.aktualControl);
+                    if (egyallapotinfo2 != null)
                     {
-                        fak.ForceAdattolt(aktualTag[i].AdatTablainfo);
-                        Egyallapotinfo egy = aktualTag[i].AdatTablainfo.GetEgyallapotinfo(aktualControl);
-                        if (egy != null)
-                            egy.Modositott = false;
+                        egyallapotinfo2.Modositott = false;
                     }
-                    panel6.Controls[0].VisibleChanged -= usercontrol_VisibleChanged;
-                    panel6.Controls.Clear();
-                    //treeView1.ContextMenuStrip = contextMenuStrip1;
-                    useraktiv = false;
-                    aktualTag = null;
-                    AktlistviewItem = null;
-                    return false;
-                }   
-                //else if (MessageBox.Show(szoveg + " változásai elvesszenek?", "", MessageBoxButtons.OKCancel) == DialogResult.OK)
-                //{
-                //    for (int i = 0; i < aktualTag.Length; i++)
-                //    {
-                //        fak.ForceAdattolt(aktualTag[i].AdatTablainfo);
-                //        Egyallapotinfo egy = aktualTag[i].AdatTablainfo.GetEgyallapotinfo(aktualControl);
-                //        if (egy != null)
-                //            egy.Modositott = false;
-                //    }
-                //    panel6.Controls[0].VisibleChanged -= usercontrol_VisibleChanged;
-                //    panel6.Controls.Clear();
-                //    //treeView1.ContextMenuStrip = contextMenuStrip1;
-                //    useraktiv = false;
-                //    aktualTag = null;
-                //    AktlistviewItem = null;
-                //    return false;
-                //}
-                //else
-                //    return true;
+                }
+                this.panel6.Controls[0].VisibleChanged -= new EventHandler(this.usercontrol_VisibleChanged);
+                this.panel6.Controls.Clear();
+                this.useraktiv = false;
+                this.aktualTag = null;
+                this.AktlistviewItem = null;
+                return false;
             }
-            return useraktiv;
+            return this.useraktiv;
         }
 
         #endregion
@@ -524,102 +506,111 @@ namespace VIR
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void listViewMenu_Click(object sender, System.EventArgs e)
+        private void listViewMenu_Click(object sender, EventArgs e)
         {
-            ListView aktview = (ListView)sender;
-            MyMenu mymenu = (MyMenu)aktview.Tag;
-            object[] param = (object[])aktview.FocusedItem.Tag;
-
-            this.Text = "SIXIS-VIR [" + aktview.FocusedItem.Text + "]";
-
-            if (aktview.FocusedItem != AktlistviewItem && param.Length != 1 && !Userabortkerdes() )
+            ListView view = (ListView)sender;
+            MyMenu tag = (MyMenu)view.Tag;
+            object[] objArray = (object[])view.FocusedItem.Tag;
+            this.Text = "SIXIS-VIR [" + view.FocusedItem.Text + "]";
+            if (((view.FocusedItem != this.AktlistviewItem) && (objArray.Length != 1)) && !this.Userabortkerdes())
             {
-                string nev = aktview.FocusedItem.Text;
-                string contname = param[0].ToString();
-                switch (contname)
+                string text = view.FocusedItem.Text;
+                switch (objArray[0].ToString())
                 {
                     case "Kodtablak":
-                        aktualControl = new Kodtablak(nev, param);
+                        this.aktualControl = new Kodtablak(text, objArray);
                         break;
+
                     case "Kodform":
-                        aktualControl = new KodForm(nev, param);
+                        this.aktualControl = new KodForm(text, objArray);
                         break;
+
                     case "Szamla":
-                        aktualControl = new Szamla(nev, param);
+                        this.aktualControl = new Szamla(text, objArray);
                         break;
+
                     case "PenzMozgas":
-                        aktualControl = new PenzMozgas(nev,param);
+                        this.aktualControl = new PenzMozgas(text, objArray);
                         break;
+
                     case "Kiegyenlites":
-                        aktualControl = new Kiegyenlites(nev, param);
+                        this.aktualControl = new Kiegyenlites(text, objArray);
                         break;
+
                     case "Partnerform":
-                        aktualControl = new Partnerform(nev, param);
+                        this.aktualControl = new Partnerform(text, objArray);
                         break;
-                    //case "Elokalkulacio":
-                    //    cont = new Elokalkulacio(nev, param);
-                    //    break;
+
                     case "KtgFelosztas":
-                        aktualControl  = new Ktgfelosztas(nev, param);
+                        this.aktualControl = new Ktgfelosztas(text, objArray);
                         break;
+
                     case "Szamlak":
-                        aktualControl = new Szamlak(nev, param);
+                        this.aktualControl = new Szamlak(text, objArray);
                         break;
+
                     case "BevetKiad":
-                        aktualControl = new BevetKiad(nev, param);
+                        this.aktualControl = new BevetKiad(text, objArray);
                         break;
+
                     case "Eredmeny":
-                        aktualControl = new Eredmeny(nev, param);
+                        this.aktualControl = new Eredmeny(text, objArray);
                         break;
+
                     case "Penzforgalom":
-                        aktualControl = new Penzforgalom(nev, param);
+                        this.aktualControl = new Penzforgalom(text, objArray);
                         break;
+
                     case "Bizonylatok":
-                        aktualControl = new Bizonylatok(nev, param);
+                        this.aktualControl = new Bizonylatok(text, objArray);
                         break;
+
                     case "Dolgozo":
-                        aktualControl = new Dolgozo(nev, param);
+                        this.aktualControl = new Dolgozo(text, objArray);
                         break;
+
                     case "Rendszer":
-                        aktualControl = new Rendszer(nev, param);
+                        this.aktualControl = new Rendszer(text, objArray);
                         break;
+
                     case "AfaLista":
-                        aktualControl = new AfaLista(nev, param);
+                        this.aktualControl = new AfaLista(text, objArray);
                         break;
                 }
-
-                if (aktualControl != null)
+                if (this.aktualControl != null)
                 {
-                    panel6.Visible = true;
-                    //                   cont.Visible = true;
-                    panel6.Controls.Add(aktualControl);
-                    aktualControl.Dock = DockStyle.Fill;
-                    //                    panel6.Controls[panel6.Controls.Count - 1].Visible = true;
-                    panel6.Controls[panel6.Controls.Count - 1].VisibleChanged += new EventHandler(usercontrol_VisibleChanged);
-                    AktlistviewItem = aktview.FocusedItem;
-                    aktualTag = (MyTag[])param[1];
-                    useraktiv = true;
+                    this.panel6.Visible = true;
+                    this.panel6.Controls.Add(this.aktualControl);
+                    this.aktualControl.Dock = DockStyle.Fill;
+                    this.panel6.Controls[this.panel6.Controls.Count - 1].VisibleChanged += new EventHandler(this.usercontrol_VisibleChanged);
+                    this.AktlistviewItem = view.FocusedItem;
+                    this.aktualTag = (MyTag[])objArray[1];
+                    this.useraktiv = true;
                 }
             }
         }
 
         private void usercontrol_VisibleChanged(object sender, EventArgs e)
         {
-            object lockObject = new Object();
-            lock (lockObject)
+            object obj2 = new object();
+            lock (obj2)
             {
-                Control cont = (Control)sender;
-                if (!cont.Visible)
+                Control control = (Control)sender;
+                if (!control.Visible)
                 {
-                    if (!cont.Enabled)
-                        this.Close();
-                    if(panel6.Controls.Count!=0)
-                        panel6.Controls.Remove((Control)sender);
-                    panel6.Visible = false;
-                    AktlistviewItem = null;
-                    aktualTag = null;
-                    aktualControl = null;
-                    useraktiv = false;
+                    if (!control.Enabled)
+                    {
+                        base.Close();
+                    }
+                    if (this.panel6.Controls.Count != 0)
+                    {
+                        this.panel6.Controls.Remove((Control)sender);
+                    }
+                    this.panel6.Visible = false;
+                    this.AktlistviewItem = null;
+                    this.aktualTag = null;
+                    this.aktualControl = null;
+                    this.useraktiv = false;
                 }
             }
         }
@@ -627,7 +618,7 @@ namespace VIR
 
         private void kilépésToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
+            base.Close();
         }
 
         private void infoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -637,143 +628,32 @@ namespace VIR
 
         private void nyomtatoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (nyomtat.pageSetupDialog.ShowDialog() == DialogResult.OK)
-                defPageSettings = nyomtat.pageSetupDialog.PageSettings;
+            if (this.nyomtat.pageSetupDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                this.defPageSettings = this.nyomtat.pageSetupDialog.PageSettings;
+            }
         }
 
         private void export_Click(object sender, EventArgs e)
         {
-            string sourceDir = Directory.GetCurrentDirectory();
-            string sourceFile = sourceDir + "\\backup.sql";
-            string dt = DateTime.Now.ToShortDateString().Replace('.', '_') + DateTime.Now.ToShortTimeString().Replace(':', '_');
-            string backupFile = "vir_"+dt+".bak";
-            try
-            {
-                //sw = File.CreateText(sourceDir + "\\vir_backup.bat");
-                //sw.WriteLine("sqlcmd -i backup.sql");
-                //sw.Close();
-
-                if (File.Exists(sourceFile))
-                {
-                    File.Delete(sourceFile);
-                }
-                
-                //sw = File.CreateText(sourceFile);
-                //sw.WriteLine("USE vir\r\n"+
-                //             "GO\r\n"+
-                //             "BACKUP DATABASE vir TO DISK = '"+backupFile+"'\r\n" +
-                //             "GO");
-                //sw.Close();
-
-                //System.Diagnostics.Process p = new System.Diagnostics.Process();
-                //p.StartInfo.WorkingDirectory = sourceDir;
-                //p.StartInfo.FileName = sourceDir + "\\vir_backup.bat";
-
-                //Backup bkp = new Backup();
-                //BackupRestoreBase brb = new BackupRestoreBase();
-
-                //bkp.Action = BackupActionType.Database;
-                //bkp.Database = "vir";
-                //bkp.Devices.AddDevice(sourceDir+"\\"+backupFile,DeviceType.File);
-                //try
-                //{
-                //    bkp.SqlBackup(svr);
-                //}
-                //catch (Exception ex)
-                //{
-                //    MessageBox.Show(ex.ToString(), "\r\nHiba a kimentésnél.");
-                //}
-
- 
-                //p.StartInfo.CreateNoWindow = false;
-                //p.Start();
-                //p.WaitForExit();
-                //File.Move("C:\\Program Files\\Microsoft SQL Server\\MSSQL.1\\MSSQL\\Backup\\"+backupFile,
-                //          sourceDir+"\\"+backupFile);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), "Hiba a path megállapításánál.");
-            }
+            string str2 = Directory.GetCurrentDirectory() + @"\backup.sql";
+            string str3 = DateTime.Now.ToShortDateString().Replace('.', '_') + DateTime.Now.ToShortTimeString().Replace(':', '_');
+            string str4 = "vir_" + str3 + ".bak";
         }
-
 
         private void import_Click(object sender, EventArgs e)
         {
-            string fileName = "";
-            string sourceDir = Directory.GetCurrentDirectory();
-            string sourceFile = sourceDir + "\\restore.sql";
-            string dt = DateTime.Now.ToShortDateString().Replace('.', '_') + DateTime.Now.ToShortTimeString().Replace(':', '_');
-
-            OpenFileDialog file = new OpenFileDialog();
-            file.InitialDirectory = sourceDir;
-            file.Filter = "backup files (*.bak)|vir_*.bak";
-            if (file.ShowDialog() == DialogResult.OK)
-            {
-                fileName = file.FileName.Substring(file.FileName.LastIndexOf('\\') + 1);
-                try
-                {
-                    //File.Move(sourceDir + "\\" + fileName,
-                    //          "C:\\Program Files\\Microsoft SQL Server\\MSSQL.1\\MSSQL\\Backup\\" + fileName
-                    //          );
-                    //sw = File.CreateText(sourceDir + "\\vir_restore.bat");
-                    //sw.WriteLine("sqlcmd -i restore.sql");
-                    //sw.Close();
-
-                    //if (File.Exists(sourceFile))
-                    //{
-                    //    File.Delete(sourceFile);
-                    //}
-                    //sw = File.CreateText(sourceFile);
-                    //sw.WriteLine("USE master\r\n" +
-                    //             "GO\r\n" +
-                    //             "RESTORE DATABASE vir FROM DISK = '" + fileName + "'\r\n" +
-                    //             "GO");
-                    //sw.Close();
-
-                    //System.Diagnostics.Process p = new System.Diagnostics.Process();
-                    //p.StartInfo.WorkingDirectory = sourceDir;
-                    //p.StartInfo.FileName = sourceDir + "\\vir_restore.bat";
-
-                    //Restore res = new Restore();
-                    //res.Database = "vir";
-                    //res.Action = RestoreActionType.Database;
-                    //res.Devices.AddDevice(sourceDir + "\\" + fileName, DeviceType.File);
-                    //res.PercentCompleteNotification = 10;
-                    //res.ReplaceDatabase = true;
-                    //try
-                    //{
-                    //    res.SqlRestore(svr);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    MessageBox.Show(ex.ToString(), "\r\nHiba a visszatöltésnél.");
-                    //}
-
-                    //p.StartInfo.CreateNoWindow = false;
-                    //// bezárni a az aktuális connecion-t mert különben nem megy a restore
-                    //Sqlinterface sqlInterface = new Sqlinterface(rendszerconn, adatbazisfajta);
-                    //sqlInterface.ConnClose(rendszerconn);
-                    //p.Start();
-                    //p.WaitForExit();
-                    //sqlInterface.ConnOpen(rendszerconn);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString(), "Hiba a path megállapításánál.");
-                }
-            }
         }
 
         private void VIR_Activated(object sender, EventArgs e)
         {
-            if (elso)
+            if (this.elso)
             {
                 this.Refresh();
-                elso = false;
+                this.elso = false;
             }
         }
-        
+
         #endregion
 
     }
