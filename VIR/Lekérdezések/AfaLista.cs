@@ -1,15 +1,16 @@
-﻿using System;
+﻿using FormattedTextBox;
+using Könyvtar.Printlib;
+using MainProgramm;
+using MainProgramm.Listák;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using Könyvtar.ClassGyujtemeny;
-using Könyvtar.Printlib;
-using TableInfo;
 using System.Data.SqlClient;
-using MainProgramm.Listák;
+using System.Drawing;
+using System.Windows.Forms;
+using TableInfo;
+using VIR;
 
 namespace Lekerdezesek
 {
@@ -40,190 +41,132 @@ namespace Lekerdezesek
         private Tablainfo partnertetelinfo;
 
         private string[] fszids;
+        private string szint;
 
         public AfaLista(string szoveg, object[] obj)
         {
-            MyTag[] myTag = (MyTag[])obj[1];
-
-            szamlatag = myTag[0];
-            szamlainfo = szamlatag.AdatTablainfo;
-            szamlateteltag = myTag[1];
-            szamlatetelinfo = szamlateteltag.AdatTablainfo;
-            penzmozgastag = myTag[2];
-            penzmozgasinfo = penzmozgastag.AdatTablainfo;
-            partnerinfo = myTag[3].AdatTablainfo;
-            partnertetelinfo = myTag[4].AdatTablainfo;
-
-            string[] pidt = partnerinfo.FindIdentityArray(new string[] { "SAJAT" }, new string[] { "I" });
-            string[] pidN = partnerinfo.FindIdentityArray(new string[] { "SAJAT" }, new string[] { "N" });
-
-            if (pidt == null)
+            MyTag[] tagArray = (MyTag[])obj[1];
+            this.szamlatag = tagArray[0];
+            this.szamlainfo = this.szamlatag.AdatTablainfo;
+            this.szamlateteltag = tagArray[1];
+            this.szamlatetelinfo = this.szamlateteltag.AdatTablainfo;
+            this.penzmozgastag = tagArray[2];
+            this.penzmozgasinfo = this.penzmozgastag.AdatTablainfo;
+            this.partnerinfo = tagArray[3].AdatTablainfo;
+            this.partnertetelinfo = tagArray[4].AdatTablainfo;
+            this.szint = obj[2].ToString();
+            string[] strArray = this.partnerinfo.FindIdentityArray(new string[] { "SAJAT" }, new string[] { "I" });
+            string[] strArray2 = this.partnerinfo.FindIdentityArray(new string[] { "SAJAT" }, new string[] { "N" });
+            if (strArray == null)
             {
                 MessageBox.Show("Nincs 'sajat' jelu partner!");
-                this.Visible = false;
+                base.Visible = false;
             }
-            if (this.Visible)
+            if (base.Visible)
             {
-                ArrayList fszidk = new ArrayList();
-                for (int i = 0; i < pidt.Length; i++)
+                int num;
+                ArrayList list = new ArrayList();
+                for (num = 0; num < strArray.Length; num++)
                 {
-                    string[] egyst = partnertetelinfo.FindIdentityArray(new string[] { "PID" }, new string[] { pidt[i] });
-                    for (int j = 0; j < egyst.Length; j++)
-                        fszidk.Add(egyst[j]);
+                    string[] strArray3 = this.partnertetelinfo.FindIdentityArray(new string[] { "PID" }, new string[] { strArray[num] });
+                    for (int i = 0; i < strArray3.Length; i++)
+                    {
+                        list.Add(strArray3[i]);
+                    }
                 }
-                fszids = new string[fszidk.Count];
-                for (int i = 0; i < fszids.Length; i++)
-                    fszids[i] = fszidk[i].ToString();
-
-                InitializeComponent();
-
-                Fak = myTag[0].Fak;
-                //PenzMozgasAdattabla = ((Adattablak)penzmozgasinfo.Initselinfo.Adattablak[penzmozgasinfo.Initselinfo.Aktualadattablaindex]).Adattabla;
-                //SzamlaAdattabla = ((Adattablak)szamlainfo.Initselinfo.Adattablak[szamlainfo.Initselinfo.Aktualadattablaindex]).Adattabla;
-
-                Fak.ControlTagokTolt(this, new Control[] { this });
-
+                this.fszids = new string[list.Count];
+                for (num = 0; num < this.fszids.Length; num++)
+                {
+                    this.fszids[num] = list[num].ToString();
+                }
+                this.InitializeComponent();
+                this.Fak = tagArray[0].Fak;
+                this.Fak.ControlTagokTolt(this, new Control[] { this });
             }
         }
 
         private void AfaLista_Load(object sender, EventArgs e)
         {
-            mainForm = (VIR.MainForm)this.ParentForm;
-            myconn = mainForm.MyConn;
+            this.mainForm = (MainForm)base.ParentForm;
+            this.myconn = this.mainForm.MyConn;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string datTol = dateTol.Value.ToShortDateString().Substring(0, 10);
-            string datIg = dateIg.Value.ToShortDateString().Substring(0, 10);
-
-            tableSzamla.Clear();
-
-            if (radioVevo.Checked)
+            string str = this.dateTol.Value.ToShortDateString().Substring(0, 10);
+            string str2 = this.dateIg.Value.ToShortDateString().Substring(0, 10);
+            this.tableSzamla.Clear();
+            if (this.radioVevo.Checked)
             {
-                sel = "select a.azonosito, a.datum, a.datum_telj, a.datum_fiz, 'Vevö' as jel, b.brutto as osszeg, d.azonosito as partner, a.megjegyzes, b.afa, b.afakulcs " +
-                      "from szamla a " +
-                      "inner join szamla_tetel b on a.id=b.id " +
-                      "left outer join partner d on a.pid = d.pid ";
-                sel = sel + "where a.vs='V' " +
-                        "and cast(datum_telj as datetime) >= cast('" + datTol + "' as datetime) and cast(datum_telj as datetime) <= cast('" + datIg + "' as datetime) ";
-                da = new SqlDataAdapter(sel, myconn);
-                da.Fill(ds, "tableSzamla");
+                this.sel = "select a.azonosito, a.datum, a.datum_telj, a.datum_fiz, 'Vev\x00f6' as jel, b.brutto as osszeg, d.azonosito as partner, a.megjegyzes, b.afa, b.afakulcs from szamla a inner join szamla_tetel b on a.id=b.id left outer join partner d on a.pid = d.pid ";
+                this.sel = this.sel + "where a.vs='V' and cast(datum_telj as datetime) >= cast('" + str + "' as datetime) and cast(datum_telj as datetime) <= cast('" + str2 + "' as datetime) ";
+                if (this.szint != "1")
+                {
+                    this.sel = this.sel + " AND H_PENZTAR_ID <> 407";
+                }
+                this.da = new SqlDataAdapter(this.sel, this.myconn);
+                this.da.Fill(this.ds, "tableSzamla");
             }
-
-            if (radioSzallito.Checked)
+            if (this.radioSzallito.Checked)
             {
-                sel = "select a.azonosito, a.datum, a.datum_telj, a.datum_fiz, 'Szállító' as jel, b.brutto as osszeg, d.azonosito as partner, a.megjegyzes, b.afa, b.afakulcs  " +
-                      "from szamla a " +
-                      "inner join szamla_tetel b on a.id=b.id " +
-                      "left outer join partner d on a.pid = d.pid ";
-                sel = sel + "where a.vs='S' " +
-                            "and cast(datum_telj as datetime) >= cast('" + datTol + "' as datetime) and cast(datum_telj as datetime) <= cast('" + datIg + "' as datetime) ";
-                da = new SqlDataAdapter(sel, myconn);
-                da.Fill(ds, "tableSzamla");
+                this.sel = "select a.azonosito, a.datum, a.datum_telj, a.datum_fiz, 'Sz\x00e1ll\x00edt\x00f3' as jel, b.brutto as osszeg, d.azonosito as partner, a.megjegyzes, b.afa, b.afakulcs  from szamla a inner join szamla_tetel b on a.id=b.id left outer join partner d on a.pid = d.pid ";
+                this.sel = this.sel + "where a.vs='S' and cast(datum_telj as datetime) >= cast('" + str + "' as datetime) and cast(datum_telj as datetime) <= cast('" + str2 + "' as datetime) ";
+                if (this.szint != "1")
+                {
+                    this.sel = this.sel + " AND H_PENZTAR_ID <> 407";
+                }
+                this.da = new SqlDataAdapter(this.sel, this.myconn);
+                this.da.Fill(this.ds, "tableSzamla");
             }
-            //sel = "select cast(id as char) as azonosito, datum, 'Pénzmozgás' as jel, " +
-            //      "case when a.h_fsz_id = " + folyszla_id + " or a.h_penztar_id = " + penztar_id + " then ft else 0.00 end as brutton, " +
-            //      "case when a.fsz_id = " + folyszla_id + " or a.penztar_id = " + penztar_id + " then ft else 0.00 end as bruttoc, '' as partner, a.megjegyzes " +
-            //      "from penzmozg a ";
-            //sel = sel + "where cast(datum as datetime) >= cast('" + datTol + "' as datetime) and cast(datum as datetime) <= cast('" + datIg + "' as datetime) ";
-            //da = new SqlDataAdapter(sel, myconn);
-            //da.Fill(ds, "tableSzamla");
-
-            tableSzamla = ds.Tables["tableSzamla"];
+            this.tableSzamla = this.ds.Tables["tableSzamla"];
             this.viewEredmeny.BeginInit();
-            this.viewEredmeny.Table = tableSzamla;
+            this.viewEredmeny.Table = this.tableSzamla;
             this.viewEredmeny.EndInit();
-            dataGV.DataSource = this.viewEredmeny;
-
-            //tableÖsszesen.Clear();
-            //sel = "select a.azonosito, b.brutto as brutton, 0.00 as bruttoc " +
-            //      "from szamla a " +
-            //      "inner join szamla_tetel b on a.id=b.id ";
-            //sel = sel + "where a.vs='V' ";
-            //if (rBBank.Checked && cbBank.Text != "")
-            //    sel = sel + "and a.h_fsz_id = " + folyszla_id + " ";
-            //else if (rBPenztar.Checked && cbPenztar.Text != "")
-            //    sel = sel + "and a.h_penztar_id = " + penztar_id + " ";
-            //da = new SqlDataAdapter(sel, myconn);
-            //da.Fill(ds, "tableÖsszesen");
-
-            //sel = "select a.azonosito, 0.00 as brutton, b.brutto as bruttoc " +
-            //      "from szamla a " +
-            //      "inner join szamla_tetel b on a.id=b.id ";
-            //sel = sel + "where a.vs='S' ";
-            //if (rBBank.Checked && cbBank.Text != "")
-            //    sel = sel + "and a.h_fsz_id = " + folyszla_id + " ";
-            //else if (rBPenztar.Checked && cbPenztar.Text != "")
-            //    sel = sel + "and a.h_penztar_id = " + penztar_id + " ";
-            //da = new SqlDataAdapter(sel, myconn);
-            //da.Fill(ds, "tableÖsszesen");
-
-            //sel = "select cast(id as char), ft as brutton, 0.00 as bruttoc " +
-            //      "from penzmozg a ";
-            //if (rBBank.Checked && cbBank.Text != "")
-            //    sel = sel + "where a.h_fsz_id = " + folyszla_id + " ";
-            //else if (rBPenztar.Checked && cbPenztar.Text != "")
-            //    sel = sel + "where a.h_penztar_id = " + penztar_id + " ";
-            //da = new SqlDataAdapter(sel, myconn);
-            //da.Fill(ds, "tableÖsszesen");
-
-            //sel = "select cast(id as char), 0.00 as brutton, ft as bruttoc " +
-            //      "from penzmozg a ";
-            //if (rBBank.Checked && cbBank.Text != "")
-            //    sel = sel + "where a.fsz_id = " + folyszla_id + " ";
-            //else if (rBPenztar.Checked && cbPenztar.Text != "")
-            //    sel = sel + "where a.penztar_id = " + penztar_id + " ";
-
-            //da = new SqlDataAdapter(sel, myconn);
-            //da.Fill(ds, "tableÖsszesen");
-            //tableÖsszesen = ds.Tables["tableÖsszesen"];
-
-            decimal afa = 0;
-            for (int i = 0; i < tableSzamla.Rows.Count; i++)
+            this.dataGV.DataSource = this.viewEredmeny;
+            decimal num = 0M;
+            for (int i = 0; i < this.tableSzamla.Rows.Count; i++)
             {
-                afa = afa + Convert.ToDecimal(tableSzamla.Rows[i]["afa"].ToString());
+                num += Convert.ToDecimal(this.tableSzamla.Rows[i]["afa"].ToString());
             }
-            osszesen.Text = string.Format("{0:N}", Convert.ToInt32(afa));
+            this.osszesen.Text = $"{Convert.ToInt32(num):N}";
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (tableSzamla.Rows.Count > 0)
+            if (this.tableSzamla.Rows.Count > 0)
             {
-                nyomtat = new PrintForm();
-                string[] parNev = { "DATUM_TOL", "DATUM_IG" };
-                string[] parVal = { dateTol.Value.ToShortDateString(), dateIg.Value.ToShortDateString()};
-                string[] parTip = { "string", "string", };
-
-
-                DataSet dS = new MainProgramm.virDataSet();
-                DataRow r;
-                dS.Tables["AfaLista"].Clear();
-                for (int i = 0; i < tableSzamla.Rows.Count; i++)
+                this.nyomtat = new PrintForm();
+                string[] parName = new string[] { "DATUM_TOL", "DATUM_IG" };
+                string[] parValue = new string[] { this.dateTol.Value.ToShortDateString(), this.dateIg.Value.ToShortDateString() };
+                string[] parTyp = new string[] { "string", "string" };
+                DataSet dataSet = new virDataSet();
+                dataSet.Tables["AfaLista"].Clear();
+                for (int i = 0; i < this.tableSzamla.Rows.Count; i++)
                 {
-                    r = dS.Tables["AfaLista"].NewRow();
-                    r["azonosito"] = tableSzamla.Rows[i]["azonosito"];
-                    r["datum"] = tableSzamla.Rows[i]["datum_telj"];
-                    r["jel"] = tableSzamla.Rows[i]["jel"];
-                    r["osszeg"] = Convert.ToDecimal(tableSzamla.Rows[i]["osszeg"].ToString().Replace('.', ','));
-                    if (tableSzamla.Rows[i]["partner"].ToString() == "")
-                        r["partner"] = " ";
+                    DataRow row = dataSet.Tables["AfaLista"].NewRow();
+                    row["azonosito"] = this.tableSzamla.Rows[i]["azonosito"];
+                    row["datum"] = this.tableSzamla.Rows[i]["datum_telj"];
+                    row["jel"] = this.tableSzamla.Rows[i]["jel"];
+                    row["osszeg"] = Convert.ToDecimal(this.tableSzamla.Rows[i]["osszeg"].ToString().Replace('.', ','));
+                    if (this.tableSzamla.Rows[i]["partner"].ToString() == "")
+                    {
+                        row["partner"] = " ";
+                    }
                     else
-                        r["partner"] = tableSzamla.Rows[i]["partner"];
-                    r["megjegyzes"] = tableSzamla.Rows[i]["megjegyzes"];
-                    r["afa"] = Convert.ToDecimal(tableSzamla.Rows[i]["afa"].ToString().Replace('.', ','));
-                    r["afakulcs"] = Convert.ToDecimal(tableSzamla.Rows[i]["afakulcs"].ToString().Replace('.', ','));
-                    dS.Tables["AfaLista"].Rows.Add(r);
+                    {
+                        row["partner"] = this.tableSzamla.Rows[i]["partner"];
+                    }
+                    row["megjegyzes"] = this.tableSzamla.Rows[i]["megjegyzes"];
+                    row["afa"] = Convert.ToDecimal(this.tableSzamla.Rows[i]["afa"].ToString().Replace('.', ','));
+                    row["afakulcs"] = Convert.ToDecimal(this.tableSzamla.Rows[i]["afakulcs"].ToString().Replace('.', ','));
+                    dataSet.Tables["AfaLista"].Rows.Add(row);
                 }
-
-                nyomtat.PrintParams(parNev, parVal, parTip);
-                this.afaListaLista.SetDataSource(dS);
-                this.afaListaLista.SetParameterValue("DATUM_TOL", dateTol.Value.ToShortDateString());
-                this.afaListaLista.SetParameterValue("DATUM_IG", dateIg.Value.ToShortDateString());
-
-                nyomtat.reportSource = afaListaLista;
-                nyomtat.DoPreview(mainForm.defPageSettings);
+                this.nyomtat.PrintParams(parName, parValue, parTyp);
+                this.afaListaLista.SetDataSource(dataSet);
+                this.afaListaLista.SetParameterValue("DATUM_TOL", this.dateTol.Value.ToShortDateString());
+                this.afaListaLista.SetParameterValue("DATUM_IG", this.dateIg.Value.ToShortDateString());
+                this.nyomtat.reportSource = this.afaListaLista;
+                this.nyomtat.DoPreview(this.mainForm.defPageSettings);
             }
         }
 

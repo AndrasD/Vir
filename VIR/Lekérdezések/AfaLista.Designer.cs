@@ -35,14 +35,11 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.buttonNyomtat = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.label1 = new System.Windows.Forms.Label();
             this.dateIg = new System.Windows.Forms.DateTimePicker();
             this.dateTol = new System.Windows.Forms.DateTimePicker();
-            this.button1 = new System.Windows.Forms.Button();
             this.dataGV = new System.Windows.Forms.DataGridView();
-            this.radioVevo = new System.Windows.Forms.RadioButton();
-            this.radioSzallito = new System.Windows.Forms.RadioButton();
-            this.osszesen = new FormattedTextBox.FormattedTextBox();
             this.azonosito = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.datum = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.datum_telj = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -53,6 +50,9 @@
             this.afakulcs = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AFA = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.megjegyzes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.radioVevo = new System.Windows.Forms.RadioButton();
+            this.radioSzallito = new System.Windows.Forms.RadioButton();
+            this.osszesen = new FormattedTextBox.FormattedTextBox();
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGV)).BeginInit();
             this.SuspendLayout();
@@ -61,12 +61,14 @@
             // 
             this.toolStrip.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.buttonNyomtat});
+            this.buttonNyomtat,
+            this.toolStripButton1});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip.Size = new System.Drawing.Size(860, 25);
+            this.toolStrip.Size = new System.Drawing.Size(860, 27);
             this.toolStrip.TabIndex = 35;
             this.toolStrip.Text = "toolStrip1";
             // 
@@ -75,16 +77,25 @@
             this.buttonNyomtat.Image = ((System.Drawing.Image)(resources.GetObject("buttonNyomtat.Image")));
             this.buttonNyomtat.ImageTransparentColor = System.Drawing.Color.Black;
             this.buttonNyomtat.Name = "buttonNyomtat";
-            this.buttonNyomtat.Size = new System.Drawing.Size(77, 22);
+            this.buttonNyomtat.Size = new System.Drawing.Size(92, 24);
             this.buttonNyomtat.Text = "Nyomtat";
             this.buttonNyomtat.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Black;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(123, 24);
+            this.toolStripButton1.Text = "Gyűjtés indít";
+            this.toolStripButton1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(51, 43);
+            this.label1.Location = new System.Drawing.Point(20, 42);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(110, 15);
+            this.label1.Size = new System.Drawing.Size(130, 17);
             this.label1.TabIndex = 38;
             this.label1.Text = "Dátum intervallum:";
             // 
@@ -93,7 +104,7 @@
             this.dateIg.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dateIg.Location = new System.Drawing.Point(281, 40);
             this.dateIg.Name = "dateIg";
-            this.dateIg.Size = new System.Drawing.Size(93, 21);
+            this.dateIg.Size = new System.Drawing.Size(93, 25);
             this.dateIg.TabIndex = 37;
             this.dateIg.Tag = "";
             // 
@@ -102,27 +113,17 @@
             this.dateTol.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dateTol.Location = new System.Drawing.Point(167, 40);
             this.dateTol.Name = "dateTol";
-            this.dateTol.Size = new System.Drawing.Size(93, 21);
+            this.dateTol.Size = new System.Drawing.Size(93, 25);
             this.dateTol.TabIndex = 36;
             this.dateTol.Tag = "";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(580, 39);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 39;
-            this.button1.Text = "mehet";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // dataGV
             // 
             this.dataGV.AllowUserToAddRows = false;
             this.dataGV.AllowUserToDeleteRows = false;
             this.dataGV.AllowUserToResizeRows = false;
-            this.dataGV.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.dataGV.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.dataGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.azonosito,
@@ -145,42 +146,6 @@
             this.dataGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGV.Size = new System.Drawing.Size(854, 529);
             this.dataGV.TabIndex = 40;
-            // 
-            // radioVevo
-            // 
-            this.radioVevo.AutoSize = true;
-            this.radioVevo.Checked = true;
-            this.radioVevo.Location = new System.Drawing.Point(165, 67);
-            this.radioVevo.Name = "radioVevo";
-            this.radioVevo.Size = new System.Drawing.Size(51, 19);
-            this.radioVevo.TabIndex = 41;
-            this.radioVevo.TabStop = true;
-            this.radioVevo.Text = "Vevő";
-            this.radioVevo.UseVisualStyleBackColor = true;
-            // 
-            // radioSzallito
-            // 
-            this.radioSzallito.AutoSize = true;
-            this.radioSzallito.Location = new System.Drawing.Point(165, 87);
-            this.radioSzallito.Name = "radioSzallito";
-            this.radioSzallito.Size = new System.Drawing.Size(64, 19);
-            this.radioSzallito.TabIndex = 42;
-            this.radioSzallito.TabStop = true;
-            this.radioSzallito.Text = "Szállító";
-            this.radioSzallito.UseVisualStyleBackColor = true;
-            // 
-            // osszesen
-            // 
-            this.osszesen.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.osszesen.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.osszesen.Form = FormattedTextBox.FormattedTextBox.formnum.N0;
-            this.osszesen.Format = "N0";
-            this.osszesen.Location = new System.Drawing.Point(633, 83);
-            this.osszesen.Name = "osszesen";
-            this.osszesen.ReadOnly = true;
-            this.osszesen.Size = new System.Drawing.Size(209, 22);
-            this.osszesen.TabIndex = 43;
-            this.osszesen.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // azonosito
             // 
@@ -269,16 +234,51 @@
             this.megjegyzes.ReadOnly = true;
             this.megjegyzes.Visible = false;
             // 
+            // radioVevo
+            // 
+            this.radioVevo.AutoSize = true;
+            this.radioVevo.Checked = true;
+            this.radioVevo.Location = new System.Drawing.Point(165, 67);
+            this.radioVevo.Name = "radioVevo";
+            this.radioVevo.Size = new System.Drawing.Size(60, 21);
+            this.radioVevo.TabIndex = 41;
+            this.radioVevo.TabStop = true;
+            this.radioVevo.Text = "Vevő";
+            this.radioVevo.UseVisualStyleBackColor = true;
+            // 
+            // radioSzallito
+            // 
+            this.radioSzallito.AutoSize = true;
+            this.radioSzallito.Location = new System.Drawing.Point(165, 87);
+            this.radioSzallito.Name = "radioSzallito";
+            this.radioSzallito.Size = new System.Drawing.Size(76, 21);
+            this.radioSzallito.TabIndex = 42;
+            this.radioSzallito.TabStop = true;
+            this.radioSzallito.Text = "Szállító";
+            this.radioSzallito.UseVisualStyleBackColor = true;
+            // 
+            // osszesen
+            // 
+            this.osszesen.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.osszesen.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.osszesen.Form = FormattedTextBox.FormattedTextBox.formnum.N0;
+            this.osszesen.Format = "N0";
+            this.osszesen.Location = new System.Drawing.Point(633, 83);
+            this.osszesen.Name = "osszesen";
+            this.osszesen.ReadOnly = true;
+            this.osszesen.Size = new System.Drawing.Size(209, 28);
+            this.osszesen.TabIndex = 43;
+            this.osszesen.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // AfaLista
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.Controls.Add(this.osszesen);
             this.Controls.Add(this.radioSzallito);
             this.Controls.Add(this.radioVevo);
             this.Controls.Add(this.dataGV);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dateIg);
             this.Controls.Add(this.dateTol);
@@ -303,7 +303,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DateTimePicker dateIg;
         private System.Windows.Forms.DateTimePicker dateTol;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dataGV;
         private System.Windows.Forms.RadioButton radioVevo;
         private System.Windows.Forms.RadioButton radioSzallito;
@@ -318,5 +317,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn afakulcs;
         private System.Windows.Forms.DataGridViewTextBoxColumn AFA;
         private System.Windows.Forms.DataGridViewTextBoxColumn megjegyzes;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+
     }
 }

@@ -291,10 +291,10 @@ namespace Adatbevitel
         {
             if (e.Clicks == 1)
             {
-                this.groupBox2.Enabled = false;
+                groupBox2.Enabled = false;
                 if (e.RowIndex != -1)
                 {
-                    this.Szamla_beallit(e.RowIndex);
+                    Szamla_beallit(e.RowIndex);
                 }
             }
         }
@@ -303,12 +303,12 @@ namespace Adatbevitel
         {
             if (e.RowIndex != -1)
             {
-                this.modositas = true;
-                this.Szamla_beallit(e.RowIndex);
-                if (!this.tobbhonap)
-                {
+                modositas = true;
+                Szamla_beallit(e.RowIndex);
+//                if (!this.tobbhonap)
+//                {
                     this.groupBox2.Enabled = true;
-                }
+//                }
             }
         }
 
