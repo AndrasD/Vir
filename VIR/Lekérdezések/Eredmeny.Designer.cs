@@ -43,6 +43,7 @@
             this.dataGVKiad = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.comboCsoport = new System.Windows.Forms.ComboBox();
+            this.honapig = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.dataGV)).BeginInit();
             this.toolStrip.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -58,7 +59,7 @@
             this.havi.Checked = true;
             this.havi.Location = new System.Drawing.Point(99, 3);
             this.havi.Name = "havi";
-            this.havi.Size = new System.Drawing.Size(49, 19);
+            this.havi.Size = new System.Drawing.Size(57, 21);
             this.havi.TabIndex = 0;
             this.havi.TabStop = true;
             this.havi.Text = "Havi";
@@ -68,9 +69,9 @@
             // eves
             // 
             this.eves.AutoSize = true;
-            this.eves.Location = new System.Drawing.Point(299, 3);
+            this.eves.Location = new System.Drawing.Point(433, 3);
             this.eves.Name = "eves";
-            this.eves.Size = new System.Drawing.Size(52, 19);
+            this.eves.Size = new System.Drawing.Size(62, 21);
             this.eves.TabIndex = 1;
             this.eves.Text = "Éves";
             this.eves.UseVisualStyleBackColor = true;
@@ -82,7 +83,7 @@
             this.honap.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.honap.Location = new System.Drawing.Point(154, 1);
             this.honap.Name = "honap";
-            this.honap.Size = new System.Drawing.Size(126, 21);
+            this.honap.Size = new System.Drawing.Size(126, 25);
             this.honap.TabIndex = 2;
             // 
             // button1
@@ -102,29 +103,30 @@
             this.dataGV.AllowUserToResizeRows = false;
             this.dataGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGV.Location = new System.Drawing.Point(3, 17);
+            this.dataGV.Location = new System.Drawing.Point(3, 21);
             this.dataGV.MultiSelect = false;
             this.dataGV.Name = "dataGV";
             this.dataGV.ReadOnly = true;
             this.dataGV.RowHeadersWidth = 24;
             this.dataGV.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGV.Size = new System.Drawing.Size(848, 264);
+            this.dataGV.Size = new System.Drawing.Size(848, 260);
             this.dataGV.TabIndex = 14;
-            this.dataGV.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGV_CellPainting);
             this.dataGV.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGV_CellMouseDoubleClick);
+            this.dataGV.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGV_CellPainting);
             // 
             // toolStrip
             // 
             this.toolStrip.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.buttonNyomtat,
             this.toolStripSeparator1});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip.Size = new System.Drawing.Size(860, 25);
+            this.toolStrip.Size = new System.Drawing.Size(860, 27);
             this.toolStrip.TabIndex = 33;
             this.toolStrip.Text = "toolStrip1";
             // 
@@ -133,28 +135,28 @@
             this.buttonNyomtat.Image = ((System.Drawing.Image)(resources.GetObject("buttonNyomtat.Image")));
             this.buttonNyomtat.ImageTransparentColor = System.Drawing.Color.Black;
             this.buttonNyomtat.Name = "buttonNyomtat";
-            this.buttonNyomtat.Size = new System.Drawing.Size(77, 22);
+            this.buttonNyomtat.Size = new System.Drawing.Size(92, 24);
             this.buttonNyomtat.Text = "Nyomtat";
             this.buttonNyomtat.Click += new System.EventHandler(this.buttonNyomtat_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
             // 
             // ev
             // 
             this.ev.Enabled = false;
             this.ev.FormattingEnabled = true;
-            this.ev.Location = new System.Drawing.Point(357, 1);
+            this.ev.Location = new System.Drawing.Point(491, 1);
             this.ev.Name = "ev";
-            this.ev.Size = new System.Drawing.Size(60, 23);
+            this.ev.Size = new System.Drawing.Size(60, 25);
             this.ev.TabIndex = 34;
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.dataGVBev);
             this.groupBox1.Location = new System.Drawing.Point(3, 318);
             this.groupBox1.Name = "groupBox1";
@@ -171,21 +173,21 @@
             this.dataGVBev.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGVBev.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGVBev.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGVBev.Location = new System.Drawing.Point(3, 17);
+            this.dataGVBev.Location = new System.Drawing.Point(3, 21);
             this.dataGVBev.MultiSelect = false;
             this.dataGVBev.Name = "dataGVBev";
             this.dataGVBev.ReadOnly = true;
             this.dataGVBev.RowHeadersWidth = 24;
             this.dataGVBev.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGVBev.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGVBev.Size = new System.Drawing.Size(848, 146);
+            this.dataGVBev.Size = new System.Drawing.Size(848, 142);
             this.dataGVBev.TabIndex = 15;
             // 
             // groupBox2
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.dataGVKiad);
             this.groupBox2.Location = new System.Drawing.Point(3, 490);
             this.groupBox2.Name = "groupBox2";
@@ -202,20 +204,20 @@
             this.dataGVKiad.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGVKiad.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGVKiad.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGVKiad.Location = new System.Drawing.Point(3, 17);
+            this.dataGVKiad.Location = new System.Drawing.Point(3, 21);
             this.dataGVKiad.MultiSelect = false;
             this.dataGVKiad.Name = "dataGVKiad";
             this.dataGVKiad.ReadOnly = true;
             this.dataGVKiad.RowHeadersWidth = 24;
             this.dataGVKiad.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dataGVKiad.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGVKiad.Size = new System.Drawing.Size(848, 146);
+            this.dataGVKiad.Size = new System.Drawing.Size(848, 142);
             this.dataGVKiad.TabIndex = 16;
             // 
             // groupBox3
             // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.dataGV);
             this.groupBox3.Location = new System.Drawing.Point(3, 28);
             this.groupBox3.Name = "groupBox3";
@@ -231,17 +233,27 @@
             "1. Főcsoport",
             "2. Alcsoport",
             "3. Termék"});
-            this.comboCsoport.Location = new System.Drawing.Point(470, 1);
+            this.comboCsoport.Location = new System.Drawing.Point(604, 1);
             this.comboCsoport.Name = "comboCsoport";
-            this.comboCsoport.Size = new System.Drawing.Size(121, 23);
+            this.comboCsoport.Size = new System.Drawing.Size(121, 25);
             this.comboCsoport.TabIndex = 38;
+            // 
+            // honapig
+            // 
+            this.honapig.CustomFormat = "yyyy.MMMM";
+            this.honapig.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.honapig.Location = new System.Drawing.Point(286, 2);
+            this.honapig.Name = "honapig";
+            this.honapig.Size = new System.Drawing.Size(126, 25);
+            this.honapig.TabIndex = 39;
             // 
             // Eredmeny
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.honapig);
             this.Controls.Add(this.comboCsoport);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -286,8 +298,6 @@
         private System.Windows.Forms.DataGridView dataGVKiad;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.ComboBox comboCsoport;
-
-
-
+        private System.Windows.Forms.DateTimePicker honapig;
     }
 }

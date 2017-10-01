@@ -112,28 +112,28 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="toolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="toolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="buttonNyomtat.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAgBJREFUOE+NksuP
-        WWEYxjv/Rv+C9u8QW2Mj7GgqsbIQicUZEaWEDhYusRCXWbBAtK7tGLfqNI2MkAgdUs2wOHUJik1TXTz1
-        falpzqjOnOTJ9+WcvL/ned/zHj3681x3v2F3v3s+ffL46NC32/fn+QYWP7An/9mbg+A96NsPN+jPwVH2
-        /Rc4nc6HQc5iV7hiwdHl159QKNQPA5yXO3jXx63Sn4HXbeDZcwZms/l+yMXFJT5uCz61gMb1L3T633Ez
-        ZDEajWAymf4PyWazqNVqmM1mSKVSyOfzSCQSyOVyKBaLVOl0+t8QUtzpdFCtVhGNRhEOh9FsNrFcLjGf
-        zzGdTtHr9VAul1EqlWCxWLjtBAIBDIdDdLtdtFotmoQAG40GhVYqFdTrdbTbbXqqVCpuEo1Gg0gkQl0I
-        ZKfBYECTEFe/3w+r1QrVSwXEYjEMBsPfFKQFUhQKheDz+WiCWCwGu90OvV4Po9GIYDBIW3gVZSCRSKDV
-        armAzWaD9XpNQR6PBzqdDl6vlw6UpHO73XA4HDSFXC4HwzDcORDnxWKB1WqF8XiMeDwOl8sFqVQKpVIJ
-        m82GQqGAyWSCZDJJ57C3yoRM3AiEOJ+eBrbDimx/Xw4syyKTydD+hULhfoIdjUSVyWTg8/ng8Xg4Phbh
-        5OQFBAIBRCIR1Gr1/VtJ1vaQ7sb+DRuc7Bv1TnwpAAAAAElFTkSuQmCC
+        YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAHySURBVDhPjZLLj5lhFMb9b2JrbIQdTSVWFiKxMCJKCR0s
+        XGIhLrNggWhdOzVu1ZlMZOSTCB1SzbD46hIUm6a6eOp9QydfpjPjSZ58m3N+5znn/XgH3fV+4CnvS57X
+        pyKD5S88cvD8w3EAoo9f7jFYgOP8529wu93HQc4Tt7hlwfHV999QKjVHrlHt4mKAf85+Bd53gFevdbBa
+        rS9DLi+vcL1ruGkDzN0fdAc/cT9iMR6PYbFYnofk83k0Gg3M53NkMhkUi0WkUikUCgWUy2XqbDb7fwhp
+        7na7qNfriMfjiEajaLVaWK1WWCwWmM1m6Pf7qFarqFQqsNlsXEgoFMJoNEKv10O73aZJCJBhGAqt1Wpo
+        NpvodDr0q1aruUm0Wi1isRidQiAHD4dDmoRMDQaDsNvtUL9VQiKRwGQyPQDICqQhEokgEAjQBIlEAk6n
+        E0ajEWazGeFwmK7wLq6DVCqFXq/nArbbLTabDQX5fD4YDAb4/X56UJLO6/XC5XLRFAqFAjqdjnsHMnm5
+        XGK9XmMymSCZTMLj8UAmk0GlUsHhcKBUKmE6nSKdTtM77FsfRMhkGoGQyWdnod2xYrvnK4BlWeRyObq/
+        SCR6nOAgElUul0MgEIDP5+PkRIzT0zcQCoUQi8XQaDQv/5Wk4CnvS/bi8f4CnZYBNTMazo4AAAAASUVO
+        RK5CYII=
 </value>
   </data>
 </root>

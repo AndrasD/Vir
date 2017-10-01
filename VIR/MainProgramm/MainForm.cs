@@ -511,7 +511,7 @@ namespace VIR
             ListView view = (ListView)sender;
             MyMenu tag = (MyMenu)view.Tag;
             object[] objArray = (object[])view.FocusedItem.Tag;
-            this.Text = "SIXIS-VIR [" + view.FocusedItem.Text + "]";
+            this.Text = "SIXIS-VIR 2.0 [" + view.FocusedItem.Text + "]";
             if (((view.FocusedItem != this.AktlistviewItem) && (objArray.Length != 1)) && !this.Userabortkerdes())
             {
                 string text = view.FocusedItem.Text;
@@ -656,5 +656,9 @@ namespace VIR
 
         #endregion
 
+        private void panel6_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

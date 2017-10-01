@@ -58,698 +58,739 @@ namespace Lekerdezesek
 
         public Eredmeny(string szoveg, object[] obj)
         {
-            MyTag[] myTag = (MyTag[])obj[1];
-
-            ktgfelosztastag = myTag[0];
-            termektag = myTag[1];
-            koltsegtag = myTag[2];
-            termekfotag = myTag[3];
-            termekaltag = myTag[4];
-            koltsegfotag = myTag[5];
-            koltsegaltag = myTag[6];
-
-            InitializeComponent();
+            MyTag[] tagArray = (MyTag[])obj[1];
+            this.ktgfelosztastag = tagArray[0];
+            this.termektag = tagArray[1];
+            this.koltsegtag = tagArray[2];
+            this.termekfotag = tagArray[3];
+            this.termekaltag = tagArray[4];
+            this.koltsegfotag = tagArray[5];
+            this.koltsegaltag = tagArray[6];
+            this.InitializeComponent();
         }
 
         private void Eredmeny_Load(object sender, EventArgs e)
         {
-            string sel = "";
-
-            mainForm = (VIR.MainForm)this.ParentForm;
-            myconn = mainForm.MyConn;
-
-            ktgfelosztastabla = ktgfelosztastag.AdatTablainfo.Adattabla;
-            termekfotabla = termekfotag.AdatTablainfo.Adattabla;
-            termekaltabla = termekaltag.AdatTablainfo.Adattabla;
-            termektabla = termektag.AdatTablainfo.Adattabla;
-            koltsegtabla = koltsegtag.AdatTablainfo.Adattabla;
-            koltsegfotabla = koltsegfotag.AdatTablainfo.Adattabla;
-            koltsegaltabla = koltsegaltag.AdatTablainfo.Adattabla;
-
-            sel = "select '' as TK,'' as Termekkod, '' as Megnevezes, " +
-                  "0 as Januar, " +
-                  "0 as Februar, " +
-                  "0 as Marcius, " +
-                  "0 as Aprilis, " +
-                  "0 as Majus, " +
-                  "0 as Junius, " +
-                  "0 as Julius, " +
-                  "0 as Augusztus, " +
-                  "0 as Szeptember, " +
-                  "0 as Oktober, " +
-                  "0 as November, " +
-                  "0 as December, " +
-                  "0 as Osszesen ";
-                  //"from dual";
-            da = new SqlDataAdapter(sel, myconn);
-            da.Fill(ds, "tableEredmeny");
-            tableEredmeny = ds.Tables["tableEredmeny"];
-            tableEredmeny.Clear();
-            viewEredmeny.Table = tableEredmeny;
-            viewEredmeny.Sort = "tk desc,termekkod";
-            dataGV.DataSource = this.viewEredmeny;
-            dataGV.Columns[0].Visible = false;
-            dataGV.Columns[0].Frozen = true;
-            dataGV.Columns[1].Frozen = true;
-            dataGV.Columns[2].Frozen = true;
-            for (int i = 3; i < dataGV.Columns.Count; i++) 
+            int num;
+            string selectCommandText = "";
+            this.mainForm = (VIR.MainForm)base.ParentForm;
+            this.myconn = this.mainForm.MyConn;
+            this.ktgfelosztastabla = this.ktgfelosztastag.AdatTablainfo.Adattabla;
+            this.termekfotabla = this.termekfotag.AdatTablainfo.Adattabla;
+            this.termekaltabla = this.termekaltag.AdatTablainfo.Adattabla;
+            this.termektabla = this.termektag.AdatTablainfo.Adattabla;
+            this.koltsegtabla = this.koltsegtag.AdatTablainfo.Adattabla;
+            this.koltsegfotabla = this.koltsegfotag.AdatTablainfo.Adattabla;
+            this.koltsegaltabla = this.koltsegaltag.AdatTablainfo.Adattabla;
+            selectCommandText = "select '' as TK,'' as Termekkod, '' as Megnevezes, 0 as Januar, 0 as Februar, 0 as Marcius, 0 as Aprilis, 0 as Majus, 0 as Junius, 0 as Julius, 0 as Augusztus, 0 as Szeptember, 0 as Oktober, 0 as November, 0 as December, 0 as Osszesen ";
+            this.da = new SqlDataAdapter(selectCommandText, this.myconn);
+            this.da.Fill(this.ds, "tableEredmeny");
+            this.tableEredmeny = this.ds.Tables["tableEredmeny"];
+            this.tableEredmeny.Clear();
+            this.viewEredmeny.Table = this.tableEredmeny;
+            this.viewEredmeny.Sort = "tk desc,termekkod";
+            this.dataGV.DataSource = this.viewEredmeny;
+            this.dataGV.Columns[0].Visible = false;
+            this.dataGV.Columns[0].Frozen = true;
+            this.dataGV.Columns[1].Frozen = true;
+            this.dataGV.Columns[2].Frozen = true;
+            for (num = 3; num < this.dataGV.Columns.Count; num++)
             {
-                dataGV.Columns[i].DefaultCellStyle.Format = "N0";
-                dataGV.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                this.dataGV.Columns[num].DefaultCellStyle.Format = "N0";
+                this.dataGV.Columns[num].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
-
-            da = new SqlDataAdapter("select distinct year(datum_telj) as ev from szamla", myconn);
-            da.Fill(ds, "tableEvek");
-            tableEvek = ds.Tables["tableEvek"];
-
-            for (int i = 0; i < tableEvek.Rows.Count; i++)
-                ev.Items.Add(tableEvek.Rows[i]["ev"].ToString());
-
-            ev.Text = ev.Items[0].ToString();
-
-            da = new SqlDataAdapter("select * from rendszer", myconn);
-            da.Fill(ds, "tableRendszer");
-            tableRendszer = ds.Tables["tableRendszer"];
-
-            string s = "";
-            eredmeny_szures = "'";
-            if (tableRendszer.Rows.Count > 0)
+            this.da = new SqlDataAdapter("select distinct year(datum_telj) as ev from szamla", this.myconn);
+            this.da.Fill(this.ds, "tableEvek");
+            this.tableEvek = this.ds.Tables["tableEvek"];
+            for (num = 0; num < this.tableEvek.Rows.Count; num++)
             {
-                s = tableRendszer.Rows[0]["eredmeny_szures"].ToString();
-                for (int i = 0; i < s.Length; i++)
-                {
-                    if (s.Substring(i, 1) == ",")
-                    {
-                        if (eredmeny_szures.Substring(eredmeny_szures.Length - 1, 1) != "'")
-                            eredmeny_szures = eredmeny_szures + "'";
-                        if (i + 1 > s.Length)
-                            break;
-                        else
-                            eredmeny_szures = eredmeny_szures + ",'";
-                    }
-                    else
-                        eredmeny_szures = eredmeny_szures + s.Substring(i, 1);
-                }
-                eredmeny_szures = eredmeny_szures + "'";
+                this.ev.Items.Add(this.tableEvek.Rows[num]["ev"].ToString());
+            }
+            this.ev.Text = this.ev.Items[0].ToString();
+            this.da = new SqlDataAdapter("select * from rendszer", this.myconn);
+            this.da.Fill(this.ds, "tableRendszer");
+            this.tableRendszer = this.ds.Tables["tableRendszer"];
+            string str2 = "";
+            this.eredmeny_szures = "'";
+            if (this.tableRendszer.Rows.Count <= 0)
+            {
+                this.eredmeny_szures = "''";
             }
             else
-                eredmeny_szures = "''";
-
-
-            tableBevetelek = tableEredmeny.Clone();
-            tableKiadasok = tableEredmeny.Clone();
-            tableKiadasok.PrimaryKey = new DataColumn[] {tableKiadasok.Columns["Termekkod"]};
-            viewBevetelek.Table = tableBevetelek;
-            viewKiadasok.Table = tableKiadasok;
-            viewBevetelek.Sort = "tk desc,termekkod";
-            viewKiadasok.Sort = "tk desc,termekkod";
-            dataGVBev.DataSource = viewBevetelek;
-            dataGVKiad.DataSource = viewKiadasok;
-            dataGVBev.Columns[0].Visible = false;
-            dataGVKiad.Columns[0].Visible = false;
-            dataGVBev.Columns[0].Frozen = true;
-            dataGVKiad.Columns[0].Frozen = true;
-            dataGVBev.Columns[1].Frozen = true;
-            dataGVKiad.Columns[1].Frozen = true;
-            dataGVBev.Columns[2].Frozen = true;
-            dataGVKiad.Columns[2].Frozen = true;
-          
-            for (int i = 3; i < dataGVBev.Columns.Count; i++)
             {
-                dataGVBev.Columns[i].DefaultCellStyle.Format = "N0";
-                dataGVBev.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dataGVKiad.Columns[i].DefaultCellStyle.Format = "N0";
-                dataGVKiad.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                str2 = this.tableRendszer.Rows[0]["eredmeny_szures"].ToString();
+                for (num = 0; num < str2.Length; num++)
+                {
+                    if (str2.Substring(num, 1) == ",")
+                    {
+                        if (this.eredmeny_szures.Substring(this.eredmeny_szures.Length - 1, 1) != "'")
+                        {
+                            this.eredmeny_szures = this.eredmeny_szures + "'";
+                        }
+                        if ((num + 1) > str2.Length)
+                        {
+                            break;
+                        }
+                        this.eredmeny_szures = this.eredmeny_szures + ",'";
+                    }
+                    else
+                    {
+                        this.eredmeny_szures = this.eredmeny_szures + str2.Substring(num, 1);
+                    }
+                }
+                this.eredmeny_szures = this.eredmeny_szures + "'";
             }
-
-            tableFelgyujt = tableEredmeny.Clone();
+            this.tableBevetelek = this.tableEredmeny.Clone();
+            this.tableKiadasok = this.tableEredmeny.Clone();
+            this.tableKiadasok.PrimaryKey = new DataColumn[] { this.tableKiadasok.Columns["Termekkod"] };
+            this.viewBevetelek.Table = this.tableBevetelek;
+            this.viewKiadasok.Table = this.tableKiadasok;
+            this.viewBevetelek.Sort = "tk desc,termekkod";
+            this.viewKiadasok.Sort = "tk desc,termekkod";
+            this.dataGVBev.DataSource = this.viewBevetelek;
+            this.dataGVKiad.DataSource = this.viewKiadasok;
+            this.dataGVBev.Columns[0].Visible = false;
+            this.dataGVKiad.Columns[0].Visible = false;
+            this.dataGVBev.Columns[0].Frozen = true;
+            this.dataGVKiad.Columns[0].Frozen = true;
+            this.dataGVBev.Columns[1].Frozen = true;
+            this.dataGVKiad.Columns[1].Frozen = true;
+            this.dataGVBev.Columns[2].Frozen = true;
+            this.dataGVKiad.Columns[2].Frozen = true;
+            for (num = 3; num < this.dataGVBev.Columns.Count; num++)
+            {
+                this.dataGVBev.Columns[num].DefaultCellStyle.Format = "N0";
+                this.dataGVBev.Columns[num].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                this.dataGVKiad.Columns[num].DefaultCellStyle.Format = "N0";
+                this.dataGVKiad.Columns[num].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
+            this.tableFelgyujt = this.tableEredmeny.Clone();
         }
 
         private void havi_CheckedChanged(object sender, EventArgs e)
         {
-            if (havi.Checked)
+            if (this.havi.Checked)
             {
-                honap.Enabled = true;
-                ev.Enabled = false;
+                this.honap.Enabled = true;
+                this.honapig.Enabled = true;
+                this.ev.Enabled = false;
             }
             else
             {
-                honap.Enabled = false;
-                ev.Enabled = true;
+                this.honap.Enabled = false;
+                this.honapig.Enabled = false;
+                this.ev.Enabled = true;
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string sel = "";
-            string dat = honap.Value.ToShortDateString();
-
-            tableBevetel.Clear();
-            sel = "select b.megnid as termek_id, c.kod as termekkod, c.szoveg as Megnevezes, sum(b.netto) as Netto, month(datum_telj) as ho " +
-                  "from szamla a, szamla_tetel b, kodtab c  " +
-                  "where a.vs='V' "+
-                  "  and c.kod not in("+eredmeny_szures+") ";
-            if (havi.Checked)
-                sel = sel + "and year(datum_telj) = year('" + dat + "') and month(datum_telj) = month('" + dat + "') ";
+            string selectCommandText = "";
+            string str2 = this.honap.Value.ToShortDateString();
+            string str3 = this.honapig.Value.ToShortDateString();
+            this.tableBevetel.Clear();
+            selectCommandText = "select b.megnid as termek_id, c.kod as termekkod, c.szoveg as Megnevezes, sum(b.netto) as Netto, month(datum_telj) as ho from szamla a, szamla_tetel b, kodtab c  where a.vs='V'   and c.kod not in(" + this.eredmeny_szures + ") ";
+            if (this.havi.Checked)
+            {
+                selectCommandText = selectCommandText + "and cast(datum_telj as datetime) >= cast('" + str2 + "' as datetime) and cast(datum_telj as datetime) <= cast('" + str3 + "' as datetime) ";
+            }
             else
-                sel = sel + "and year(datum_telj) = '" + ev.Text + "' ";
-            sel = sel + "and a.id=b.id " +
-                        "and b.megnid = c.sorszam " +
-                        "group by b.megnid,c.kod,c.szoveg,month(datum_telj)";
-            da = new SqlDataAdapter(sel, myconn);
-            da.Fill(ds, "tableBevetel");
-            tableBevetel = ds.Tables["tableBevetel"];
-
-            tableKiadas.Clear();
-            sel = "select b.megnid as koltseg_id, c.kod as koltsegkod, c.szoveg as Megnevezes, sum(b.netto) as Netto, month(datum_telj) as ho " +
-                  "from szamla a, szamla_tetel b, kodtab c  " +
-                  "where a.vs='S' " +
-                  "  and c.kod not in(" + eredmeny_szures + ") ";
-            if (havi.Checked)
-                sel = sel + "and year(datum_telj) = year('" + dat + "') and month(datum_telj) = month('" + dat + "') ";
+            {
+                selectCommandText = selectCommandText + "and year(datum_telj) = '" + this.ev.Text + "' ";
+            }
+            selectCommandText = selectCommandText + "and a.id=b.id and b.megnid = c.sorszam group by b.megnid,c.kod,c.szoveg,month(datum_telj)";
+            this.da = new SqlDataAdapter(selectCommandText, this.myconn);
+            this.da.Fill(this.ds, "tableBevetel");
+            this.tableBevetel = this.ds.Tables["tableBevetel"];
+            this.tableKiadas.Clear();
+            selectCommandText = "select b.megnid as koltseg_id, c.kod as koltsegkod, c.szoveg as Megnevezes, sum(b.netto) as Netto, month(datum_telj) as ho from szamla a, szamla_tetel b, kodtab c  where a.vs='S'   and c.kod not in(" + this.eredmeny_szures + ") ";
+            if (this.havi.Checked)
+            {
+                selectCommandText = selectCommandText + "and cast(datum_telj as datetime) >= cast('" + str2 + "' as datetime) and cast(datum_telj as datetime) <= cast('" + str3 + "' as datetime) ";
+            }
             else
-                sel = sel + "and year(datum_telj) = '" + ev.Text + "' ";
-            sel = sel + "and a.id=b.id " +
-                        "and b.megnid = c.sorszam " +
-                        "group by b.megnid,c.kod,c.szoveg,month(datum_telj)";
-            da = new SqlDataAdapter(sel, myconn);
-            da.Fill(ds, "tableKiadas");
-            tableKiadas = ds.Tables["tableKiadas"];
-
-            da = new SqlDataAdapter("select 0 as termek_id, 0 as ho, 0.00 as ft, '' as TK ", myconn);
-            da.Fill(ds, "tableKiadasTermek");
-            tableKiadasTermek = ds.Tables["tableKiadasTermek"];
-            tableKiadasTermek.Clear();
-            viewKiadasTermek.Table = tableKiadasTermek;
-            viewKiadasTermek.Sort = "termek_id, ho";
-
-            koltsegFelosztas();
-            tableKiadasokTolt();
-            tableBevetelekTolt();
-            eredmenySzamitas();
-
-            //viewEredmeny.RowFilter = "koltsegnev = ''";
+            {
+                selectCommandText = selectCommandText + "and year(datum_telj) = '" + this.ev.Text + "' ";
+            }
+            selectCommandText = selectCommandText + "and a.id=b.id and b.megnid = c.sorszam group by b.megnid,c.kod,c.szoveg,month(datum_telj)";
+            this.da = new SqlDataAdapter(selectCommandText, this.myconn);
+            this.da.Fill(this.ds, "tableKiadas");
+            this.tableKiadas = this.ds.Tables["tableKiadas"];
+            this.da = new SqlDataAdapter("select 0 as termek_id, 0 as ho, 0.00 as ft, '' as TK ", this.myconn);
+            this.da.Fill(this.ds, "tableKiadasTermek");
+            this.tableKiadasTermek = this.ds.Tables["tableKiadasTermek"];
+            this.tableKiadasTermek.Clear();
+            this.viewKiadasTermek.Table = this.tableKiadasTermek;
+            this.viewKiadasTermek.Sort = "termek_id, ho";
+            this.koltsegFelosztas();
+            this.tableKiadasokTolt();
+            this.tableBevetelekTolt();
+            this.eredmenySzamitas();
         }
 
         private void tablFelgyujtTolt(DataView view)
         {
-            tableFelgyujt.Clear();
-            if (comboCsoport.Text == "1. Főcsoport")
+            int num;
+            DataRow row;
+            int num2;
+            string str;
+            DataRow[] rowArray;
+            decimal[] numArray;
+            decimal[] numArray2;
+            this.tableFelgyujt.Clear();
+            if (this.comboCsoport.Text == "1. Főcsoport")
             {
-                int i = 0;
-                while (i < view.Count)
+                num = 0;
+                while (num < view.Count)
                 {
-                    DataRow ujsor = tableFelgyujt.NewRow();
-                    ujsor["tk"] = view[i]["tk"];
-                    if (view[i]["tk"].ToString() == "A" )
+                    row = this.tableFelgyujt.NewRow();
+                    row["tk"] = view[num]["tk"];
+                    if (view[num]["tk"].ToString() == "A")
                     {
-                        ujsor["termekkod"] = view[i]["termekkod"];
-                        ujsor["megnevezes"] = view[i]["megnevezes"]; ;
-                        for (int h = 3; h < view.Table.Columns.Count; h++)
-                            ujsor[h] = Convert.ToDecimal(view[i][h].ToString());
-                        i++;
-                    }
-                    else if (view[i]["tk"].ToString() == "K")
-                    {
-                        string k = view[i]["termekkod"].ToString().Substring(0, 1);
-                        DataRow[] t = koltsegfotabla.Select("kod = '" + k + "'");
-
-                        ujsor["termekkod"] = k;
-                        ujsor["megnevezes"] = t[0]["szoveg"];
-                        decimal[] tomb = new decimal[13] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                        while (i < view.Count && k == view[i]["termekkod"].ToString().Substring(0, 1))
+                        row["termekkod"] = view[num]["termekkod"];
+                        row["megnevezes"] = view[num]["megnevezes"];
+                        num2 = 3;
+                        while (num2 < view.Table.Columns.Count)
                         {
-                            for (int h = 3; h < view.Table.Columns.Count; h++)
-                                tomb[h - 3] = tomb[h - 3] + Convert.ToDecimal(view[i][h].ToString());
-                            i++;
+                            row[num2] = Convert.ToDecimal(view[num][num2].ToString());
+                            num2++;
                         }
-                        for (int h = 0; h < tomb.Length; h++)
-                            ujsor[h + 3] = tomb[h];
+                        num++;
+                    }
+                    else if (view[num]["tk"].ToString() == "K")
+                    {
+                        str = view[num]["termekkod"].ToString().Substring(0, 1);
+                        rowArray = this.koltsegfotabla.Select("kod = '" + str + "'");
+                        row["termekkod"] = str;
+                        row["megnevezes"] = rowArray[0]["szoveg"];
+                        numArray2 = new decimal[13];
+                        numArray = numArray2;
+                        while ((num < view.Count) && (str == view[num]["termekkod"].ToString().Substring(0, 1)))
+                        {
+                            num2 = 3;
+                            while (num2 < view.Table.Columns.Count)
+                            {
+                                numArray[num2 - 3] += Convert.ToDecimal(view[num][num2].ToString());
+                                num2++;
+                            }
+                            num++;
+                        }
+                        num2 = 0;
+                        while (num2 < numArray.Length)
+                        {
+                            row[num2 + 3] = numArray[num2];
+                            num2++;
+                        }
                     }
                     else
                     {
-                        string k = view[i]["termekkod"].ToString().Substring(0, 1);
-                        DataRow[] t = termekfotabla.Select("kod = '" + k + "'");
-
-                        ujsor["termekkod"] = k;
-                        ujsor["megnevezes"] = t[0]["szoveg"];
-                        decimal[] tomb = new decimal[13] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                        while (i < view.Count && k == view[i]["termekkod"].ToString().Substring(0, 1))
+                        str = view[num]["termekkod"].ToString().Substring(0, 1);
+                        rowArray = this.termekfotabla.Select("kod = '" + str + "'");
+                        row["termekkod"] = str;
+                        row["megnevezes"] = rowArray[0]["szoveg"];
+                        numArray2 = new decimal[13];
+                        numArray = numArray2;
+                        while ((num < view.Count) && (str == view[num]["termekkod"].ToString().Substring(0, 1)))
                         {
-                            for (int h = 3; h < view.Table.Columns.Count; h++)
-                                tomb[h - 3] = tomb[h - 3] + Convert.ToDecimal(view[i][h].ToString());
-                            i++;
+                            num2 = 3;
+                            while (num2 < view.Table.Columns.Count)
+                            {
+                                numArray[num2 - 3] += Convert.ToDecimal(view[num][num2].ToString());
+                                num2++;
+                            }
+                            num++;
                         }
-                        for (int h = 0; h < tomb.Length; h++)
-                            ujsor[h + 3] = tomb[h];
+                        num2 = 0;
+                        while (num2 < numArray.Length)
+                        {
+                            row[num2 + 3] = numArray[num2];
+                            num2++;
+                        }
                     }
-                    tableFelgyujt.Rows.Add(ujsor);
+                    this.tableFelgyujt.Rows.Add(row);
                 }
             }
-            else if (comboCsoport.Text == "2. Alcsoport")
+            else if (this.comboCsoport.Text == "2. Alcsoport")
             {
-                int i = 0;
-                while (i < view.Count)
+                num = 0;
+                while (num < view.Count)
                 {
-                    DataRow ujsor = tableFelgyujt.NewRow();
-                    ujsor["tk"] = view[i]["tk"];
-                    if (view[i]["tk"].ToString() == "A")
+                    row = this.tableFelgyujt.NewRow();
+                    row["tk"] = view[num]["tk"];
+                    if (view[num]["tk"].ToString() == "A")
                     {
-                        ujsor["termekkod"] = view[i]["termekkod"];
-                        ujsor["megnevezes"] = view[i]["megnevezes"]; ;
-                        for (int h = 3; h < view.Table.Columns.Count; h++)
-                            ujsor[h] = Convert.ToDecimal(view[i][h].ToString());
-                        i++;
-                    }
-                    else if (view[i]["tk"].ToString() == "K")
-                    {
-                        string k = view[i]["termekkod"].ToString().Substring(0, 2);
-                        DataRow[] t = koltsegaltabla.Select("kod = '" + k + "'");
-
-                        ujsor["termekkod"] = k;
-                        ujsor["megnevezes"] = t[0]["szoveg"];
-                        decimal[] tomb = new decimal[13] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                        while (i < view.Count && k == view[i]["termekkod"].ToString().Substring(0, 2))
+                        row["termekkod"] = view[num]["termekkod"];
+                        row["megnevezes"] = view[num]["megnevezes"];
+                        num2 = 3;
+                        while (num2 < view.Table.Columns.Count)
                         {
-                            for (int h = 3; h < view.Table.Columns.Count; h++)
-                                tomb[h - 3] = tomb[h - 3] + Convert.ToDecimal(view[i][h].ToString());
-                            i++;
+                            row[num2] = Convert.ToDecimal(view[num][num2].ToString());
+                            num2++;
                         }
-                        for (int h = 0; h < tomb.Length; h++)
-                            ujsor[h + 3] = tomb[h];
+                        num++;
+                    }
+                    else if (view[num]["tk"].ToString() == "K")
+                    {
+                        str = view[num]["termekkod"].ToString().Substring(0, 2);
+                        rowArray = this.koltsegaltabla.Select("kod = '" + str + "'");
+                        row["termekkod"] = str;
+                        row["megnevezes"] = rowArray[0]["szoveg"];
+                        numArray2 = new decimal[13];
+                        numArray = numArray2;
+                        while ((num < view.Count) && (str == view[num]["termekkod"].ToString().Substring(0, 2)))
+                        {
+                            num2 = 3;
+                            while (num2 < view.Table.Columns.Count)
+                            {
+                                numArray[num2 - 3] += Convert.ToDecimal(view[num][num2].ToString());
+                                num2++;
+                            }
+                            num++;
+                        }
+                        num2 = 0;
+                        while (num2 < numArray.Length)
+                        {
+                            row[num2 + 3] = numArray[num2];
+                            num2++;
+                        }
                     }
                     else
                     {
-                        string k = view[i]["termekkod"].ToString().Substring(0, 2);
-                        DataRow[] t = termekaltabla.Select("kod = '" + k + "'");
-
-                        ujsor["termekkod"] = k;
-                        ujsor["megnevezes"] = t[0]["szoveg"];
-                        decimal[] tomb = new decimal[13] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                        while (i < view.Count && k == view[i]["termekkod"].ToString().Substring(0, 2))
+                        str = view[num]["termekkod"].ToString().Substring(0, 2);
+                        rowArray = this.termekaltabla.Select("kod = '" + str + "'");
+                        row["termekkod"] = str;
+                        row["megnevezes"] = rowArray[0]["szoveg"];
+                        numArray2 = new decimal[13];
+                        numArray = numArray2;
+                        while ((num < view.Count) && (str == view[num]["termekkod"].ToString().Substring(0, 2)))
                         {
-                            for (int h = 3; h < view.Table.Columns.Count; h++)
-                                tomb[h - 3] = tomb[h - 3] + Convert.ToDecimal(view[i][h].ToString());
-                            i++;
+                            num2 = 3;
+                            while (num2 < view.Table.Columns.Count)
+                            {
+                                numArray[num2 - 3] += Convert.ToDecimal(view[num][num2].ToString());
+                                num2++;
+                            }
+                            num++;
                         }
-                        for (int h = 0; h < tomb.Length; h++)
-                            ujsor[h + 3] = tomb[h];
+                        for (num2 = 0; num2 < numArray.Length; num2++)
+                        {
+                            row[num2 + 3] = numArray[num2];
+                        }
                     }
-                    tableFelgyujt.Rows.Add(ujsor);
+                    this.tableFelgyujt.Rows.Add(row);
                 }
             }
         }
 
         private void koltsegFelosztas()
         {
-            DataRow ujsor;
-            tableKiadasTermek.Clear();
-            for (int i = 0; i < tableKiadas.Rows.Count; i++)
+            this.tableKiadasTermek.Clear();
+            for (int i = 0; i < this.tableKiadas.Rows.Count; i++)
             {
-                decimal n = Convert.ToDecimal(tableKiadas.Rows[i]["Netto"].ToString());
-
-                // megkeresem a ktgfelosztásban az adott ktg-t, majd felosztom a megadott termékekre
-                DataRow[] dr = ktgfelosztastabla.Select("koltseg_id = " + tableKiadas.Rows[i]["koltseg_id"].ToString());
-                if (dr.Length > 0)
+                DataRow row;
+                decimal num2 = Convert.ToDecimal(this.tableKiadas.Rows[i]["Netto"].ToString());
+                DataRow[] rowArray = this.ktgfelosztastabla.Select("koltseg_id = " + this.tableKiadas.Rows[i]["koltseg_id"].ToString());
+                if (rowArray.Length > 0)
                 {
-                    for (int j = 0; j < dr.Length; j++)
+                    for (int j = 0; j < rowArray.Length; j++)
                     {
-                        decimal s = Convert.ToDecimal(dr[j]["szazalek"].ToString());
-                        decimal ft = n * s / 100;
-
-                        ujsor = tableKiadasTermek.NewRow();
-                        ujsor["tk"] = "T";
-                        ujsor["termek_id"] = dr[j]["termek_id"];
-                        ujsor["ho"] = tableKiadas.Rows[i]["ho"];
-                        ujsor["ft"] = ft;
-                        tableKiadasTermek.Rows.Add(ujsor);
+                        decimal num4 = Convert.ToDecimal(rowArray[j]["szazalek"].ToString());
+                        decimal num5 = (num2 * num4) / 100M;
+                        row = this.tableKiadasTermek.NewRow();
+                        row["tk"] = "T";
+                        row["termek_id"] = rowArray[j]["termek_id"];
+                        row["ho"] = this.tableKiadas.Rows[i]["ho"];
+                        row["ft"] = num5;
+                        this.tableKiadasTermek.Rows.Add(row);
                     }
                 }
-                else // felosztatlan költség
+                else
                 {
-                    ujsor = tableKiadasTermek.NewRow();
-                    ujsor["tk"] = "K";
-                    ujsor["termek_id"] = tableKiadas.Rows[i]["koltseg_id"];
-                    ujsor["ho"] = tableKiadas.Rows[i]["ho"];
-                    ujsor["ft"] = n;
-                    tableKiadasTermek.Rows.Add(ujsor);
+                    row = this.tableKiadasTermek.NewRow();
+                    row["tk"] = "K";
+                    row["termek_id"] = this.tableKiadas.Rows[i]["koltseg_id"];
+                    row["ho"] = this.tableKiadas.Rows[i]["ho"];
+                    row["ft"] = num2;
+                    this.tableKiadasTermek.Rows.Add(row);
                 }
             }
         }
 
         private void tableKiadasokTolt()
         {
-            DataRow ujsor;
-            string tKod;
-            string tSzoveg;
-
-            viewKiadasok.BeginInit();
-            tableKiadasok.Clear();
-            int i = 0;
-            while (i < viewKiadasTermek.Count)
+            DataRow row;
+            string columnName;
+            this.viewKiadasok.BeginInit();
+            this.tableKiadasok.Clear();
+            int num = 0;
+            while (num < this.viewKiadasTermek.Count)
             {
-                int id = Convert.ToInt32(viewKiadasTermek[i]["termek_id"].ToString());
-                DataRow[] t = termektabla.Select("sorszam = " + viewKiadasTermek[i]["termek_id"].ToString());
-                if (t.Length > 0)
+                string str;
+                string str2;
+                int num2 = Convert.ToInt32(this.viewKiadasTermek[num]["termek_id"].ToString());
+                DataRow[] rowArray = this.termektabla.Select("sorszam = " + this.viewKiadasTermek[num]["termek_id"].ToString());
+                if (rowArray.Length > 0)
                 {
-                    tKod = t[0]["kod"].ToString();
-                    tSzoveg = t[0]["szoveg"].ToString();
+                    str = rowArray[0]["kod"].ToString();
+                    str2 = rowArray[0]["szoveg"].ToString();
                 }
                 else
                 {
-                    DataRow[] k = koltsegtabla.Select("sorszam = " + viewKiadasTermek[i]["termek_id"].ToString());
-                    tKod = k[0]["kod"].ToString(); ;
-                    tSzoveg = k[0]["szoveg"].ToString() + " (felosztatlan költség)";
+                    DataRow[] rowArray2 = this.koltsegtabla.Select("sorszam = " + this.viewKiadasTermek[num]["termek_id"].ToString());
+                    str = rowArray2[0]["kod"].ToString();
+                    str2 = rowArray2[0]["szoveg"].ToString() + " (felosztatlan k\x00f6lts\x00e9g)";
                 }
-
-                ujsor = tableKiadasok.NewRow();
-                ujsor["tk"] = viewKiadasTermek[i]["tk"];
-                ujsor["Termekkod"] = tKod;
-                ujsor["megnevezes"] = tSzoveg;
-
-                for (int m = 3; m < tableKiadasok.Columns.Count; m++)
-                    ujsor[m] = 0;
-
-                while (i < viewKiadasTermek.Count && id == Convert.ToInt32(viewKiadasTermek[i]["termek_id"].ToString()))
+                row = this.tableKiadasok.NewRow();
+                row["tk"] = this.viewKiadasTermek[num]["tk"];
+                row["Termekkod"] = str;
+                row["megnevezes"] = str2;
+                for (int i = 3; i < this.tableKiadasok.Columns.Count; i++)
                 {
-                    string hoNap = viewKiadasTermek[i]["ho"].ToString();
-                    string hoNev = honapNev(hoNap);
-                    ujsor[hoNev] = 0;
-                    while (i < viewKiadasTermek.Count && id == Convert.ToInt32(viewKiadasTermek[i]["termek_id"].ToString()) && hoNap == viewKiadasTermek[i]["ho"].ToString())
+                    row[i] = 0;
+                }
+                while ((num < this.viewKiadasTermek.Count) && (num2 == Convert.ToInt32(this.viewKiadasTermek[num]["termek_id"].ToString())))
+                {
+                    string honap = this.viewKiadasTermek[num]["ho"].ToString();
+                    columnName = this.honapNev(honap);
+                    row[columnName] = 0;
+                    while (((num < this.viewKiadasTermek.Count) && (num2 == Convert.ToInt32(this.viewKiadasTermek[num]["termek_id"].ToString()))) && (honap == this.viewKiadasTermek[num]["ho"].ToString()))
                     {
-                        decimal kiadasN = Convert.ToDecimal(viewKiadasTermek[i]["ft"].ToString());
-                        ujsor[hoNev] = Convert.ToDecimal(ujsor[hoNev].ToString()) + kiadasN;
-                        i++;
+                        decimal num4 = Convert.ToDecimal(this.viewKiadasTermek[num]["ft"].ToString());
+                        row[columnName] = Convert.ToDecimal(row[columnName].ToString()) + num4;
+                        num++;
                     }
                 }
-                ujsor["osszesen"] = termekÖsszesen(ujsor);
-                tableKiadasok.Rows.Add(ujsor);
+                row["osszesen"] = this.termekÖsszesen(row);
+                this.tableKiadasok.Rows.Add(row);
             }
-
-            ujsor = tableKiadasok.NewRow();
-            ujsor["tk"] = "A";
-            ujsor["Termekkod"] = "Összesen:";
-            ujsor["megnevezes"] = "";
-            for (i = 3; i < tableKiadasok.Columns.Count; i++)
+            row = this.tableKiadasok.NewRow();
+            row["tk"] = "A";
+            row["Termekkod"] = "\x00d6sszesen:";
+            row["megnevezes"] = "";
+            for (num = 3; num < this.tableKiadasok.Columns.Count; num++)
             {
-                string hoNev = tableKiadasok.Columns[i].ColumnName;
-                decimal sum = 0;
-                for (int j = 0; j < tableKiadasok.Rows.Count; j++)
-                    sum = sum + Convert.ToDecimal(tableKiadasok.Rows[j][hoNev].ToString());
-                ujsor[hoNev] = sum;
+                columnName = this.tableKiadasok.Columns[num].ColumnName;
+                decimal num5 = 0M;
+                for (int j = 0; j < this.tableKiadasok.Rows.Count; j++)
+                {
+                    num5 += Convert.ToDecimal(this.tableKiadasok.Rows[j][columnName].ToString());
+                }
+                row[columnName] = num5;
             }
-            tableKiadasok.Rows.Add(ujsor);
-
-            if (comboCsoport.Text == "1. Főcsoport" || comboCsoport.Text == "2. Alcsoport")
+            this.tableKiadasok.Rows.Add(row);
+            if ((this.comboCsoport.Text == "1. Főcsoport") || (this.comboCsoport.Text == "2. Alcsoport"))
             {
-                tablFelgyujtTolt(viewKiadasok);
-                tableKiadasok.Clear();
-                tableKiadasok = tableFelgyujt.Copy();
-                viewKiadasok.Table = tableKiadasok;
-                viewKiadasok.Sort = "tk desc,termekkod";
-                dataGVKiad.DataSource = viewKiadasok;
+                this.tablFelgyujtTolt(this.viewKiadasok);
+                this.tableKiadasok.Clear();
+                this.tableKiadasok = this.tableFelgyujt.Copy();
+                this.viewKiadasok.Table = this.tableKiadasok;
+                this.viewKiadasok.Sort = "tk desc,termekkod";
+                this.dataGVKiad.DataSource = this.viewKiadasok;
             }
-
-            viewKiadasok.EndInit();
+            this.viewKiadasok.EndInit();
         }
 
         private void tableBevetelekTolt()
         {
-            DataRow ujsor;
-            string tKod;
-            string tSzoveg;
-
-            viewBevetelek.BeginInit();
-            tableBevetelek.Clear();
-            int i = 0;
-            while (i < tableBevetel.Rows.Count)
+            DataRow row;
+            string columnName;
+            this.viewBevetelek.BeginInit();
+            this.tableBevetelek.Clear();
+            int num = 0;
+            while (num < this.tableBevetel.Rows.Count)
             {
-                int id = Convert.ToInt32(tableBevetel.Rows[i]["termek_id"].ToString());
-                DataRow[] t = termektabla.Select("sorszam = " + tableBevetel.Rows[i]["termek_id"].ToString());
-                tKod = t[0]["kod"].ToString();
-                tSzoveg = t[0]["szoveg"].ToString();
-
-                ujsor = tableBevetelek.NewRow();
-                ujsor["tk"] = "T";
-                ujsor["Termekkod"] = tKod;
-                ujsor["megnevezes"] = tSzoveg;
-
-                for (int m = 3; m < tableBevetelek.Columns.Count; m++)
-                    ujsor[m] = 0;
-
-                while (i < tableBevetel.Rows.Count && id == Convert.ToInt32(tableBevetel.Rows[i]["termek_id"].ToString()))
+                int num2 = Convert.ToInt32(this.tableBevetel.Rows[num]["termek_id"].ToString());
+                DataRow[] rowArray = this.termektabla.Select("sorszam = " + this.tableBevetel.Rows[num]["termek_id"].ToString());
+                string str = rowArray[0]["kod"].ToString();
+                string str2 = rowArray[0]["szoveg"].ToString();
+                row = this.tableBevetelek.NewRow();
+                row["tk"] = "T";
+                row["Termekkod"] = str;
+                row["megnevezes"] = str2;
+                for (int i = 3; i < this.tableBevetelek.Columns.Count; i++)
                 {
-                    string hoNap = tableBevetel.Rows[i]["ho"].ToString();
-                    string hoNev = honapNev(hoNap);
-                    ujsor[hoNev] = 0;
-                    while (i < tableBevetel.Rows.Count && id == Convert.ToInt32(tableBevetel.Rows[i]["termek_id"].ToString()) && hoNap == tableBevetel.Rows[i]["ho"].ToString())
+                    row[i] = 0;
+                }
+                while ((num < this.tableBevetel.Rows.Count) && (num2 == Convert.ToInt32(this.tableBevetel.Rows[num]["termek_id"].ToString())))
+                {
+                    string honap = this.tableBevetel.Rows[num]["ho"].ToString();
+                    columnName = this.honapNev(honap);
+                    row[columnName] = 0;
+                    while (((num < this.tableBevetel.Rows.Count) && (num2 == Convert.ToInt32(this.tableBevetel.Rows[num]["termek_id"].ToString()))) && (honap == this.tableBevetel.Rows[num]["ho"].ToString()))
                     {
-                        decimal kiadasN = Convert.ToDecimal(tableBevetel.Rows[i]["netto"].ToString());
-                        ujsor[hoNev] = Convert.ToDecimal(ujsor[hoNev].ToString()) + kiadasN;
-                        i++;
+                        decimal num4 = Convert.ToDecimal(this.tableBevetel.Rows[num]["netto"].ToString());
+                        row[columnName] = Convert.ToDecimal(row[columnName].ToString()) + num4;
+                        num++;
                     }
                 }
-                ujsor["osszesen"] = termekÖsszesen(ujsor);
-                tableBevetelek.Rows.Add(ujsor);
+                row["osszesen"] = this.termekÖsszesen(row);
+                this.tableBevetelek.Rows.Add(row);
             }
-
-            ujsor = tableBevetelek.NewRow();
-            ujsor["tk"] = "A";
-            ujsor["Termekkod"] = "Összesen:";
-            ujsor["megnevezes"] = "";
-            for (i = 3; i < tableBevetelek.Columns.Count; i++)
+            row = this.tableBevetelek.NewRow();
+            row["tk"] = "A";
+            row["Termekkod"] = "\x00d6sszesen:";
+            row["megnevezes"] = "";
+            for (num = 3; num < this.tableBevetelek.Columns.Count; num++)
             {
-                string hoNev = tableBevetelek.Columns[i].ColumnName;
-                decimal sum = 0;
-                for (int j = 0; j < tableBevetelek.Rows.Count; j++)
-                    sum = sum + Convert.ToDecimal(tableBevetelek.Rows[j][hoNev].ToString());
-                ujsor[hoNev] = sum;
+                columnName = this.tableBevetelek.Columns[num].ColumnName;
+                decimal num5 = 0M;
+                for (int j = 0; j < this.tableBevetelek.Rows.Count; j++)
+                {
+                    num5 += Convert.ToDecimal(this.tableBevetelek.Rows[j][columnName].ToString());
+                }
+                row[columnName] = num5;
             }
-            tableBevetelek.Rows.Add(ujsor);
-
-            if (comboCsoport.Text == "1. Főcsoport" || comboCsoport.Text == "2. Alcsoport")
+            this.tableBevetelek.Rows.Add(row);
+            if ((this.comboCsoport.Text == "1. Főcsoport") || (this.comboCsoport.Text == "2. Alcsoport"))
             {
-                tablFelgyujtTolt(viewBevetelek);
-                tableBevetelek.Clear();
-                tableBevetelek = tableFelgyujt.Copy();
-                viewBevetelek.Table = tableBevetelek;
-                viewBevetelek.Sort = "tk desc,termekkod";
-                dataGVBev.DataSource = viewBevetelek;
-
+                this.tablFelgyujtTolt(this.viewBevetelek);
+                this.tableBevetelek.Clear();
+                this.tableBevetelek = this.tableFelgyujt.Copy();
+                this.viewBevetelek.Table = this.tableBevetelek;
+                this.viewBevetelek.Sort = "tk desc,termekkod";
+                this.dataGVBev.DataSource = this.viewBevetelek;
             }
-            viewBevetelek.EndInit();
+            this.viewBevetelek.EndInit();
         }
 
         private void eredmenySzamitas()
         {
-            DataRow ujsor;
-            DataRow[] r ;
-            decimal bevetelN = 0;
-
-            tableEredmeny.Clear();
-            for (int i = 0; i < tableBevetelek.Rows.Count; i++ )
+            DataRow row;
+            DataRow[] rowArray;
+            int num2;
+            int num3;
+            decimal num = 0M;
+            this.tableEredmeny.Clear();
+            for (num2 = 0; num2 < this.tableBevetelek.Rows.Count; num2++)
             {
-                ujsor = tableEredmeny.NewRow();
-                ujsor["tk"] = tableBevetelek.Rows[i]["tk"];
-                ujsor["Termekkod"] = tableBevetelek.Rows[i]["termekkod"];
-                ujsor["megnevezes"] = tableBevetelek.Rows[i]["megnevezes"];
-
-                if (ujsor["tk"].ToString() == "T")
-                    r = tableKiadasok.Select("tk = 'K' and termekkod = '" + tableBevetelek.Rows[i]["termekkod"].ToString() +"'");
-                else
-                    r = tableKiadasok.Select("tk = 'A' and termekkod = '" + tableBevetelek.Rows[i]["termekkod"].ToString() + "'");
-
-                for (int j = 3; j < tableBevetelek.Columns.Count; j++)
+                row = this.tableEredmeny.NewRow();
+                row["tk"] = this.tableBevetelek.Rows[num2]["tk"];
+                row["Termekkod"] = this.tableBevetelek.Rows[num2]["termekkod"];
+                row["megnevezes"] = this.tableBevetelek.Rows[num2]["megnevezes"];
+                if (row["tk"].ToString() == "T")
                 {
-                    if (tableBevetelek.Rows[i][j].ToString() == "")
-                        bevetelN = 0;
-                    else
-                        bevetelN = Convert.ToDecimal(tableBevetelek.Rows[i][j].ToString());
-
-                    if (r.Length > 0) // ha van kiadas párja
-                        if (r[0][j].ToString() == "")
-                            ujsor[j] = bevetelN ;
-                        else
-                            ujsor[j] = bevetelN - Convert.ToDecimal(r[0][j].ToString());
-                    else // nincs kiadas erre a termékre
-                        ujsor[j] = bevetelN;
+                    rowArray = this.tableKiadasok.Select("tk = 'K' and termekkod = '" + this.tableBevetelek.Rows[num2]["termekkod"].ToString() + "'");
                 }
-
-                tableEredmeny.Rows.Add(ujsor);
-            }
-
-            for (int i = 0; i < tableKiadasok.Rows.Count; i++)
-            {
-                if (tableKiadasok.Rows[i]["tk"].ToString() == "K")
-                    r = tableBevetelek.Select("tk = 'T' and termekkod = '" + tableKiadasok.Rows[i]["termekkod"].ToString() + "'");
                 else
-                    r = tableBevetelek.Select("tk = 'A' and termekkod = '" + tableKiadasok.Rows[i]["termekkod"].ToString() + "'");
-
-                if (r.Length == 0)
                 {
-                    ujsor = tableEredmeny.NewRow();
-                    ujsor["tk"] = tableKiadasok.Rows[i]["tk"];
-                    ujsor["Termekkod"] = tableKiadasok.Rows[i]["termekkod"];
-                    ujsor["megnevezes"] = tableKiadasok.Rows[i]["megnevezes"];
-                    for (int j = 3; j < tableKiadasok.Columns.Count; j++)
-                        if (tableKiadasok.Rows[i][j].ToString() == "")
-                            ujsor[j] = 0;
+                    rowArray = this.tableKiadasok.Select("tk = 'A' and termekkod = '" + this.tableBevetelek.Rows[num2]["termekkod"].ToString() + "'");
+                }
+                num3 = 3;
+                while (num3 < this.tableBevetelek.Columns.Count)
+                {
+                    if (this.tableBevetelek.Rows[num2][num3].ToString() == "")
+                    {
+                        num = 0M;
+                    }
+                    else
+                    {
+                        num = Convert.ToDecimal(this.tableBevetelek.Rows[num2][num3].ToString());
+                    }
+                    if (rowArray.Length > 0)
+                    {
+                        if (rowArray[0][num3].ToString() == "")
+                        {
+                            row[num3] = num;
+                        }
                         else
-                            ujsor[j] = 0 - Convert.ToDecimal(tableKiadasok.Rows[i][j].ToString());
-                    tableEredmeny.Rows.Add(ujsor);
+                        {
+                            row[num3] = num - Convert.ToDecimal(rowArray[0][num3].ToString());
+                        }
+                    }
+                    else
+                    {
+                        row[num3] = num;
+                    }
+                    num3++;
+                }
+                this.tableEredmeny.Rows.Add(row);
+            }
+            for (num2 = 0; num2 < this.tableKiadasok.Rows.Count; num2++)
+            {
+                if (this.tableKiadasok.Rows[num2]["tk"].ToString() == "K")
+                {
+                    rowArray = this.tableBevetelek.Select("tk = 'T' and termekkod = '" + this.tableKiadasok.Rows[num2]["termekkod"].ToString() + "'");
+                }
+                else
+                {
+                    rowArray = this.tableBevetelek.Select("tk = 'A' and termekkod = '" + this.tableKiadasok.Rows[num2]["termekkod"].ToString() + "'");
+                }
+                if (rowArray.Length == 0)
+                {
+                    row = this.tableEredmeny.NewRow();
+                    row["tk"] = this.tableKiadasok.Rows[num2]["tk"];
+                    row["Termekkod"] = this.tableKiadasok.Rows[num2]["termekkod"];
+                    row["megnevezes"] = this.tableKiadasok.Rows[num2]["megnevezes"];
+                    for (num3 = 3; num3 < this.tableKiadasok.Columns.Count; num3++)
+                    {
+                        if (this.tableKiadasok.Rows[num2][num3].ToString() == "")
+                        {
+                            row[num3] = 0;
+                        }
+                        else
+                        {
+                            row[num3] = 0M - Convert.ToDecimal(this.tableKiadasok.Rows[num2][num3].ToString());
+                        }
+                    }
+                    this.tableEredmeny.Rows.Add(row);
                 }
             }
         }
 
         private decimal termekÖsszesen(DataRow r)
         {
-            decimal sum = 0;
+            decimal num = 0M;
             for (int i = 3; i < r.Table.Columns.Count; i++)
-                sum = sum + Convert.ToDecimal(r[i].ToString());
-
-            return sum;
+            {
+                num += Convert.ToDecimal(r[i].ToString());
+            }
+            return num;
         }
-
 
         private void dataGV_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex > -1)
             {
-                Termekkod = dataGV.Rows[e.RowIndex].Cells["termekkod"].Value.ToString();
+                this.Termekkod = this.dataGV.Rows[e.RowIndex].Cells["termekkod"].Value.ToString();
             }
         }
 
         private void eves_CheckedChanged(object sender, EventArgs e)
         {
-            tableEredmeny.Clear();
-            tableKiadasok.Clear();
-            tableBevetelek.Clear();
+            this.tableEredmeny.Clear();
+            this.tableKiadasok.Clear();
+            this.tableBevetelek.Clear();
         }
 
         private void buttonNyomtat_Click(object sender, EventArgs e)
         {
-            nyomtat = new PrintForm();
-            string[] parNev = { "SZURES"};
-            string[] parVal = { ""};
-            if (havi.Checked)
-                parVal[0] = "Havi: " + honap.Value.ToShortDateString();
+            DataRow row;
+            int num;
+            int num2;
+            string columnName;
+            this.nyomtat = new PrintForm();
+            string[] parName = new string[] { "SZURES" };
+            string[] parValue = new string[] { "" };
+            if (this.havi.Checked)
+            {
+                parValue[0] = "Havi: " + this.honap.Value.ToShortDateString();
+            }
             else
-                parVal[0] = "Éves: " + ev.Text.ToString();
-
-            string[] parTip = { "string"};
-
-            DataSet dS = new MainProgramm.virDataSet();
-            DataRow r;
-            for (int i = 0; i < viewBevetelek.Count; i++)
             {
-                if (viewBevetelek[i]["tk"].ToString() != "A")
+                parValue[0] = "\x00c9ves: " + this.ev.Text.ToString();
+            }
+            string[] parTyp = new string[] { "string" };
+            DataSet dataSet = new MainProgramm.virDataSet();
+            for (num = 0; num < this.viewBevetelek.Count; num++)
+            {
+                if (this.viewBevetelek[num]["tk"].ToString() != "A")
                 {
-                    r = dS.Tables["Eredmeny"].NewRow();
-                    r["bke"] = "1B";
-                    for (int j = 0; j < tableBevetelek.Columns.Count; j++)
+                    row = dataSet.Tables["Eredmeny"].NewRow();
+                    row["bke"] = "1B";
+                    num2 = 0;
+                    while (num2 < this.tableBevetelek.Columns.Count)
                     {
-                        string colName = tableBevetelek.Columns[j].ColumnName;
-                        if (r.Table.Columns.IndexOf(colName) > -1)
-                            r[colName] = viewBevetelek[i][colName];
+                        columnName = this.tableBevetelek.Columns[num2].ColumnName;
+                        if (row.Table.Columns.IndexOf(columnName) > -1)
+                        {
+                            row[columnName] = this.viewBevetelek[num][columnName];
+                        }
+                        num2++;
                     }
-                    dS.Tables["Eredmeny"].Rows.Add(r);
+                    dataSet.Tables["Eredmeny"].Rows.Add(row);
                 }
             }
-
-            for (int i = 0; i < viewKiadasok.Count; i++)
+            for (num = 0; num < this.viewKiadasok.Count; num++)
             {
-                if (viewKiadasok[i]["tk"].ToString() != "A")
+                if (this.viewKiadasok[num]["tk"].ToString() != "A")
                 {
-                    r = dS.Tables["Eredmeny"].NewRow();
-                    r["bke"] = "2K";
-                    for (int j = 0; j < tableKiadasok.Columns.Count; j++)
+                    row = dataSet.Tables["Eredmeny"].NewRow();
+                    row["bke"] = "2K";
+                    num2 = 0;
+                    while (num2 < this.tableKiadasok.Columns.Count)
                     {
-                        string colName = tableKiadasok.Columns[j].ColumnName;
-                        if (r.Table.Columns.IndexOf(colName) > -1)
-                            r[colName] = viewKiadasok[i][colName];
+                        columnName = this.tableKiadasok.Columns[num2].ColumnName;
+                        if (row.Table.Columns.IndexOf(columnName) > -1)
+                        {
+                            row[columnName] = this.viewKiadasok[num][columnName];
+                        }
+                        num2++;
                     }
-                    dS.Tables["Eredmeny"].Rows.Add(r);
+                    dataSet.Tables["Eredmeny"].Rows.Add(row);
                 }
             }
-
-            for (int i = 0; i < viewEredmeny.Count; i++)
+            for (num = 0; num < this.viewEredmeny.Count; num++)
             {
-                if (viewEredmeny[i]["tk"].ToString() != "A")
+                if (this.viewEredmeny[num]["tk"].ToString() != "A")
                 {
-                    r = dS.Tables["Eredmeny"].NewRow();
-                    r["bke"] = "3E";
-                    for (int j = 0; j < tableEredmeny.Columns.Count; j++)
+                    row = dataSet.Tables["Eredmeny"].NewRow();
+                    row["bke"] = "3E";
+                    for (num2 = 0; num2 < this.tableEredmeny.Columns.Count; num2++)
                     {
-                        string colName = tableEredmeny.Columns[j].ColumnName;
-                        if (r.Table.Columns.IndexOf(colName) > -1)
-                            r[colName] = viewEredmeny[i][colName];
+                        columnName = this.tableEredmeny.Columns[num2].ColumnName;
+                        if (row.Table.Columns.IndexOf(columnName) > -1)
+                        {
+                            row[columnName] = this.viewEredmeny[num][columnName];
+                        }
                     }
-                    dS.Tables["Eredmeny"].Rows.Add(r);
+                    dataSet.Tables["Eredmeny"].Rows.Add(row);
                 }
             }
-
-            nyomtat.PrintParams(parNev, parVal, parTip);
-            eredmenyLista.SetDataSource(dS);
-            eredmenyLista.SetParameterValue("SZURES", parVal[0]);
-
-            nyomtat.reportSource = eredmenyLista;
-            nyomtat.DoPreview(mainForm.defPageSettings);
-
+            this.nyomtat.PrintParams(parName, parValue, parTyp);
+            this.eredmenyLista.SetDataSource(dataSet);
+            this.eredmenyLista.SetParameterValue("SZURES", parValue[0]);
+            this.nyomtat.reportSource = this.eredmenyLista;
+            this.nyomtat.DoPreview(this.mainForm.defPageSettings);
         }
 
         private string honapNev(string honap)
         {
-            string ret = "Januar";
             switch (honap)
             {
                 case "1":
-                    ret = "Januar";
-                    break;
+                    return "Januar";
+
                 case "2":
-                    ret = "Februar";
-                    break;
+                    return "Februar";
+
                 case "3":
-                    ret = "Marcius";
-                    break;
+                    return "Marcius";
+
                 case "4":
-                    ret = "Aprilis";
-                    break;
+                    return "Aprilis";
+
                 case "5":
-                    ret = "Majus";
-                    break;
+                    return "Majus";
+
                 case "6":
-                    ret = "Junius";
-                    break;
+                    return "Junius";
+
                 case "7":
-                    ret = "Julius";
-                    break;
+                    return "Julius";
+
                 case "8":
-                    ret = "Augusztus";
-                    break;
+                    return "Augusztus";
+
                 case "9":
-                    ret = "Szeptember";
-                    break;
+                    return "Szeptember";
+
                 case "10":
-                    ret = "Oktober";
-                    break;
+                    return "Oktober";
+
                 case "11":
-                    ret = "November";
-                    break;
+                    return "November";
+
                 case "12":
-                    ret = "December";
-                    break;
+                    return "December";
             }
-            return ret;
+            return "Januar";
         }
 
         private void dataGV_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-            if (e.RowIndex >= 0)
+            if ((e.RowIndex >= 0) && (this.dataGV.Rows[e.RowIndex].Cells["tk"].Value.ToString() == "A"))
             {
-                if (dataGV.Rows[e.RowIndex].Cells["tk"].Value.ToString() == "A")
-                {
-                    e.CellStyle.BackColor = Color.LightGreen;
-                }
+                e.CellStyle.BackColor = Color.LightGreen;
             }
         }
 

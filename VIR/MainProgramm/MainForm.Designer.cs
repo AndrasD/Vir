@@ -58,9 +58,9 @@
             this.labelUzenetek = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.labelPrg = new System.Windows.Forms.Label();
             this.labelUser = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.labelPrg = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.imageMenu = new System.Windows.Forms.ImageList(this.components);
             this.splitter1 = new System.Windows.Forms.Splitter();
@@ -96,7 +96,7 @@
             this.toolStripSeparator4,
             this.kilépésToolStripMenuItem1});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(43, 24);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(43, 21);
             this.toolStripMenuItem1.Text = "File";
             // 
             // adatokImportToolStripMenuItem
@@ -148,7 +148,7 @@
             // infoToolStripMenuItem1
             // 
             this.infoToolStripMenuItem1.Name = "infoToolStripMenuItem1";
-            this.infoToolStripMenuItem1.Size = new System.Drawing.Size(43, 24);
+            this.infoToolStripMenuItem1.Size = new System.Drawing.Size(43, 21);
             this.infoToolStripMenuItem1.Text = "Info";
             this.infoToolStripMenuItem1.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
             // 
@@ -324,16 +324,12 @@
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel3.Controls.Add(this.labelUser);
             this.panel3.Controls.Add(this.label1);
+            this.panel3.Controls.Add(this.labelPrg);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel3.Location = new System.Drawing.Point(836, 0);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(180, 27);
             this.panel3.TabIndex = 0;
-            //
-            // labelPrg
-            //
-            this.panel3.Controls.Add(this.labelPrg);
-            this.labelPrg.Name = "labelPrg";
             // 
             // labelUser
             // 
@@ -356,6 +352,13 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Kezelö:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // labelPrg
+            // 
+            this.labelPrg.Location = new System.Drawing.Point(0, 0);
+            this.labelPrg.Name = "labelPrg";
+            this.labelPrg.Size = new System.Drawing.Size(100, 23);
+            this.labelPrg.TabIndex = 2;
             // 
             // panel1
             // 
@@ -397,6 +400,7 @@
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(858, 682);
             this.panel6.TabIndex = 10;
+            this.panel6.Paint += new System.Windows.Forms.PaintEventHandler(this.panel6_Paint);
             // 
             // MainForm
             // 
@@ -413,7 +417,7 @@
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SIXIS-VIR";
+            this.Text = "SIXIS-VIR 2.0";
             this.Load += new System.EventHandler(this.VIR_Load);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();

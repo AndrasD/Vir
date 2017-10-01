@@ -53,6 +53,7 @@ namespace MainProgramm.Bejelentkezes
             this.megsem = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -133,7 +134,7 @@ namespace MainProgramm.Bejelentkezes
             this.rendben.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.rendben.ImageIndex = 0;
             this.rendben.ImageList = this.imageList;
-            this.rendben.Location = new System.Drawing.Point(156, 165);
+            this.rendben.Location = new System.Drawing.Point(165, 178);
             this.rendben.Name = "rendben";
             this.rendben.Size = new System.Drawing.Size(97, 27);
             this.rendben.TabIndex = 3;
@@ -155,7 +156,7 @@ namespace MainProgramm.Bejelentkezes
             this.megsem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.megsem.ImageIndex = 1;
             this.megsem.ImageList = this.imageList;
-            this.megsem.Location = new System.Drawing.Point(269, 165);
+            this.megsem.Location = new System.Drawing.Point(278, 178);
             this.megsem.Name = "megsem";
             this.megsem.Size = new System.Drawing.Size(97, 27);
             this.megsem.TabIndex = 4;
@@ -184,6 +185,17 @@ namespace MainProgramm.Bejelentkezes
             this.label4.TabIndex = 6;
             this.label4.Text = "Bejelentkezés";
             // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.SystemColors.Control;
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Location = new System.Drawing.Point(22, 179);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 19);
+            this.textBox1.TabIndex = 13;
+            this.textBox1.Text = "VIR 2.0";
+            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // Bejelentkezes
             // 
             this.AcceptButton = this.rendben;
@@ -193,6 +205,7 @@ namespace MainProgramm.Bejelentkezes
             this.CancelButton = this.megsem;
             this.ClientSize = new System.Drawing.Size(411, 217);
             this.ControlBox = false;
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.comboConn);
@@ -236,5 +249,6 @@ namespace MainProgramm.Bejelentkezes
         private System.Windows.Forms.ComboBox comboConn;
         private PictureBox pictureBox1;
         private ImageList imageList;
+        private TextBox textBox1;
     }
 }

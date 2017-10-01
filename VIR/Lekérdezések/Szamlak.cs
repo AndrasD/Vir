@@ -50,551 +50,575 @@ namespace Lekerdezesek
         private string jel;
         private string partner_id = "";
 
-
         public Szamlak(string szoveg, object[] obj)
         {
-            MyTag[] myTag = (MyTag[])obj[1];
-
-            ktfotag = myTag[0];
-            ktaltag = myTag[1];
-            kttag = myTag[2];
-
-            jel = obj[2].ToString();
-
-            InitializeComponent();
-        }
-
-        private void Szamlak_Load(object sender, EventArgs e)
-        {
-            mainForm = (VIR.MainForm)this.ParentForm;
-            myconn = mainForm.MyConn;
-
-            ktfotabla = ktfotag.AdatTablainfo.Adattabla;
-            ktaltabla = ktaltag.AdatTablainfo.Adattabla;
-            kttabla = kttag.AdatTablainfo.Adattabla;
-
-            da = new SqlDataAdapter("select '' as Kod, '' as Megnevezes, "+
-                                      "0.0 as Januar, " +
-                                      "0.0 as Februar, " +
-                                      "0.0 as Marcius, " +
-                                      "0.0 as Aprilis, " +
-                                      "0.0 as Majus, " +
-                                      "0.0 as Junius, " +
-                                      "0.0 as Julius, " +
-                                      "0.0 as Augusztus, " +
-                                      "0.0 as Szeptember, " +
-                                      "0.0 as Oktober, " +
-                                      "0.0 as November, " +
-                                      "0.0 as December, " +
-                                      "'F' as bonthato, 'N' as bontva " +
-                                      "from szamla_tetel where id is null", myconn);
-            da.Fill(ds, "tableHaviBontas");
-            tableHaviBontas = ds.Tables["tableHaviBontas"];
-
-            da = new SqlDataAdapter("select distinct year(datum_telj) as ev from szamla", myconn);
-            da.Fill(ds, "tableEvek");
-            tableEvek = ds.Tables["tableEvek"];
-            for (int i = 0; i < tableEvek.Rows.Count; i++)
-                ev.Items.Add(tableEvek.Rows[i]["ev"].ToString());
-
-            string dat = honap.Value.ToShortDateString();
-
-            da = new SqlDataAdapter("select distinct partner.azonosito, partner.pid from szamla, partner " +
-                                    "where szamla.pid = partner.pid "+
-                                    "and year(datum_telj) = year('" + dat + "') and month(datum_telj) = month('" + dat + "') "+
-                                    "order by azonosito "
-                                    , myconn);
-            da.Fill(ds, "tablePartner");
-            tablePartner = ds.Tables["tablePartner"];
-            for (int i = 0; i < tablePartner.Rows.Count; i++)
-                comboPartner.Items.Add(tablePartner.Rows[i]["azonosito"].ToString());
-            tablePartner.PrimaryKey = new DataColumn[] { tablePartner.Columns["azonosito"] };
-
-            da = new SqlDataAdapter("select distinct szoveg from szamla a, szamla_tetel b " +
-                                    "where a.id = b.id "+
-                                    "and year(datum_telj) = year('" + dat + "') and month(datum_telj) = month('" + dat + "') "+
-                                    "order by szoveg"
-                                    , myconn);
-            da.Fill(ds, "tableSzoveg");
-            tableSzoveg = ds.Tables["tableSzoveg"];
-            for (int i = 0; i < tableSzoveg.Rows.Count; i++)
-                comboSzoveg.Items.Add(tableSzoveg.Rows[i]["szoveg"].ToString());
-        }
-
-        private void havi_CheckedChanged(object sender, EventArgs e)
-        {
-            tableFo.Clear();
-            tableAl.Clear();
-            table.Clear();
-            if (havi.Checked)
-            {
-                honap.Enabled = true;
-                ev.Enabled = false;
-            }
-            else
-            {
-                honap.Enabled = false;
-                ev.Enabled = true;
-            }
+            MyTag[] tagArray = (MyTag[])obj[1];
+            this.ktfotag = tagArray[0];
+            this.ktaltag = tagArray[1];
+            this.kttag = tagArray[2];
+            this.jel = obj[2].ToString();
+            this.InitializeComponent();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string sel = "";
-            string dat = honap.Value.ToShortDateString();
-            tableKoztes.Clear();
-            tableFo.Clear();
-            tableAl.Clear();
-            table.Clear();
-
-            for (int i = 0; i < ktfotabla.Rows.Count; i++)
+            int num;
+            string str3;
+            string str4;
+            string str5;
+            string selectCommandText = "";
+            string str2 = this.honap.Value.ToShortDateString();
+            this.tableKoztes.Clear();
+            this.tableFo.Clear();
+            this.tableAl.Clear();
+            this.table.Clear();
+            for (num = 0; num < this.ktfotabla.Rows.Count; num++)
             {
-                string tKod = ktfotabla.Rows[i]["kod"].ToString();
-                string tSzoveg = ktfotabla.Rows[i]["szoveg"].ToString();
-                string tSorszam = ktfotabla.Rows[i]["sorszam"].ToString();
-                if (havi.Checked)
-                    sel = "select substring(c.kod,1,1) as Kod, '" + tSzoveg + "' as Megnevezes, sum(b.netto) as Netto ";
+                str3 = this.ktfotabla.Rows[num]["kod"].ToString();
+                str4 = this.ktfotabla.Rows[num]["szoveg"].ToString();
+                str5 = this.ktfotabla.Rows[num]["sorszam"].ToString();
+                if (this.havi.Checked)
+                {
+                    selectCommandText = "select substring(c.kod,1,1) as Kod, '" + str4 + "' as Megnevezes, sum(b.netto) as Netto ";
+                }
                 else
-                    sel = "select substring(c.kod,1,1) as Kod, month(datum_telj) as ho, '" + tSzoveg + "' as Megnevezes, sum(b.netto) as Netto ";
-                sel = sel + ", 'F' as bonthato, 'N' as bontva " +
-                            "from szamla a, szamla_tetel b, kodtab c " + 
-                            "where a.vs='"+jel+"' ";
-
-                if (comboPartner.SelectedItem != null && partner_id != String.Empty)
-                    sel = sel + "and pid=" + partner_id + " ";
-                if (comboSzoveg.SelectedItem != null && comboSzoveg.SelectedItem.ToString() != String.Empty)
-                    sel = sel + "and b.szoveg='" + comboSzoveg.SelectedItem.ToString() + "' ";
-
-                if (havi.Checked)
-                    sel = sel + "and year(datum_telj) = year('" + dat + "') and month(datum_telj) = month('" + dat + "') ";
+                {
+                    selectCommandText = "select substring(c.kod,1,1) as Kod, month(datum_telj) as ho, '" + str4 + "' as Megnevezes, sum(b.netto) as Netto ";
+                }
+                selectCommandText = selectCommandText + ", 'F' as bonthato, 'N' as bontva from szamla a, szamla_tetel b, kodtab c where a.vs='" + this.jel + "' ";
+                if ((this.comboPartner.SelectedItem != null) && (this.partner_id != string.Empty))
+                {
+                    selectCommandText = selectCommandText + "and pid=" + this.partner_id + " ";
+                }
+                if ((this.comboSzoveg.SelectedItem != null) && (this.comboSzoveg.SelectedItem.ToString() != string.Empty))
+                {
+                    selectCommandText = selectCommandText + "and b.szoveg='" + this.comboSzoveg.SelectedItem.ToString() + "' ";
+                }
+                if (this.havi.Checked)
+                {
+                    selectCommandText = selectCommandText + "and year(datum_telj) = year('" + str2 + "') and month(datum_telj) = month('" + str2 + "') ";
+                }
                 else
-                    sel = sel + "and year(datum_telj) = '" + ev.Text + "' ";
-
-                sel = sel + "and a.id=b.id " +
-                            "and b.megnid = c.sorszam " +
-                            "and '" + tKod + "' = substring(c.kod,1,1) ";
-                if (havi.Checked)
-                    sel = sel + "group by substring(c.kod,1,1)";
+                {
+                    selectCommandText = selectCommandText + "and year(datum_telj) = '" + this.ev.Text + "' ";
+                }
+                selectCommandText = selectCommandText + "and a.id=b.id and b.megnid = c.sorszam and '" + str3 + "' = substring(c.kod,1,1) ";
+                if (this.havi.Checked)
+                {
+                    selectCommandText = selectCommandText + "group by substring(c.kod,1,1)";
+                }
                 else
-                    sel = sel + "group by substring(c.kod,1,1),month(datum_telj)";
-
-                da = new SqlDataAdapter(sel, myconn);
-                if (havi.Checked)
-                    da.Fill(ds, "tableFo");
+                {
+                    selectCommandText = selectCommandText + "group by substring(c.kod,1,1),month(datum_telj)";
+                }
+                this.da = new SqlDataAdapter(selectCommandText, this.myconn);
+                if (this.havi.Checked)
+                {
+                    this.da.Fill(this.ds, "tableFo");
+                }
                 else
-                    da.Fill(ds, "tableKoztes");
+                {
+                    this.da.Fill(this.ds, "tableKoztes");
+                }
             }
-            if (havi.Checked)
-                tableFo = ds.Tables["tableFo"];
+            if (this.havi.Checked)
+            {
+                this.tableFo = this.ds.Tables["tableFo"];
+            }
             else
-                tableFo = koztesTablaAtforditas().Copy();
+            {
+                this.tableFo = this.koztesTablaAtforditas().Copy();
+            }
             this.viewFo.BeginInit();
-            this.viewFo.Table = tableFo;
+            this.viewFo.Table = this.tableFo;
             this.viewFo.EndInit();
-            viewFo.Sort = "kod";
-            dataGV.DataSource = this.viewFo;
-            dataGV.Columns[0].Frozen = true;
-            dataGV.Columns[1].Frozen = true;
-            for (int i = 2; i < dataGV.ColumnCount-2; i++)
+            this.viewFo.Sort = "kod";
+            this.dataGV.DataSource = this.viewFo;
+            this.dataGV.Columns[0].Frozen = true;
+            this.dataGV.Columns[1].Frozen = true;
+            for (num = 2; num < (this.dataGV.ColumnCount - 2); num++)
             {
-                dataGV.Columns[i].DefaultCellStyle.Format = "N2";
-                dataGV.Columns[i].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                this.dataGV.Columns[num].DefaultCellStyle.Format = "N2";
+                this.dataGV.Columns[num].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
-            dataGV.Columns[dataGV.ColumnCount - 2].Visible = false;
-            dataGV.Columns[dataGV.ColumnCount - 1].Visible = false;
-
-            tableKoztes.Clear();
-            for (int i = 0; i < ktaltabla.Rows.Count; i++)
+            this.dataGV.Columns[this.dataGV.ColumnCount - 2].Visible = false;
+            this.dataGV.Columns[this.dataGV.ColumnCount - 1].Visible = false;
+            this.tableKoztes.Clear();
+            for (num = 0; num < this.ktaltabla.Rows.Count; num++)
             {
-                string tKod = ktaltabla.Rows[i]["kod"].ToString();
-                string tSzoveg = ktaltabla.Rows[i]["szoveg"].ToString();
-                string tSorszam = ktaltabla.Rows[i]["sorszam"].ToString();
-                if (havi.Checked)
-                    sel = "select substring(c.kod,1,2) as Kod, '" + tSzoveg + "' as Megnevezes, sum(b.netto) as Netto ";
+                str3 = this.ktaltabla.Rows[num]["kod"].ToString();
+                str4 = this.ktaltabla.Rows[num]["szoveg"].ToString();
+                str5 = this.ktaltabla.Rows[num]["sorszam"].ToString();
+                if (this.havi.Checked)
+                {
+                    selectCommandText = "select substring(c.kod,1,2) as Kod, '" + str4 + "' as Megnevezes, sum(b.netto) as Netto ";
+                }
                 else
-                    sel = "select substring(c.kod,1,2) as Kod, month(datum_telj) as ho, '" + tSzoveg + "' as Megnevezes, sum(b.netto) as Netto ";
-                sel = sel + ", 'A' as bonthato, 'N' as bontva " +
-                            "from szamla a, szamla_tetel b, kodtab c "+
-                            "where a.vs='" + jel + "' ";
-
-                if (comboPartner.SelectedItem != null && partner_id != String.Empty)
-                    sel = sel + "and pid=" + partner_id + " ";
-                if (comboSzoveg.SelectedItem != null && comboSzoveg.SelectedItem.ToString() != String.Empty)
-                    sel = sel + "and b.szoveg='" + comboSzoveg.SelectedItem.ToString() + "' ";
-
-                if (havi.Checked)
-                    sel = sel + "and year(datum_telj) = year('" + dat + "') and month(datum_telj) = month('" + dat + "') ";
+                {
+                    selectCommandText = "select substring(c.kod,1,2) as Kod, month(datum_telj) as ho, '" + str4 + "' as Megnevezes, sum(b.netto) as Netto ";
+                }
+                selectCommandText = selectCommandText + ", 'A' as bonthato, 'N' as bontva from szamla a, szamla_tetel b, kodtab c where a.vs='" + this.jel + "' ";
+                if ((this.comboPartner.SelectedItem != null) && (this.partner_id != string.Empty))
+                {
+                    selectCommandText = selectCommandText + "and pid=" + this.partner_id + " ";
+                }
+                if ((this.comboSzoveg.SelectedItem != null) && (this.comboSzoveg.SelectedItem.ToString() != string.Empty))
+                {
+                    selectCommandText = selectCommandText + "and b.szoveg='" + this.comboSzoveg.SelectedItem.ToString() + "' ";
+                }
+                if (this.havi.Checked)
+                {
+                    selectCommandText = selectCommandText + "and year(datum_telj) = year('" + str2 + "') and month(datum_telj) = month('" + str2 + "') ";
+                }
                 else
-                    sel = sel + "and year(datum_telj) = '" + ev.Text + "' ";
-                sel = sel + "and a.id=b.id " +
-                             "and b.megnid = c.sorszam " +
-                             "and '" + tKod + "' = substring(c.kod,1,2) ";
-                if (havi.Checked)
-                    sel = sel + "group by substring(c.kod,1,2)";
+                {
+                    selectCommandText = selectCommandText + "and year(datum_telj) = '" + this.ev.Text + "' ";
+                }
+                selectCommandText = selectCommandText + "and a.id=b.id and b.megnid = c.sorszam and '" + str3 + "' = substring(c.kod,1,2) ";
+                if (this.havi.Checked)
+                {
+                    selectCommandText = selectCommandText + "group by substring(c.kod,1,2)";
+                }
                 else
-                    sel = sel + "group by substring(c.kod,1,2),month(datum_telj)";
-
-                da = new SqlDataAdapter(sel, myconn);
-                if (havi.Checked)
-                    da.Fill(ds, "tableAl");
+                {
+                    selectCommandText = selectCommandText + "group by substring(c.kod,1,2),month(datum_telj)";
+                }
+                this.da = new SqlDataAdapter(selectCommandText, this.myconn);
+                if (this.havi.Checked)
+                {
+                    this.da.Fill(this.ds, "tableAl");
+                }
                 else
-                    da.Fill(ds, "tableKoztes");
+                {
+                    this.da.Fill(this.ds, "tableKoztes");
+                }
             }
-            if (havi.Checked)
-                tableAl = ds.Tables["tableAl"];
+            if (this.havi.Checked)
+            {
+                this.tableAl = this.ds.Tables["tableAl"];
+            }
             else
-                tableAl = koztesTablaAtforditas().Copy();
-            //this.viewAl.BeginInit();
-            //this.viewAl.Table = tableAl;
-            //this.viewAl.EndInit();
-
-            tableKoztes.Clear();
-            for (int i = 0; i < kttabla.Rows.Count; i++)
             {
-                string tKod = kttabla.Rows[i]["kod"].ToString();
-                string tSzoveg = kttabla.Rows[i]["szoveg"].ToString();
-                string tSorszam = kttabla.Rows[i]["sorszam"].ToString();
-                if (havi.Checked)
-                    sel = "select c.kod as Kod, '" + tSzoveg + "' as Megnevezes, sum(b.netto) as Netto ";
-                else
-                    sel = "select c.kod as Kod, month(datum_telj) as ho, '" + tSzoveg + "' as Megnevezes, sum(b.netto) as Netto ";
-                sel = sel + ", 'T' as bonthato, 'N' as bontva " +
-                            "from szamla a, szamla_tetel b, kodtab c "+
-                            "where a.vs='" + jel + "' ";
-
-                if (comboPartner.SelectedItem != null && partner_id != String.Empty)
-                    sel = sel + "and pid=" + partner_id + " ";
-                if (comboSzoveg.SelectedItem != null && comboSzoveg.SelectedItem.ToString() != String.Empty)
-                    sel = sel + "and b.szoveg='" + comboSzoveg.SelectedItem.ToString() + "' ";
-
-                if (havi.Checked)
-                    sel = sel + "and year(datum_telj) = year('" + dat + "') and month(datum_telj) = month('" + dat + "') ";
-                else
-                    sel = sel + "and year(datum_telj) = '" + ev.Text + "' ";
-                sel = sel + "and a.id=b.id " +
-                             "and b.megnid = c.sorszam " +
-                             "and '" + tKod + "' = c.kod ";
-                if (havi.Checked)
-                    sel = sel + "group by c.kod";
-                else
-                    sel = sel + "group by c.kod,month(datum_telj)";
-
-                da = new SqlDataAdapter(sel, myconn);
-                if (havi.Checked)
-                    da.Fill(ds, "table");
-                else
-                    da.Fill(ds, "tableKoztes");
+                this.tableAl = this.koztesTablaAtforditas().Copy();
             }
-            if (havi.Checked)
-                table = ds.Tables["table"];
+            this.tableKoztes.Clear();
+            for (num = 0; num < this.kttabla.Rows.Count; num++)
+            {
+                str3 = this.kttabla.Rows[num]["kod"].ToString();
+                str4 = this.kttabla.Rows[num]["szoveg"].ToString();
+                str5 = this.kttabla.Rows[num]["sorszam"].ToString();
+                if (this.havi.Checked)
+                {
+                    selectCommandText = "select c.kod as Kod, '" + str4 + "' as Megnevezes, sum(b.netto) as Netto ";
+                }
+                else
+                {
+                    selectCommandText = "select c.kod as Kod, month(datum_telj) as ho, '" + str4 + "' as Megnevezes, sum(b.netto) as Netto ";
+                }
+                selectCommandText = selectCommandText + ", 'T' as bonthato, 'N' as bontva from szamla a, szamla_tetel b, kodtab c where a.vs='" + this.jel + "' ";
+                if ((this.comboPartner.SelectedItem != null) && (this.partner_id != string.Empty))
+                {
+                    selectCommandText = selectCommandText + "and pid=" + this.partner_id + " ";
+                }
+                if ((this.comboSzoveg.SelectedItem != null) && (this.comboSzoveg.SelectedItem.ToString() != string.Empty))
+                {
+                    selectCommandText = selectCommandText + "and b.szoveg='" + this.comboSzoveg.SelectedItem.ToString() + "' ";
+                }
+                if (this.havi.Checked)
+                {
+                    selectCommandText = selectCommandText + "and year(datum_telj) = year('" + str2 + "') and month(datum_telj) = month('" + str2 + "') ";
+                }
+                else
+                {
+                    selectCommandText = selectCommandText + "and year(datum_telj) = '" + this.ev.Text + "' ";
+                }
+                selectCommandText = selectCommandText + "and a.id=b.id and b.megnid = c.sorszam and '" + str3 + "' = c.kod ";
+                if (this.havi.Checked)
+                {
+                    selectCommandText = selectCommandText + "group by c.kod";
+                }
+                else
+                {
+                    selectCommandText = selectCommandText + "group by c.kod,month(datum_telj)";
+                }
+                this.da = new SqlDataAdapter(selectCommandText, this.myconn);
+                if (this.havi.Checked)
+                {
+                    this.da.Fill(this.ds, "table");
+                }
+                else
+                {
+                    this.da.Fill(this.ds, "tableKoztes");
+                }
+            }
+            if (this.havi.Checked)
+            {
+                this.table = this.ds.Tables["table"];
+            }
             else
-                table = koztesTablaAtforditas().Copy();
-            //this.view.BeginInit();
-            //this.view.Table = table;
-            //this.view.EndInit();
-        }
-
-        private DataTable koztesTablaAtforditas()
-        {
-            tableHaviBontas.Clear();
-            tableKoztes = ds.Tables["tableKoztes"];
-            int i = 0;
-            while (i < tableKoztes.Rows.Count)
             {
-                string tKod = tableKoztes.Rows[i]["kod"].ToString();
-                DataRow ujsor = tableHaviBontas.NewRow();
-                ujsor["kod"] = tKod;
-                ujsor["megnevezes"] = tableKoztes.Rows[i]["megnevezes"].ToString();
-                ujsor["bonthato"] = tableKoztes.Rows[i]["bonthato"].ToString();
-                ujsor["bontva"] = tableKoztes.Rows[i]["bontva"].ToString();
-                while (i < tableKoztes.Rows.Count && tKod == tableKoztes.Rows[i]["kod"].ToString())
-                {
-                    string hoNap = tableKoztes.Rows[i]["ho"].ToString();
-                    string hoNev = honapNev(hoNap);
-                    while (i < tableKoztes.Rows.Count && tKod == tableKoztes.Rows[i]["kod"].ToString() && hoNap == tableKoztes.Rows[i]["ho"].ToString())
-                    {
-                        ujsor[hoNev] = tableKoztes.Rows[i]["netto"].ToString();
-                        i++;
-                    }
-                }
-                tableHaviBontas.Rows.Add(ujsor);
+                this.table = this.koztesTablaAtforditas().Copy();
             }
-            return tableHaviBontas;
-        }
-
-        private string honapNev(string honap)
-        {
-            string ret = "Januar";
-            switch (honap)
-            {
-                case "1":
-                    ret = "Januar";
-                    break;
-                case "2":
-                    ret = "Februar";
-                    break;
-                case "3":
-                    ret ="Marcius";
-                    break;
-                case "4":
-                    ret = "Aprilis";
-                    break;
-                case "5":
-                    ret ="Majus";
-                    break;
-                case "6":
-                    ret ="Junius";
-                    break;
-                case "7":
-                    ret ="Julius";
-                    break;
-                case "8":
-                    ret ="Augusztus";
-                    break;
-                case "9":
-                    ret ="Szeptember";
-                    break;
-                case "10":
-                    ret ="Oktober";
-                    break;
-                case "11":
-                    ret ="November";
-                    break;
-                case "12":
-                    ret = "December";
-                    break;
-            }
-            return ret;
-        }
-
-        private void dataGV_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.RowIndex > -1 )
-            {
-                DataRow[] aktRow = tableFo.Select("kod ='"+dataGV.Rows[e.RowIndex].Cells["kod"].Value.ToString()+"'");
-                int aktRowIndex = tableFo.Rows.IndexOf(aktRow[0]);
-                if (dataGV.Rows[e.RowIndex].Cells["bonthato"].Value.ToString() == "F")
-                {
-                    if (dataGV.Rows[e.RowIndex].Cells["bontva"].Value.ToString() == "N")
-                    {
-                        tableFo.Rows[aktRowIndex]["bontva"] = "I";
-                        DataRow[] f = tableAl.Select("substring(kod,1,1)='" + dataGV.Rows[e.RowIndex].Cells["kod"].Value.ToString() + "'");
-                        for (int i = 0; i < f.Length; i++)
-                        {
-                            DataRow r = tableFo.NewRow();
-                            for (int m = 0; m < tableFo.Columns.Count; m++)
-                                r[m] = f[i][m];
-                            tableFo.Rows.Add(r);
-                        }
-                    }
-                    else
-                    {
-                        DataRow[] f = tableFo.Select("substring(kod,1,1)='" + dataGV.Rows[e.RowIndex].Cells["kod"].Value.ToString() + "' and bonthato in('A','T')");
-                        for (int i=0;i<f.Length;i++)
-                            tableFo.Rows.Remove(f[i]);
-                        tableFo.Rows[aktRowIndex]["bontva"] = "N";
-                    }
-                }
-                else if (dataGV.Rows[e.RowIndex].Cells["bonthato"].Value.ToString() == "A")
-                {
-                    if (dataGV.Rows[e.RowIndex].Cells["bontva"].Value.ToString() == "N")
-                    {
-                        tableFo.Rows[aktRowIndex]["bontva"] = "I";
-                        DataRow[] f = table.Select("substring(kod,1,2)='" + dataGV.Rows[e.RowIndex].Cells["kod"].Value.ToString() + "'");
-                        for (int i = 0; i < f.Length; i++)
-                        {
-                            DataRow r = tableFo.NewRow();
-                            for (int m = 0; m < tableFo.Columns.Count; m++)
-                                r[m] = f[i][m];
-                            tableFo.Rows.Add(r);
-                        }
-                    }
-                    else
-                    {
-                        DataRow[] f = tableFo.Select("substring(kod,1,2)='" + dataGV.Rows[e.RowIndex].Cells["kod"].Value.ToString() + "' and bonthato = 'T'");
-                        for (int i = 0; i < f.Length; i++)
-                            tableFo.Rows.Remove(f[i]);
-                        tableFo.Rows[aktRowIndex]["bontva"] = "N";
-                    }
-
-                }
-                else if (dataGV.Rows[e.RowIndex].Cells["bonthato"].Value.ToString() == "T")
-                {
-                    tableTooltip.Clear();
-                    string dat = honap.Value.ToShortDateString();
-                    string tKod = dataGV.Rows[e.RowIndex].Cells["kod"].Value.ToString();
-                    string sel = "select a.azonosito, d.azonosito as partner, a.megjegyzes, b.netto, b.brutto, a.fizetve, b.szoveg " +
-                                 "from szamla a "+
-                                 "left outer join partner d on a.pid =d.pid, " +
-                                 "szamla_tetel b, kodtab c " +
-                                 "where a.id = b.id and a.vs='" + jel + "' ";
-
-                    if (comboPartner.SelectedItem != null && partner_id != String.Empty)
-                        sel = sel + "and a.pid=" + partner_id + " ";
-                    if (comboSzoveg.SelectedItem != null && comboSzoveg.SelectedItem.ToString() != String.Empty)
-                        sel = sel + "and b.szoveg='" + comboSzoveg.SelectedItem.ToString() + "' ";
-
-                    if (havi.Checked)
-                        sel = sel + "and year(datum_telj) = year('" + dat + "') and month(datum_telj) = month('" + dat + "') ";
-                    else
-                        sel = sel + "and year(datum_telj) = '" + ev.Text + "' ";
-
-                    sel = sel + "  and b.megnid = c.sorszam " +
-                                "  and c.kod = '" + tKod + "' ";
-
-                    da = new SqlDataAdapter(sel,myconn);
-                    da.Fill(ds, "tableTooltip");
-                    tableTooltip = ds.Tables["tableTooltip"];
-
-                    alSzamlak = new AlSzamlak(tableTooltip,tKod);
-                    alSzamlak.ShowDialog();
-                }
-            }
-        }
-
-        private void eves_CheckedChanged(object sender, EventArgs e)
-        {
-            tableFo.Clear();
-            tableAl.Clear();
-            table.Clear();
         }
 
         private void buttonNyomtat_Click(object sender, EventArgs e)
         {
-            nyomtat = new PrintForm();
-            string[] parNev = { "SZOVEG","EV"};
-            string[] parVal = { "", ev.Text };
-            string[] parTip = { "string", "string" };
-
-            if (jel == "V")
-                parVal[0] = "Bevételek"; 
-            else
-                parVal[0] = "Kiadások";
-      
-            DataSet dS = new MainProgramm.virDataSet();
-            DataRow r;
-            for (int i = 0; i < viewFo.Count; i++)
+            this.nyomtat = new PrintForm();
+            string[] parName = new string[] { "SZOVEG", "EV" };
+            string[] parValue = new string[] { "", this.ev.Text };
+            string[] parTyp = new string[] { "string", "string" };
+            if (this.jel == "V")
             {
-                r = dS.Tables["HaviBontas"].NewRow();
-                if (viewFo[i]["bonthato"].ToString() == "F")
-                    r["kod"] = viewFo[i]["kod"].ToString();
-                if (viewFo[i]["bonthato"].ToString() == "A")
-                    r["kod"] = " " + viewFo[i]["kod"].ToString();
-                if (viewFo[i]["bonthato"].ToString() == "T")
-                    r["kod"] = "  " + viewFo[i]["kod"].ToString();
-
-                r["megnevezes"] = viewFo[i]["megnevezes"];
-                if (havi.Checked)
+                parValue[0] = "Bev\x00e9telek";
+            }
+            else
+            {
+                parValue[0] = "Kiad\x00e1sok";
+            }
+            DataSet dataSet = new MainProgramm.virDataSet();
+            for (int i = 0; i < this.viewFo.Count; i++)
+            {
+                DataRow row = dataSet.Tables["HaviBontas"].NewRow();
+                if (this.viewFo[i]["bonthato"].ToString() == "F")
                 {
-                    for (int f = 2; f < dS.Tables["HaviBontas"].Columns.Count; f++)
-                        r[f] = 0;
-                    r[honap.Value.Month + 1] = viewFo[i]["netto"];
+                    row["kod"] = this.viewFo[i]["kod"].ToString();
+                }
+                if (this.viewFo[i]["bonthato"].ToString() == "A")
+                {
+                    row["kod"] = " " + this.viewFo[i]["kod"].ToString();
+                }
+                if (this.viewFo[i]["bonthato"].ToString() == "T")
+                {
+                    row["kod"] = "  " + this.viewFo[i]["kod"].ToString();
+                }
+                row["megnevezes"] = this.viewFo[i]["megnevezes"];
+                if (this.havi.Checked)
+                {
+                    for (int j = 2; j < dataSet.Tables["HaviBontas"].Columns.Count; j++)
+                    {
+                        row[j] = 0;
+                    }
+                    row[this.honap.Value.Month + 1] = this.viewFo[i]["netto"];
                 }
                 else
                 {
-                    r["januar"] = viewFo[i]["januar"];
-                    r["februar"] = viewFo[i]["februar"];
-                    r["marcius"] = viewFo[i]["marcius"];
-                    r["aprilis"] = viewFo[i]["aprilis"];
-                    r["majus"] = viewFo[i]["majus"];
-                    r["junius"] = viewFo[i]["junius"];
-                    r["julius"] = viewFo[i]["julius"];
-                    r["augusztus"] = viewFo[i]["augusztus"];
-                    r["szeptember"] = viewFo[i]["szeptember"];
-                    r["oktober"] = viewFo[i]["oktober"];
-                    r["november"] = viewFo[i]["november"];
-                    r["december"] = viewFo[i]["december"];
+                    row["januar"] = this.viewFo[i]["januar"];
+                    row["februar"] = this.viewFo[i]["februar"];
+                    row["marcius"] = this.viewFo[i]["marcius"];
+                    row["aprilis"] = this.viewFo[i]["aprilis"];
+                    row["majus"] = this.viewFo[i]["majus"];
+                    row["junius"] = this.viewFo[i]["junius"];
+                    row["julius"] = this.viewFo[i]["julius"];
+                    row["augusztus"] = this.viewFo[i]["augusztus"];
+                    row["szeptember"] = this.viewFo[i]["szeptember"];
+                    row["oktober"] = this.viewFo[i]["oktober"];
+                    row["november"] = this.viewFo[i]["november"];
+                    row["december"] = this.viewFo[i]["december"];
                 }
-                dS.Tables["HaviBontas"].Rows.Add(r);
+                dataSet.Tables["HaviBontas"].Rows.Add(row);
             }
+            this.nyomtat.PrintParams(parName, parValue, parTyp);
+            this.bevetelkiadasLista.SetDataSource(dataSet);
+            this.bevetelkiadasLista.SetParameterValue("SZOVEG", parValue[0]);
+            this.bevetelkiadasLista.SetParameterValue("EV", parValue[1]);
+            this.nyomtat.reportSource = this.bevetelkiadasLista;
+            this.nyomtat.DoPreview(this.mainForm.defPageSettings);
+        }
 
-            nyomtat.PrintParams(parNev, parVal, parTip);
-            bevetelkiadasLista.SetDataSource(dS);
-            bevetelkiadasLista.SetParameterValue("SZOVEG", parVal[0]);
-            bevetelkiadasLista.SetParameterValue("EV", parVal[1]);
+        private void comboPartner_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.partner_id = this.tablePartner.Rows.Find(this.comboPartner.SelectedItem)["pid"].ToString();
+        }
 
-            nyomtat.reportSource = bevetelkiadasLista;
-            nyomtat.DoPreview(mainForm.defPageSettings);
+        private void dataGV_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex > -1)
+            {
+                DataRow[] rowArray2;
+                int num2;
+                DataRow row;
+                int num3;
+                DataRow[] rowArray = this.tableFo.Select("kod ='" + this.dataGV.Rows[e.RowIndex].Cells["kod"].Value.ToString() + "'");
+                int index = this.tableFo.Rows.IndexOf(rowArray[0]);
+                if (this.dataGV.Rows[e.RowIndex].Cells["bonthato"].Value.ToString() == "F")
+                {
+                    if (this.dataGV.Rows[e.RowIndex].Cells["bontva"].Value.ToString() == "N")
+                    {
+                        this.tableFo.Rows[index]["bontva"] = "I";
+                        rowArray2 = this.tableAl.Select("substring(kod,1,1)='" + this.dataGV.Rows[e.RowIndex].Cells["kod"].Value.ToString() + "'");
+                        for (num2 = 0; num2 < rowArray2.Length; num2++)
+                        {
+                            row = this.tableFo.NewRow();
+                            num3 = 0;
+                            while (num3 < this.tableFo.Columns.Count)
+                            {
+                                row[num3] = rowArray2[num2][num3];
+                                num3++;
+                            }
+                            this.tableFo.Rows.Add(row);
+                        }
+                    }
+                    else
+                    {
+                        rowArray2 = this.tableFo.Select("substring(kod,1,1)='" + this.dataGV.Rows[e.RowIndex].Cells["kod"].Value.ToString() + "' and bonthato in('A','T')");
+                        for (num2 = 0; num2 < rowArray2.Length; num2++)
+                        {
+                            this.tableFo.Rows.Remove(rowArray2[num2]);
+                        }
+                        this.tableFo.Rows[index]["bontva"] = "N";
+                    }
+                }
+                else if (this.dataGV.Rows[e.RowIndex].Cells["bonthato"].Value.ToString() == "A")
+                {
+                    if (this.dataGV.Rows[e.RowIndex].Cells["bontva"].Value.ToString() == "N")
+                    {
+                        this.tableFo.Rows[index]["bontva"] = "I";
+                        rowArray2 = this.table.Select("substring(kod,1,2)='" + this.dataGV.Rows[e.RowIndex].Cells["kod"].Value.ToString() + "'");
+                        for (num2 = 0; num2 < rowArray2.Length; num2++)
+                        {
+                            row = this.tableFo.NewRow();
+                            for (num3 = 0; num3 < this.tableFo.Columns.Count; num3++)
+                            {
+                                row[num3] = rowArray2[num2][num3];
+                            }
+                            this.tableFo.Rows.Add(row);
+                        }
+                    }
+                    else
+                    {
+                        rowArray2 = this.tableFo.Select("substring(kod,1,2)='" + this.dataGV.Rows[e.RowIndex].Cells["kod"].Value.ToString() + "' and bonthato = 'T'");
+                        for (num2 = 0; num2 < rowArray2.Length; num2++)
+                        {
+                            this.tableFo.Rows.Remove(rowArray2[num2]);
+                        }
+                        this.tableFo.Rows[index]["bontva"] = "N";
+                    }
+                }
+                else if (this.dataGV.Rows[e.RowIndex].Cells["bonthato"].Value.ToString() == "T")
+                {
+                    this.tableTooltip.Clear();
+                    string str = this.honap.Value.ToShortDateString();
+                    string kod = this.dataGV.Rows[e.RowIndex].Cells["kod"].Value.ToString();
+                    string selectCommandText = "select a.azonosito, d.azonosito as partner, a.megjegyzes, b.netto, b.brutto, a.fizetve, b.szoveg from szamla a left outer join partner d on a.pid =d.pid, szamla_tetel b, kodtab c where a.id = b.id and a.vs='" + this.jel + "' ";
+                    if ((this.comboPartner.SelectedItem != null) && (this.partner_id != string.Empty))
+                    {
+                        selectCommandText = selectCommandText + "and a.pid=" + this.partner_id + " ";
+                    }
+                    if ((this.comboSzoveg.SelectedItem != null) && (this.comboSzoveg.SelectedItem.ToString() != string.Empty))
+                    {
+                        selectCommandText = selectCommandText + "and b.szoveg='" + this.comboSzoveg.SelectedItem.ToString() + "' ";
+                    }
+                    if (this.havi.Checked)
+                    {
+                        selectCommandText = selectCommandText + "and year(datum_telj) = year('" + str + "') and month(datum_telj) = month('" + str + "') ";
+                    }
+                    else
+                    {
+                        selectCommandText = selectCommandText + "and year(datum_telj) = '" + this.ev.Text + "' ";
+                    }
+                    selectCommandText = selectCommandText + "  and b.megnid = c.sorszam   and c.kod = '" + kod + "' ";
+                    this.da = new SqlDataAdapter(selectCommandText, this.myconn);
+                    this.da.Fill(this.ds, "tableTooltip");
+                    this.tableTooltip = this.ds.Tables["tableTooltip"];
+                    this.alSzamlak = new AlSzamlak(this.tableTooltip, kod);
+                    this.alSzamlak.ShowDialog();
+                }
+            }
         }
 
         private void dataGV_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                if (dataGV.Rows[e.RowIndex].Cells["bonthato"].Value.ToString() == "A")
+                if (this.dataGV.Rows[e.RowIndex].Cells["bonthato"].Value.ToString() == "A")
                 {
                     e.CellStyle.BackColor = Color.LightGreen;
                 }
-                if (dataGV.Rows[e.RowIndex].Cells["bonthato"].Value.ToString() == "T")
+                if (this.dataGV.Rows[e.RowIndex].Cells["bonthato"].Value.ToString() == "T")
                 {
                     e.CellStyle.BackColor = Color.GreenYellow;
                 }
             }
         }
 
-        private void comboPartner_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            partner_id = tablePartner.Rows.Find(comboPartner.SelectedItem)["pid"].ToString();
-        }
-
         private void ev_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tablePartner.Clear();
-            tableSzoveg.Clear();
-            comboPartner.Items.Clear();
-            comboSzoveg.Items.Clear();
+            int num;
+            this.tablePartner.Clear();
+            this.tableSzoveg.Clear();
+            this.comboPartner.Items.Clear();
+            this.comboSzoveg.Items.Clear();
+            this.da = new SqlDataAdapter("select distinct partner.azonosito, partner.pid from szamla, partner where szamla.pid = partner.pid and vs='" + this.jel + "' and year(datum_telj) = '" + this.ev.Text + "' order by azonosito ", this.myconn);
+            this.da.Fill(this.ds, "tablePartner");
+            this.tablePartner = this.ds.Tables["tablePartner"];
+            for (num = 0; num < this.tablePartner.Rows.Count; num++)
+            {
+                this.comboPartner.Items.Add(this.tablePartner.Rows[num]["azonosito"].ToString());
+            }
+            this.tablePartner.PrimaryKey = new DataColumn[] { this.tablePartner.Columns["azonosito"] };
+            this.da = new SqlDataAdapter("select distinct szoveg from szamla a, szamla_tetel b where a.id = b.id and vs='" + this.jel + "' and year(datum_telj) = '" + this.ev.Text + "' order by szoveg", this.myconn);
+            this.da.Fill(this.ds, "tableSzoveg");
+            this.tableSzoveg = this.ds.Tables["tableSzoveg"];
+            for (num = 0; num < this.tableSzoveg.Rows.Count; num++)
+            {
+                this.comboSzoveg.Items.Add(this.tableSzoveg.Rows[num]["szoveg"].ToString());
+            }
+        }
 
-            da = new SqlDataAdapter("select distinct partner.azonosito, partner.pid from szamla, partner " +
-                                    "where szamla.pid = partner.pid and vs='" + jel + "' " +
-                                    "and year(datum_telj) = '" + ev.Text + "' " +
-                                    "order by azonosito "
-                                   , myconn);
-            da.Fill(ds, "tablePartner");
-            tablePartner = ds.Tables["tablePartner"];
-            for (int i = 0; i < tablePartner.Rows.Count; i++)
-                comboPartner.Items.Add(tablePartner.Rows[i]["azonosito"].ToString());
-            tablePartner.PrimaryKey = new DataColumn[] { tablePartner.Columns["azonosito"] };
+        private void eves_CheckedChanged(object sender, EventArgs e)
+        {
+            this.tableFo.Clear();
+            this.tableAl.Clear();
+            this.table.Clear();
+        }
 
-            da = new SqlDataAdapter("select distinct szoveg from szamla a, szamla_tetel b " +
-                                    "where a.id = b.id and vs='" + jel + "' " +
-                                    "and year(datum_telj) = '" + ev.Text + "' " +
-                                    "order by szoveg"
-                                    , myconn);
-            da.Fill(ds, "tableSzoveg");
-            tableSzoveg = ds.Tables["tableSzoveg"];
-            for (int i = 0; i < tableSzoveg.Rows.Count; i++)
-                comboSzoveg.Items.Add(tableSzoveg.Rows[i]["szoveg"].ToString());
-
+        private void havi_CheckedChanged(object sender, EventArgs e)
+        {
+            this.tableFo.Clear();
+            this.tableAl.Clear();
+            this.table.Clear();
+            if (this.havi.Checked)
+            {
+                this.honap.Enabled = true;
+                this.ev.Enabled = false;
+            }
+            else
+            {
+                this.honap.Enabled = false;
+                this.ev.Enabled = true;
+            }
         }
 
         private void honap_ValueChanged(object sender, EventArgs e)
         {
-            tablePartner.Clear();
-            tableSzoveg.Clear();
-            comboPartner.Items.Clear();
-            comboSzoveg.Items.Clear();
-            string dat = honap.Value.ToShortDateString();
-            da = new SqlDataAdapter("select distinct partner.azonosito, partner.pid from szamla, partner " +
-                                    "where szamla.pid = partner.pid and vs='" + jel + "' " +
-                                    "and year(datum_telj) = year('" + dat + "') and month(datum_telj) = month('" + dat + "') " +
-                                    "order by azonosito "
-                                    , myconn);
-            da.Fill(ds, "tablePartner");
-            tablePartner = ds.Tables["tablePartner"];
-            for (int i = 0; i < tablePartner.Rows.Count; i++)
-                comboPartner.Items.Add(tablePartner.Rows[i]["azonosito"].ToString());
-            tablePartner.PrimaryKey = new DataColumn[] { tablePartner.Columns["azonosito"] };
+            int num;
+            this.tablePartner.Clear();
+            this.tableSzoveg.Clear();
+            this.comboPartner.Items.Clear();
+            this.comboSzoveg.Items.Clear();
+            string str = this.honap.Value.ToShortDateString();
+            this.da = new SqlDataAdapter("select distinct partner.azonosito, partner.pid from szamla, partner where szamla.pid = partner.pid and vs='" + this.jel + "' and year(datum_telj) = year('" + str + "') and month(datum_telj) = month('" + str + "') order by azonosito ", this.myconn);
+            this.da.Fill(this.ds, "tablePartner");
+            this.tablePartner = this.ds.Tables["tablePartner"];
+            for (num = 0; num < this.tablePartner.Rows.Count; num++)
+            {
+                this.comboPartner.Items.Add(this.tablePartner.Rows[num]["azonosito"].ToString());
+            }
+            this.tablePartner.PrimaryKey = new DataColumn[] { this.tablePartner.Columns["azonosito"] };
+            this.da = new SqlDataAdapter("select distinct szoveg from szamla a, szamla_tetel b where a.id = b.id and vs='" + this.jel + "' and year(datum_telj) = year('" + str + "') and month(datum_telj) = month('" + str + "') order by szoveg", this.myconn);
+            this.da.Fill(this.ds, "tableSzoveg");
+            this.tableSzoveg = this.ds.Tables["tableSzoveg"];
+            for (num = 0; num < this.tableSzoveg.Rows.Count; num++)
+            {
+                this.comboSzoveg.Items.Add(this.tableSzoveg.Rows[num]["szoveg"].ToString());
+            }
+        }
 
-            da = new SqlDataAdapter("select distinct szoveg from szamla a, szamla_tetel b " +
-                                    "where a.id = b.id and vs='" + jel + "' " +
-                                    "and year(datum_telj) = year('" + dat + "') and month(datum_telj) = month('" + dat + "') " +
-                                    "order by szoveg"
-                                    , myconn);
-            da.Fill(ds, "tableSzoveg");
-            tableSzoveg = ds.Tables["tableSzoveg"];
-            for (int i = 0; i < tableSzoveg.Rows.Count; i++)
-                comboSzoveg.Items.Add(tableSzoveg.Rows[i]["szoveg"].ToString());
+        private string honapNev(string honap)
+        {
+            switch (honap)
+            {
+                case "1":
+                    return "Januar";
 
+                case "2":
+                    return "Februar";
+
+                case "3":
+                    return "Marcius";
+
+                case "4":
+                    return "Aprilis";
+
+                case "5":
+                    return "Majus";
+
+                case "6":
+                    return "Junius";
+
+                case "7":
+                    return "Julius";
+
+                case "8":
+                    return "Augusztus";
+
+                case "9":
+                    return "Szeptember";
+
+                case "10":
+                    return "Oktober";
+
+                case "11":
+                    return "November";
+
+                case "12":
+                    return "December";
+            }
+            return "Januar";
+        }
+
+        private DataTable koztesTablaAtforditas()
+        {
+            this.tableHaviBontas.Clear();
+            this.tableKoztes = this.ds.Tables["tableKoztes"];
+            int num = 0;
+            while (num < this.tableKoztes.Rows.Count)
+            {
+                string str = this.tableKoztes.Rows[num]["kod"].ToString();
+                DataRow row = this.tableHaviBontas.NewRow();
+                row["kod"] = str;
+                row["megnevezes"] = this.tableKoztes.Rows[num]["megnevezes"].ToString();
+                row["bonthato"] = this.tableKoztes.Rows[num]["bonthato"].ToString();
+                row["bontva"] = this.tableKoztes.Rows[num]["bontva"].ToString();
+                while ((num < this.tableKoztes.Rows.Count) && (str == this.tableKoztes.Rows[num]["kod"].ToString()))
+                {
+                    string honap = this.tableKoztes.Rows[num]["ho"].ToString();
+                    string str3 = this.honapNev(honap);
+                    while (((num < this.tableKoztes.Rows.Count) && (str == this.tableKoztes.Rows[num]["kod"].ToString())) && (honap == this.tableKoztes.Rows[num]["ho"].ToString()))
+                    {
+                        row[str3] = this.tableKoztes.Rows[num]["netto"].ToString();
+                        num++;
+                    }
+                }
+                this.tableHaviBontas.Rows.Add(row);
+            }
+            return this.tableHaviBontas;
+        }
+
+        private void Szamlak_Load(object sender, EventArgs e)
+        {
+            int num;
+            this.mainForm = (VIR.MainForm)base.ParentForm;
+            this.myconn = this.mainForm.MyConn;
+            this.ktfotabla = this.ktfotag.AdatTablainfo.Adattabla;
+            this.ktaltabla = this.ktaltag.AdatTablainfo.Adattabla;
+            this.kttabla = this.kttag.AdatTablainfo.Adattabla;
+            this.da = new SqlDataAdapter("select '' as Kod, '' as Megnevezes, 0.0 as Januar, 0.0 as Februar, 0.0 as Marcius, 0.0 as Aprilis, 0.0 as Majus, 0.0 as Junius, 0.0 as Julius, 0.0 as Augusztus, 0.0 as Szeptember, 0.0 as Oktober, 0.0 as November, 0.0 as December, 'F' as bonthato, 'N' as bontva from szamla_tetel where id is null", this.myconn);
+            this.da.Fill(this.ds, "tableHaviBontas");
+            this.tableHaviBontas = this.ds.Tables["tableHaviBontas"];
+            this.da = new SqlDataAdapter("select distinct year(datum_telj) as ev from szamla", this.myconn);
+            this.da.Fill(this.ds, "tableEvek");
+            this.tableEvek = this.ds.Tables["tableEvek"];
+            for (num = 0; num < this.tableEvek.Rows.Count; num++)
+            {
+                this.ev.Items.Add(this.tableEvek.Rows[num]["ev"].ToString());
+            }
+            string str = this.honap.Value.ToShortDateString();
+            this.da = new SqlDataAdapter("select distinct partner.azonosito, partner.pid from szamla, partner where szamla.pid = partner.pid and year(datum_telj) = year('" + str + "') and month(datum_telj) = month('" + str + "') order by azonosito ", this.myconn);
+            this.da.Fill(this.ds, "tablePartner");
+            this.tablePartner = this.ds.Tables["tablePartner"];
+            for (num = 0; num < this.tablePartner.Rows.Count; num++)
+            {
+                this.comboPartner.Items.Add(this.tablePartner.Rows[num]["azonosito"].ToString());
+            }
+            this.tablePartner.PrimaryKey = new DataColumn[] { this.tablePartner.Columns["azonosito"] };
+            this.da = new SqlDataAdapter("select distinct szoveg from szamla a, szamla_tetel b where a.id = b.id and year(datum_telj) = year('" + str + "') and month(datum_telj) = month('" + str + "') order by szoveg", this.myconn);
+            this.da.Fill(this.ds, "tableSzoveg");
+            this.tableSzoveg = this.ds.Tables["tableSzoveg"];
+            for (num = 0; num < this.tableSzoveg.Rows.Count; num++)
+            {
+                this.comboSzoveg.Items.Add(this.tableSzoveg.Rows[num]["szoveg"].ToString());
+            }
         }
 
     }
