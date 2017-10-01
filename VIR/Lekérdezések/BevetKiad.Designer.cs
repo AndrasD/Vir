@@ -34,6 +34,7 @@
             this.dataGV = new System.Windows.Forms.DataGridView();
             this.ev = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.honapig = new System.Windows.Forms.DateTimePicker();
             this.textBevetelkod = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.textKoltsegkod = new System.Windows.Forms.TextBox();
@@ -68,7 +69,7 @@
             this.havi.Checked = true;
             this.havi.Location = new System.Drawing.Point(6, 19);
             this.havi.Name = "havi";
-            this.havi.Size = new System.Drawing.Size(49, 19);
+            this.havi.Size = new System.Drawing.Size(57, 21);
             this.havi.TabIndex = 0;
             this.havi.TabStop = true;
             this.havi.Text = "Havi";
@@ -80,7 +81,7 @@
             this.eves.AutoSize = true;
             this.eves.Location = new System.Drawing.Point(6, 46);
             this.eves.Name = "eves";
-            this.eves.Size = new System.Drawing.Size(52, 19);
+            this.eves.Size = new System.Drawing.Size(62, 21);
             this.eves.TabIndex = 1;
             this.eves.Text = "Éves";
             this.eves.UseVisualStyleBackColor = true;
@@ -89,10 +90,10 @@
             // honap
             // 
             this.honap.CustomFormat = "yyyy.MMMM";
-            this.honap.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.honap.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.honap.Location = new System.Drawing.Point(61, 18);
             this.honap.Name = "honap";
-            this.honap.Size = new System.Drawing.Size(144, 21);
+            this.honap.Size = new System.Drawing.Size(144, 25);
             this.honap.TabIndex = 0;
             this.honap.ValueChanged += new System.EventHandler(this.honap_ValueChanged);
             // 
@@ -111,8 +112,8 @@
             this.dataGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dataGV.Size = new System.Drawing.Size(418, 396);
             this.dataGV.TabIndex = 14;
-            this.dataGV.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGV_CellPainting);
             this.dataGV.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGV_CellMouseDoubleClick);
+            this.dataGV.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGV_CellPainting);
             // 
             // ev
             // 
@@ -120,14 +121,15 @@
             this.ev.FormattingEnabled = true;
             this.ev.Location = new System.Drawing.Point(61, 45);
             this.ev.Name = "ev";
-            this.ev.Size = new System.Drawing.Size(77, 23);
+            this.ev.Size = new System.Drawing.Size(77, 25);
             this.ev.TabIndex = 1;
             this.ev.SelectedIndexChanged += new System.EventHandler(this.ev_SelectedIndexChanged);
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.honapig);
             this.groupBox1.Controls.Add(this.textBevetelkod);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.textKoltsegkod);
@@ -142,10 +144,20 @@
             this.groupBox1.Controls.Add(this.eves);
             this.groupBox1.Location = new System.Drawing.Point(6, 28);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(846, 136);
+            this.groupBox1.Size = new System.Drawing.Size(972, 136);
             this.groupBox1.TabIndex = 35;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Szűrő feltételek";
+            // 
+            // honapig
+            // 
+            this.honapig.CustomFormat = "yyyy.MMMM";
+            this.honapig.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.honapig.Location = new System.Drawing.Point(230, 18);
+            this.honapig.Name = "honapig";
+            this.honapig.Size = new System.Drawing.Size(144, 25);
+            this.honapig.TabIndex = 27;
+            this.honapig.ValueChanged += new System.EventHandler(this.honapig_ValueChanged);
             // 
             // textBevetelkod
             // 
@@ -160,7 +172,7 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(6, 77);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(70, 15);
+            this.label8.Size = new System.Drawing.Size(83, 17);
             this.label8.TabIndex = 25;
             this.label8.Text = "Bevételkód:";
             // 
@@ -177,7 +189,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(435, 77);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(72, 15);
+            this.label3.Size = new System.Drawing.Size(84, 17);
             this.label3.TabIndex = 23;
             this.label3.Text = "Költségkód:";
             // 
@@ -186,7 +198,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(435, 46);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(78, 15);
+            this.label2.Size = new System.Drawing.Size(94, 17);
             this.label2.TabIndex = 21;
             this.label2.Text = "Megnevezés:";
             // 
@@ -195,7 +207,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(435, 17);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(50, 15);
+            this.label1.Size = new System.Drawing.Size(60, 17);
             this.label1.TabIndex = 20;
             this.label1.Text = "Partner:";
             // 
@@ -204,7 +216,7 @@
             this.comboPartner.FormattingEnabled = true;
             this.comboPartner.Location = new System.Drawing.Point(513, 13);
             this.comboPartner.Name = "comboPartner";
-            this.comboPartner.Size = new System.Drawing.Size(321, 23);
+            this.comboPartner.Size = new System.Drawing.Size(321, 25);
             this.comboPartner.TabIndex = 2;
             this.comboPartner.SelectedIndexChanged += new System.EventHandler(this.comboPartner_SelectedIndexChanged);
             // 
@@ -213,7 +225,7 @@
             this.comboSzoveg.FormattingEnabled = true;
             this.comboSzoveg.Location = new System.Drawing.Point(513, 42);
             this.comboSzoveg.Name = "comboSzoveg";
-            this.comboSzoveg.Size = new System.Drawing.Size(321, 23);
+            this.comboSzoveg.Size = new System.Drawing.Size(321, 25);
             this.comboSzoveg.TabIndex = 3;
             // 
             // dataGV2
@@ -238,7 +250,7 @@
             this.label4.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(3, 170);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(88, 15);
+            this.label4.Size = new System.Drawing.Size(113, 18);
             this.label4.TabIndex = 37;
             this.label4.Text = "Bevétel (Vevő)";
             // 
@@ -248,7 +260,7 @@
             this.label5.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(428, 170);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(98, 15);
+            this.label5.Size = new System.Drawing.Size(122, 18);
             this.label5.TabIndex = 38;
             this.label5.Text = "Kiadás (Szállító)";
             // 
@@ -257,7 +269,7 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(3, 599);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(66, 15);
+            this.label6.Size = new System.Drawing.Size(80, 17);
             this.label6.TabIndex = 39;
             this.label6.Text = "Összesen:";
             // 
@@ -266,7 +278,7 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(438, 599);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(66, 15);
+            this.label7.Size = new System.Drawing.Size(80, 17);
             this.label7.TabIndex = 40;
             this.label7.Text = "Összesen:";
             // 
@@ -279,7 +291,7 @@
             this.osszeg1.Location = new System.Drawing.Point(255, 590);
             this.osszeg1.Name = "osszeg1";
             this.osszeg1.ReadOnly = true;
-            this.osszeg1.Size = new System.Drawing.Size(166, 29);
+            this.osszeg1.Size = new System.Drawing.Size(166, 35);
             this.osszeg1.TabIndex = 41;
             this.osszeg1.TabStop = false;
             this.osszeg1.Tag = "";
@@ -290,6 +302,7 @@
             // 
             this.toolStrip.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.buttonNyomtat,
             this.toolStripButton1,
@@ -299,7 +312,7 @@
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip.Size = new System.Drawing.Size(855, 25);
+            this.toolStrip.Size = new System.Drawing.Size(858, 27);
             this.toolStrip.TabIndex = 43;
             this.toolStrip.Text = "toolStrip1";
             // 
@@ -308,7 +321,7 @@
             this.buttonNyomtat.Image = ((System.Drawing.Image)(resources.GetObject("buttonNyomtat.Image")));
             this.buttonNyomtat.ImageTransparentColor = System.Drawing.Color.Black;
             this.buttonNyomtat.Name = "buttonNyomtat";
-            this.buttonNyomtat.Size = new System.Drawing.Size(77, 22);
+            this.buttonNyomtat.Size = new System.Drawing.Size(92, 24);
             this.buttonNyomtat.Text = "Nyomtat";
             this.buttonNyomtat.Click += new System.EventHandler(this.buttonNyomtat_Click_1);
             // 
@@ -317,21 +330,21 @@
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Black;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(104, 22);
+            this.toolStripButton1.Size = new System.Drawing.Size(129, 24);
             this.toolStripButton1.Text = "Keresés indít";
             this.toolStripButton1.Click += new System.EventHandler(this.button1_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
             // 
             // buttonMentes
             // 
             this.buttonMentes.Image = ((System.Drawing.Image)(resources.GetObject("buttonMentes.Image")));
             this.buttonMentes.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonMentes.Name = "buttonMentes";
-            this.buttonMentes.Size = new System.Drawing.Size(71, 22);
+            this.buttonMentes.Size = new System.Drawing.Size(85, 24);
             this.buttonMentes.Text = "Mentés";
             // 
             // buttonBetolt
@@ -339,7 +352,7 @@
             this.buttonBetolt.Image = ((System.Drawing.Image)(resources.GetObject("buttonBetolt.Image")));
             this.buttonBetolt.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.buttonBetolt.Name = "buttonBetolt";
-            this.buttonBetolt.Size = new System.Drawing.Size(59, 22);
+            this.buttonBetolt.Size = new System.Drawing.Size(72, 24);
             this.buttonBetolt.Text = "Open";
             // 
             // osszeg2
@@ -351,7 +364,7 @@
             this.osszeg2.Location = new System.Drawing.Point(688, 590);
             this.osszeg2.Name = "osszeg2";
             this.osszeg2.ReadOnly = true;
-            this.osszeg2.Size = new System.Drawing.Size(166, 29);
+            this.osszeg2.Size = new System.Drawing.Size(166, 35);
             this.osszeg2.TabIndex = 42;
             this.osszeg2.TabStop = false;
             this.osszeg2.Tag = "";
@@ -367,7 +380,7 @@
             this.egyenleg.Location = new System.Drawing.Point(688, 625);
             this.egyenleg.Name = "egyenleg";
             this.egyenleg.ReadOnly = true;
-            this.egyenleg.Size = new System.Drawing.Size(166, 29);
+            this.egyenleg.Size = new System.Drawing.Size(166, 35);
             this.egyenleg.TabIndex = 44;
             this.egyenleg.TabStop = false;
             this.egyenleg.Tag = "";
@@ -376,7 +389,7 @@
             // 
             // BevetKiad
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.Control;
@@ -393,7 +406,7 @@
             this.Controls.Add(this.dataGV);
             this.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "BevetKiad";
-            this.Size = new System.Drawing.Size(855, 654);
+            this.Size = new System.Drawing.Size(858, 664);
             this.Load += new System.EventHandler(this.Szamlak_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGV)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -411,6 +424,7 @@
         private System.Windows.Forms.RadioButton havi;
         private System.Windows.Forms.RadioButton eves;
         private System.Windows.Forms.DateTimePicker honap;
+        private System.Windows.Forms.DateTimePicker honapig;
         private System.Windows.Forms.DataGridView dataGV;
         private System.Windows.Forms.ComboBox ev;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -436,8 +450,5 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private FormattedTextBox.FormattedTextBox osszeg2;
         private FormattedTextBox.FormattedTextBox egyenleg;
-
-
-
     }
 }
