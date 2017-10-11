@@ -58,483 +58,498 @@ namespace Adatbevitel
 
         public Kiegyenlites(string szoveg, object[] obj)
         {
-            szamlatag = ((MyTag[])obj[1])[0];
-            Fak = szamlatag.Fak;
-            partnerinfo = Fak.GetTablaInfo("C", "PARTNER");
-            folyoszlainfo = Fak.GetTablaInfo("C", "PARTNER_FOLYOSZ");
-            partneradatok = new Tablainfo[] { partnerinfo };
-            partneradatok = Fak.Adatoktolt("C", Fak.Aktintervallum, partneradatok, "", false);
-            folyoszlainfoadatok = new Tablainfo[] { folyoszlainfo };
-            folyoszlainfoadatok = Fak.Adatoktolt("C", Fak.Aktintervallum, folyoszlainfoadatok, "", false);
-            Szamlainfo = szamlatag.AdatTablainfo;
-            szamlateteltag = ((MyTag[])obj[1])[1];
-            Szamlatetelinfo = szamlateteltag.AdatTablainfo;
-            szamlaadatok = new Tablainfo[] { Szamlainfo};
-            SzamlaAdattabla = Szamlainfo.Adattabla;
-            teteladatok = new Tablainfo[] { Szamlatetelinfo };
-            SzamlatetelAdattabla = Szamlatetelinfo.Adattabla;
-            jel = obj[2].ToString();
-            InitializeComponent();
-            if (jel == "V")
+            this.szamlatag = ((MyTag[])obj[1])[0];
+            this.Fak = this.szamlatag.Fak;
+            this.partnerinfo = this.Fak.GetTablaInfo("C", "PARTNER");
+            this.folyoszlainfo = this.Fak.GetTablaInfo("C", "PARTNER_FOLYOSZ");
+            this.partneradatok = new Tablainfo[] { this.partnerinfo };
+            this.partneradatok = this.Fak.Adatoktolt("C", this.Fak.Aktintervallum, this.partneradatok, "", false);
+            this.folyoszlainfoadatok = new Tablainfo[] { this.folyoszlainfo };
+            this.folyoszlainfoadatok = this.Fak.Adatoktolt("C", this.Fak.Aktintervallum, this.folyoszlainfoadatok, "", false);
+            this.Szamlainfo = this.szamlatag.AdatTablainfo;
+            this.szamlateteltag = ((MyTag[])obj[1])[1];
+            this.Szamlatetelinfo = this.szamlateteltag.AdatTablainfo;
+            this.szamlaadatok = new Tablainfo[] { this.Szamlainfo };
+            this.SzamlaAdattabla = this.Szamlainfo.Adattabla;
+            this.teteladatok = new Tablainfo[] { this.Szamlatetelinfo };
+            this.SzamlatetelAdattabla = this.Szamlatetelinfo.Adattabla;
+            this.jel = obj[2].ToString();
+            this.InitializeComponent();
+            if (this.jel == "V")
             {
-                comboBox2.Visible = false;
-                label12.Visible = false;
-                ((Cols)Szamlainfo.TablaColumns[Szamlainfo.GetTablaColIndex("FSZ_ID")]).ReadOnly=true;
-                ((Cols)Szamlainfo.KiegColumns[Szamlainfo.GetKiegcolIndex("FSZ_ID_K")]).Lathato = false;
-                kodtag = Fak.GetKodtab("C", "Term");
+                this.comboBox2.Visible = false;
+                this.label12.Visible = false;
+                ((Cols)this.Szamlainfo.TablaColumns[this.Szamlainfo.GetTablaColIndex("FSZ_ID")]).ReadOnly = true;
+                ((Cols)this.Szamlainfo.KiegColumns[this.Szamlainfo.GetKiegcolIndex("FSZ_ID_K")]).Lathato = false;
+                this.kodtag = this.Fak.GetKodtab("C", "Term");
             }
             else
             {
-                ((Cols)Szamlainfo.TablaColumns[Szamlainfo.GetTablaColIndex("FSZ_ID")]).ReadOnly=false;
-                ((Cols)Szamlainfo.KiegColumns[Szamlainfo.GetKiegcolIndex("FSZ_ID_K")]).Lathato = true;
-                kodtag = Fak.GetKodtab("C", "Kolt");
+                ((Cols)this.Szamlainfo.TablaColumns[this.Szamlainfo.GetTablaColIndex("FSZ_ID")]).ReadOnly = false;
+                ((Cols)this.Szamlainfo.KiegColumns[this.Szamlainfo.GetKiegcolIndex("FSZ_ID_K")]).Lathato = true;
+                this.kodtag = this.Fak.GetKodtab("C", "Kolt");
             }
-            if (!Szamlatetelinfo.AktCombotolt("MEGNID", kodtag))
+            if (!this.Szamlatetelinfo.AktCombotolt("MEGNID", this.kodtag))
             {
-                MessageBox.Show("Nincs termék- vagy költség kód!");
-                this.Visible = false;
+                MessageBox.Show("Nincs termék- vagy kötség kód!");
+                base.Visible = false;
             }
-            string[] pidN = partnerinfo.FindIdentityArray(new string[] { "SAJAT" }, new string[] { "N" });
-            string[] pidI = partnerinfo.FindIdentityArray(new string[] { "SAJAT" }, new string[] { "I" });
-            if (pidN == null)
+            string[] kellfileinfo = this.partnerinfo.FindIdentityArray(new string[] { "SAJAT" }, new string[] { "N" });
+            string[] tartalom = this.partnerinfo.FindIdentityArray(new string[] { "SAJAT" }, new string[] { "I" });
+            if (kellfileinfo == null)
             {
                 MessageBox.Show("Csak 'saját' jelü partner van!");
-                this.Visible = false;
+                base.Visible = false;
             }
-            else if (pidI == null)
+            else if (tartalom == null)
             {
-                MessageBox.Show("Nincs 'sajat' jelu partner!");
-                this.Visible = false;
+                MessageBox.Show("Nincs 'saját' jelü partner!");
+                base.Visible = false;
             }
-            if (this.Visible)
+            if (base.Visible)
             {
-                Fak.ControlTagokTolt(this, groupBox2);
-                Szamlaegyallapot = Szamlainfo.GetEgyallapotinfo(this);
-                dateTimePicker3.Value = Convert.ToDateTime(dateTimePicker3.Value.Year.ToString() + "." + dateTimePicker3.Value.Month.ToString() + ".01");
-                DateTime dat = Convert.ToDateTime(dateTimePicker4.Value.Year.ToString() + "." + dateTimePicker4.Value.Month.ToString() + ".01");
-                dateTimePicker4.Value = Convert.ToDateTime(dat.AddMonths(1).AddDays(-1));
-                dateSzamla.MinDate = dateTimePicker3.Value;
-                dateSzamla.MaxDate = dateTimePicker4.Value;
-                dateSzamla.Value = dateTimePicker3.Value;
-                dateTimePicker1.Value = dateTimePicker3.Value;
-                dateTeljesit.Value = dateTimePicker3.Value;
-                Szamlainfo.Comboinfoszures(comboSzallito, pidN);
-                string[] fszid=folyoszlainfo.FindIdentityArray(new string[]{"PID"},pidI);
-                Szamlainfo.Comboinfoszures(comboBox4,fszid);
-                szamlaegycont=Szamlainfo.GetEgycontrolinfo(this);
-                if (comboSzallito.Items.Count == 0)
+                this.Fak.ControlTagokTolt(this, this.groupBox2);
+                this.Szamlaegyallapot = this.Szamlainfo.GetEgyallapotinfo(this);
+                this.dateTimePicker3.Value = Convert.ToDateTime(this.dateTimePicker3.Value.Year.ToString() + "." + this.dateTimePicker3.Value.Month.ToString() + ".01");
+                DateTime time = Convert.ToDateTime(this.dateTimePicker4.Value.Year.ToString() + "." + this.dateTimePicker4.Value.Month.ToString() + ".01");
+                this.dateTimePicker4.Value = Convert.ToDateTime(time.AddMonths(1).AddDays(-1.0));
+                this.dateSzamla.MinDate = this.dateTimePicker3.Value;
+                this.dateSzamla.MaxDate = this.dateTimePicker4.Value;
+                this.dateSzamla.Value = this.dateTimePicker3.Value;
+                this.dateTimePicker1.Value = this.dateTimePicker3.Value;
+                this.dateTeljesit.Value = this.dateTimePicker3.Value;
+                this.Szamlainfo.Comboinfoszures(this.comboSzallito, kellfileinfo);
+                string[] strArray3 = this.folyoszlainfo.FindIdentityArray(new string[] { "PID" }, tartalom);
+                this.Szamlainfo.Comboinfoszures(this.comboBox4, strArray3);
+                this.szamlaegycont = this.Szamlainfo.GetEgycontrolinfo(this);
+                if (this.comboSzallito.Items.Count == 0)
                 {
                     MessageBox.Show("Elöbb vezesse fel a partnereit!");
-                    this.Visible = false;
-                } 
-                if (this.Visible)
+                    base.Visible = false;
+                }
+                if (base.Visible)
                 {
-                    tetelegycont = Szamlatetelinfo.GetEgycontrolinfo(this);
-                    Tetelegyallapot = Szamlatetelinfo.GetEgyallapotinfo(this);
-                    dataGVSzla.AutoGenerateColumns = false;
-                    DataGridViewColumn[] szlagridcols = Szamlainfo.GetGridColumns();
-                    DataGridViewColumn tempCol = szlagridcols[szlagridcols.Length - 1];
-                    dataGVSzla.Columns.AddRange(szlagridcols);
-                    dataGVSzla.Columns.Remove("FIZETVE");
-                    tempCol.DisplayIndex = 0;
-                    tempCol.ReadOnly = false;
-  //                  dataGVSzla.Columns.Insert(0, tempCol);
-                    dataGVSzla.Columns[0].Frozen = true;
-                    dataGVSzla.Columns[1].Frozen = true;
-                    dataGVSzla.Columns[2].SortMode = DataGridViewColumnSortMode.Automatic;
-                    Szamlaidcol = Szamlainfo.Identitycol;
-                    szamlaadatok = Fak.Adatoktolt("C", Fak.Aktintervallum, szamlaadatok, 
-                        " where VS='" + jel + "'" +
-                        " AND DATUM between cast('" + dateSzamla.MinDate.ToShortDateString()+"' as datetime)"+
-                        " AND cast('" + dateSzamla.MaxDate.ToShortDateString()+"' as datetime)"+
-                        " and fizetve = 'N'",false);
-                    SzamlaAdattabla = Szamlainfo.Adattabla;
-                    Szamlatetelidcol = Szamlatetelinfo.Identitycol;
-                    dataViewSzamla.Table = SzamlaAdattabla;
-                    dataViewSzamla.Sort = Szamlainfo.Sort;
-                    if (dataViewSzamla.Count == 0)
-                        Szamlaaktgridrowind = -1;
+                    this.tetelegycont = this.Szamlatetelinfo.GetEgycontrolinfo(this);
+                    this.Tetelegyallapot = this.Szamlatetelinfo.GetEgyallapotinfo(this);
+                    this.dataGVSzla.AutoGenerateColumns = false;
+                    DataGridViewColumn[] gridColumns = this.Szamlainfo.GetGridColumns();
+                    for (int i = 0; i < gridColumns.Length; i++)
+                    {
+                        gridColumns[i].Name = gridColumns[i].DataPropertyName;
+                    }
+                    this.dataGVSzla.Columns.AddRange(gridColumns);
+                    DataGridViewColumn dataGridViewColumn = this.dataGVSzla.Columns["FIZETVE"];
+                    this.dataGVSzla.Columns.Remove("FIZETVE");
+                    dataGridViewColumn.DisplayIndex = 0;
+                    dataGridViewColumn.ReadOnly = false;
+                    this.dataGVSzla.Columns.Insert(0, dataGridViewColumn);
+                    this.dataGVSzla.Columns[0].Frozen = true;
+                    this.dataGVSzla.Columns[1].Frozen = true;
+                    this.dataGVSzla.Columns[2].SortMode = DataGridViewColumnSortMode.Automatic;
+                    this.Szamlaidcol = this.Szamlainfo.Identitycol;
+                    this.szamlaadatok = this.Fak.Adatoktolt("C", this.Fak.Aktintervallum, this.szamlaadatok, " where VS='" + this.jel + "' AND DATUM between cast('" + this.dateSzamla.MinDate.ToShortDateString() + "' as datetime) AND cast('" + this.dateSzamla.MaxDate.ToShortDateString() + "' as datetime) and fizetve = 'N'", false);
+                    this.SzamlaAdattabla = this.Szamlainfo.Adattabla;
+                    this.Szamlatetelidcol = this.Szamlatetelinfo.Identitycol;
+                    this.dataViewSzamla.Table = this.SzamlaAdattabla;
+                    this.dataViewSzamla.Sort = this.Szamlainfo.Sort;
+                    if (this.dataViewSzamla.Count == 0)
+                    {
+                        this.Szamlaaktgridrowind = -1;
+                    }
                     else
-                        Szamlaaktgridrowind = 0;
-                    dataGVSzla.DataSource = dataViewSzamla;
-                    dataViewTetel.Table = SzamlatetelAdattabla;
-                    dataViewTetel.Sort = Szamlatetelinfo.Sort;
-                    //dataGVSzlatetel.DataSource = dataViewTetel;
-                    groupBox2.Enabled = false;
-                    Szamla_beallit(Szamlaaktgridrowind);
+                    {
+                        this.Szamlaaktgridrowind = 0;
+                    }
+                    this.dataGVSzla.DataSource = this.dataViewSzamla;
+                    this.dataViewTetel.Table = this.SzamlatetelAdattabla;
+                    this.dataViewTetel.Sort = this.Szamlatetelinfo.Sort;
+                    this.groupBox2.Enabled = false;
+                    this.Szamla_beallit(this.Szamlaaktgridrowind);
                 }
             }
         }
 
         private void Szamla_beallit(int gridind)
         {
-            igazivaltozas = false;
-            dateSzamla.MinDate = tol;
-            dateSzamla.MaxDate = ig;
-            dateSzamla.MinDate = dateTimePicker3.Value;
-            dateSzamla.MaxDate = dateTimePicker4.Value;
-            dateSzamla.Value = dateTimePicker3.Value;
-            buttonMentes.Enabled = false;
-            Szamlaegyallapot.Modositott = false;
-            //Tetelegyallapot.Modositott = false;
-            for (int i = 0; i < dataViewSzamla.Count; i++)
-                dataGVSzla.Rows[i].Selected = false;
-            Szamlaaktgridrowind = gridind;
-            Lastszamlaaktgridindex = gridind;
-            if (Szamlaaktgridrowind != -1)
+            int num;
+            this.igazivaltozas = false;
+            this.dateSzamla.MinDate = this.tol;
+            this.dateSzamla.MaxDate = this.ig;
+            this.dateSzamla.MinDate = this.dateTimePicker3.Value;
+            this.dateSzamla.MaxDate = this.dateTimePicker4.Value;
+            this.dateSzamla.Value = this.dateTimePicker3.Value;
+            this.buttonMentes.Enabled = false;
+            this.Szamlaegyallapot.Modositott = false;
+            for (num = 0; num < this.dataViewSzamla.Count; num++)
             {
-                Szamlaaktsorindex=SzamlaAdattabla.Rows.IndexOf(dataViewSzamla[Szamlaaktgridrowind].Row);
-                Szamlainfo.Aktsorindex = Szamlaaktsorindex;
-                dataGVSzla.Rows[Szamlaaktgridrowind].Selected = true;
-                Szamlaaktid = Convert.ToInt32(SzamlaAdattabla.Rows[Szamlaaktsorindex][Szamlaidcol].ToString());
-                Szamlainfo.Aktidentity=Szamlaaktid;
+                this.dataGVSzla.Rows[num].Selected = false;
+            }
+            this.Szamlaaktgridrowind = gridind;
+            this.Lastszamlaaktgridindex = gridind;
+            if (this.Szamlaaktgridrowind != -1)
+            {
+                this.Szamlaaktsorindex = this.SzamlaAdattabla.Rows.IndexOf(this.dataViewSzamla[this.Szamlaaktgridrowind].Row);
+                this.Szamlainfo.Aktsorindex = this.Szamlaaktsorindex;
+                this.dataGVSzla.Rows[this.Szamlaaktgridrowind].Selected = true;
+                this.Szamlaaktid = Convert.ToInt32(this.SzamlaAdattabla.Rows[this.Szamlaaktsorindex][this.Szamlaidcol].ToString());
+                this.Szamlainfo.Aktidentity = this.Szamlaaktid;
             }
             else
             {
-                Szamlaaktid = -1;
-                Szamlaaktsorindex=-1;
-                Szamlainfo.Aktsorindex = -1;
+                this.Szamlaaktid = -1;
+                this.Szamlaaktsorindex = -1;
+                this.Szamlainfo.Aktsorindex = -1;
             }
-            dateTimePicker1.MinDate = tol;
-            if(dateTimePicker1.Value.CompareTo(dateSzamla.Value) < 0 || Szamlaaktid==-1)
-               dateTimePicker1.Value = dateSzamla.Value;
-            dateTimePicker1.MinDate = dateSzamla.Value;
-            dateTeljesit.MinDate = tol;
-            if(dateTeljesit.Value.CompareTo(dateTimePicker1.Value) < 0 || Szamlaaktid==-1)
-              dateTeljesit.Value = dateTimePicker1.Value;
-            dateTeljesit.MinDate = dateTimePicker1.Value;
-            if (comboBox2.Visible)
+            this.dateTimePicker1.MinDate = this.tol;
+            if ((this.dateTimePicker1.Value.CompareTo(this.dateSzamla.Value) < 0) || (this.Szamlaaktid == -1))
             {
-                string pid = Szamlainfo.GetActualCombofileinfo(comboSzallito);
-                partnerinfo.Aktidentity = Convert.ToInt32(pid);
-                Tablainfo[] adatok = new Tablainfo[] { folyoszlainfo };
-                adatok = Fak.Adatoktolt("C", Fak.Aktintervallum, adatok, "", false);
-                Szamlainfo.Aktsorindex = Szamlaaktsorindex;
-                string[] fszid = folyoszlainfo.FindIdentityArray(new string[] { "PID" }, new string[] { pid });
-                if (fszid != null)
-                    Szamlainfo.Comboinfoszures(comboBox2, fszid);
+                this.dateTimePicker1.Value = this.dateSzamla.Value;
             }
-            groupBox1.Enabled = true;
-            osszesen.Text = "0";
-            teteladatok = Fak.Adatoktolt("T",Fak.Aktintervallum,teteladatok,"",false);
-            for (int i = 0; i < dataViewTetel.Count; i++)
-                osszesen.Text = Convert.ToString(Convert.ToDecimal(osszesen.Text) + Convert.ToDecimal(dataViewTetel[i].Row["brutto"].ToString()));
-            if (dataViewTetel.Count == 0)
-                Szamlatetelaktgridrowind = -1;
+            this.dateTimePicker1.MinDate = this.dateSzamla.Value;
+            this.dateTeljesit.MinDate = this.tol;
+            if ((this.dateTeljesit.Value.CompareTo(this.dateTimePicker1.Value) < 0) || (this.Szamlaaktid == -1))
+            {
+                this.dateTeljesit.Value = this.dateTimePicker1.Value;
+            }
+            this.dateTeljesit.MinDate = this.dateTimePicker1.Value;
+            if (this.comboBox2.Visible)
+            {
+                string actualCombofileinfo = this.Szamlainfo.GetActualCombofileinfo(this.comboSzallito);
+                this.partnerinfo.Aktidentity = Convert.ToInt32(actualCombofileinfo);
+                Tablainfo[] tablainfok = new Tablainfo[] { this.folyoszlainfo };
+                tablainfok = this.Fak.Adatoktolt("C", this.Fak.Aktintervallum, tablainfok, "", false);
+                this.Szamlainfo.Aktsorindex = this.Szamlaaktsorindex;
+                string[] kellfileinfo = this.folyoszlainfo.FindIdentityArray(new string[] { "PID" }, new string[] { actualCombofileinfo });
+                if (kellfileinfo != null)
+                {
+                    this.Szamlainfo.Comboinfoszures(this.comboBox2, kellfileinfo);
+                }
+            }
+            this.groupBox1.Enabled = true;
+            decimal num2 = 0M;
+            this.teteladatok = this.Fak.Adatoktolt("T", this.Fak.Aktintervallum, this.teteladatok, "", false);
+            for (num = 0; num < this.dataViewTetel.Count; num++)
+            {
+                num2 += Convert.ToDecimal(this.dataViewTetel[num].Row["brutto"].ToString());
+            }
+            if (this.dataViewTetel.Count == 0)
+            {
+                this.Szamlatetelaktgridrowind = -1;
+            }
             else
-                Szamlatetelaktgridrowind = 0;
-            RadiobuttonBeallitasok();
-            igazivaltozas = true;
+            {
+                this.Szamlatetelaktgridrowind = 0;
+            }
+            this.RadiobuttonBeallitasok();
+            this.osszesen.Text = $"{num2:N}";
+            this.igazivaltozas = true;
         }
 
         private void Szamla_ok()
         {
-            string hiba = Fak.Hibavizsg(this,Szamlainfo, null);
-            if (hiba == "")
+            if ((this.Fak.Hibavizsg(this, this.Szamlainfo, null) == "") && (this.Validalas(this.comboSzallito) == ""))
             {
-                hiba = Validalas(comboSzallito);
-                if (hiba == "")
+                this.groupBox1.Enabled = false;
+                this.groupBox2.Enabled = false;
+                if (this.Szamlaaktgridrowind == -1)
                 {
-                    groupBox1.Enabled = false;
-                    groupBox2.Enabled = false;
-                    if (Szamlaaktgridrowind == -1)
-                    {
-                        SzamlaAdattabla=Szamlainfo.Ujsor();
-                        Szamlaaktsorindex = SzamlaAdattabla.Rows.Count - 1;
-                        Szamlaaktgridrowind = 0;
-                        Szamlatetelaktgridrowind = -1;
-                    }
-                    DataRow dr = SzamlaAdattabla.Rows[Szamlaaktsorindex];
-                    dr = Szamlainfo.Adatsortolt(Szamlaaktsorindex);
-                    dr["VS"] = jel;
-                    dataViewSzamla.Table=SzamlaAdattabla;
-                    dataViewSzamla.Sort = Szamlainfo.Sort;
+                    this.SzamlaAdattabla = this.Szamlainfo.Ujsor();
+                    this.Szamlaaktsorindex = this.SzamlaAdattabla.Rows.Count - 1;
+                    this.Szamlaaktgridrowind = 0;
+                    this.Szamlatetelaktgridrowind = -1;
                 }
+                DataRow row = this.SzamlaAdattabla.Rows[this.Szamlaaktsorindex];
+                this.Szamlainfo.Adatsortolt(this.Szamlaaktsorindex)["VS"] = this.jel;
+                this.dataViewSzamla.Table = this.SzamlaAdattabla;
+                this.dataViewSzamla.Sort = this.Szamlainfo.Sort;
             }
         }
 
         private string Validalas(Control cont)
         {
-            string hibaszov="";
-            string tartal = cont.Text.Trim();
-            Taggyart tg = (Taggyart)cont.Tag;
-            switch (tg.Valid)
+            string str = "";
+            string str2 = cont.Text.Trim();
+            Taggyart tag = (Taggyart)cont.Tag;
+            switch (tag.Valid)
             {
                 case 2:
-                    string pid = "";
-                    DataRow dr;
-                    if (comboSzallito.Text != "")
                     {
-                        pid = Szamlainfo.GetActualCombofileinfo(comboSzallito);//, comboSzallito.Text.Trim());
-                        if(jel=="S")
+                        string actualCombofileinfo = "";
+                        if (this.comboSzallito.Text != "")
                         {
- //                           string[] fszid = folyoszlainfo.FindIdentityArray(new string[] { "PID" }, new string[] { pid });
-                            //                   for (int i = 0; i < fszid.Length; i++)
-                            //                       fszid[i] = arr[i]["FSZ_ID"].ToString().Trim();
- //                           Szamlainfo.Aktsorindex=Szamlaaktsorindex;
+                            actualCombofileinfo = this.Szamlainfo.GetActualCombofileinfo(this.comboSzallito);
+                            if (this.jel == "S")
+                            {
+                            }
                         }
-                    }
-                    if (jel == "S")
-                    {
-                        if (comboSzallito.Text != "" && szamlaszam.Text != "")
+                        if (this.jel == "S")
                         {
-                            dr = Szamlainfo.FindRow(new string[] { "VS", "PID", "AZONOSITO" }, new string[] { jel, pid, szamlaszam.Text.Trim() }, Szamlaaktsorindex);
-                            if (dr != null)
-                                hibaszov = comboSzallito.Text.Trim() + "- nak mar van ilyen szamlaszama!";
+                            if (((this.comboSzallito.Text != "") && (this.szamlaszam.Text != "")) && (this.Szamlainfo.FindRow(new string[] { "VS", "PID", "AZONOSITO" }, new string[] { this.jel, actualCombofileinfo, this.szamlaszam.Text.Trim() }, this.Szamlaaktsorindex) != null))
+                            {
+                                str = this.comboSzallito.Text.Trim() + "- nak mar van ilyen szamlaszama!";
+                            }
                         }
+                        else if ((this.szamlaszam.Text != "") && (this.Szamlainfo.FindRow(new string[] { "VS", "AZONOSITO" }, new string[] { this.jel, this.szamlaszam.Text.Trim() }, this.Szamlaaktsorindex) != null))
+                        {
+                            str = "Mar van ilyen szamu vevoszamla!";
+                        }
+                        break;
                     }
-                    else if (szamlaszam.Text != "")
+                case 3:
                     {
-                        dr = Szamlainfo.FindRow(new string[] { "VS", "AZONOSITO" }, new string[] { jel, szamlaszam.Text.Trim() }, Szamlaaktsorindex);
-                        if (dr != null)
-                            hibaszov = "Mar van ilyen szamu vevoszamla!";
+                        string str4 = this.Szamlainfo.GetActualCombofileinfo(cont);
+                        break;
                     }
-                    break;
-                case 3: 
-                    string fsz = Szamlainfo.GetActualCombofileinfo(cont);
-                    break;
             }
-            Fak.ErrorProvider.SetError(cont, hibaszov);
-            return hibaszov;
+            this.Fak.ErrorProvider.SetError(cont, str);
+            return str;
         }
 
         private void Mentes(object sender, EventArgs e)
         {
-            Szamla_ok();
-
-            ArrayList list = new ArrayList();
-            list.Add(Szamlainfo);
-            list.Add(Szamlatetelinfo);
-            igazivaltozas = false;
-            if (!Fak.UpdateTransaction(list))
+            this.Szamla_ok();
+            ArrayList modositandok = new ArrayList {
+                this.Szamlainfo,
+                this.Szamlatetelinfo
+            };
+            this.igazivaltozas = false;
+            if (!this.Fak.UpdateTransaction(modositandok))
             {
-                this.Enabled = true;
-                this.Visible = false;
+                base.Enabled = true;
+                base.Visible = false;
             }
-            if (this.Visible)
+            if (base.Visible)
             {
-                if (dataViewSzamla.Count == 0)
-                    Szamlaaktgridrowind = -1;
+                if (this.dataViewSzamla.Count == 0)
+                {
+                    this.Szamlaaktgridrowind = -1;
+                }
                 else
-                    Szamlaaktgridrowind = 0;
-                Szamla_beallit(Szamlaaktgridrowind);
-                buttonMentes.Enabled = false;
-                Szamlaegyallapot.Modositott = false;
-                Szamlaegyallapot.Mentett = true;
+                {
+                    this.Szamlaaktgridrowind = 0;
+                }
+                this.Szamla_beallit(this.Szamlaaktgridrowind);
+                this.buttonMentes.Enabled = false;
+                this.Szamlaegyallapot.Modositott = false;
+                this.Szamlaegyallapot.Mentett = true;
             }
-
         }
 
         private void Vissza(object sender, EventArgs e)
         {
-            if (!buttonMentes.Enabled || MessageBox.Show("A változások elvesszenek?", "", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            if (!(this.buttonMentes.Enabled && (MessageBox.Show("A v\x00e1ltoz\x00e1sok elvesszenek?", "", System.Windows.Forms.MessageBoxButtons.OKCancel) != System.Windows.Forms.DialogResult.OK)))
             {
-                igazivaltozas = false;
-                Fak.ForceAdattolt(Szamlainfo);
-                Fak.ForceAdattolt(Szamlatetelinfo);
-                Szamlaegyallapot.Modositott = false;
-                //Tetelegyallapot.Modositott = false;
-                this.Visible = false;
+                this.igazivaltozas = false;
+                this.Fak.ForceAdattolt(this.Szamlainfo);
+                this.Fak.ForceAdattolt(this.Szamlatetelinfo);
+                this.Szamlaegyallapot.Modositott = false;
+                base.Visible = false;
             }
         }
 
         private void Elem_Validated(object sender, EventArgs e)
         {
-            if (igazivaltozas)
+            if (this.igazivaltozas)
             {
-                Taggyart tg = (Taggyart)((Control)sender).Tag;
-                string hibaszov = Fak.Hibavizsg(this, tg.Tabinfo, (Control)sender);
-                if (hibaszov == "")
-                    Validalas((Control)sender);
+                Taggyart tag = (Taggyart)((Control)sender).Tag;
+                if (this.Fak.Hibavizsg(this, tag.Tabinfo, (Control)sender) == "")
+                {
+                    this.Validalas((Control)sender);
+                }
             }
         }
 
         private void dataGVSzla_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            string n = dataGVSzla.Columns[e.ColumnIndex].Name;
-
-            if (e.Clicks == 1 && e.RowIndex > -1) 
+            string name = this.dataGVSzla.Columns[e.ColumnIndex].Name;
+            if ((e.Clicks == 1) && (e.RowIndex > -1))
             {
-                if (n == "FIZETVE" && dataGVSzla.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "N")
+                if ((name == "FIZETVE") && (this.dataGVSzla.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "N"))
                 {
-                    dataGVSzla.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "I";
+                    this.dataGVSzla.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "I";
+                    this.dataGVSzla.Rows[e.RowIndex].Cells["DATUM_FIZETVE"].Value = DateTime.Today.ToShortDateString();
                 }
-                else if (n == "FIZETVE" && dataGVSzla.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "I")
+                else if ((name == "FIZETVE") && (this.dataGVSzla.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString() == "I"))
                 {
-                    dataGVSzla.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "N";
+                    this.dataGVSzla.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = "N";
+                    this.dataGVSzla.Rows[e.RowIndex].Cells["DATUM_FIZETVE"].Value = this.dateFizetve.MinDate.ToShortDateString();
                 }
-                Szamla_beallit(e.RowIndex);
+                this.Szamla_beallit(e.RowIndex);
             }
         }
 
         private void Elolrol(object sender, EventArgs e)
         {
-            igazivaltozas = false;
-            SzamlaAdattabla = Fak.ForceAdattolt(Szamlainfo);
-            SzamlatetelAdattabla = Fak.ForceAdattolt(Szamlatetelinfo);
-            if (dataViewSzamla.Count == 0)
-                Szamlaaktgridrowind = -1;
+            this.igazivaltozas = false;
+            this.SzamlaAdattabla = this.Fak.ForceAdattolt(this.Szamlainfo);
+            this.SzamlatetelAdattabla = this.Fak.ForceAdattolt(this.Szamlatetelinfo);
+            if (this.dataViewSzamla.Count == 0)
+            {
+                this.Szamlaaktgridrowind = -1;
+            }
             else
-                Szamlaaktgridrowind = 0;
-            Szamla_beallit(Szamlaaktgridrowind);
-            igazivaltozas = true;
+            {
+                this.Szamlaaktgridrowind = 0;
+            }
+            this.Szamla_beallit(this.Szamlaaktgridrowind);
+            this.igazivaltozas = true;
         }
 
         private void rb_CheckChanged(object sender, EventArgs e)
         {
-            if (igazivaltozas)
+            if (this.igazivaltozas && (this.rBPenztar == ((RadioButton)sender)))
             {
-                if (rBPenztar == (RadioButton)sender)
+                if (this.rBPenztar.Checked)
                 {
-                    if (rBPenztar.Checked)
-                    {
-                        checkBox1.Checked = true;
-                        checkBox1.Enabled = false;
-                    }
-                    else
-                        checkBox1.Enabled = true;
+                    this.checkBox1.Checked = true;
+                    this.checkBox1.Enabled = false;
+                }
+                else
+                {
+                    this.checkBox1.Enabled = true;
                 }
             }
-
-            RadiobuttonBeallitasok();
+            this.RadiobuttonBeallitasok();
         }
 
         private void RadiobuttonBeallitasok()
         {
-            bool elozoigazi = igazivaltozas;
-            igazivaltozas = false;
-
-            if (rBBank.Checked)
+            bool igazivaltozas = this.igazivaltozas;
+            this.igazivaltozas = false;
+            if (this.rBBank.Checked)
             {
-                comboBox4.Enabled = true;
-                Fak.SetCombodef(comboBox4);
-                comboBox6.Enabled = false;
-                Fak.ClearCombodef(comboBox6);
-   //             comboBox6.Text = "";
+                this.comboBox4.Enabled = true;
+                this.Fak.SetCombodef(this.comboBox4);
+                this.comboBox6.Enabled = false;
+                this.Fak.ClearCombodef(this.comboBox6);
             }
-            if (rBPenztar.Checked)
+            if (this.rBPenztar.Checked)
             {
-                comboBox4.Enabled = false;
-                Fak.ClearCombodef(comboBox4);
- //               comboBox4.Text = "";
-                comboBox6.Enabled = true;
-                Fak.SetCombodef(comboBox6);
+                this.comboBox4.Enabled = false;
+                this.Fak.ClearCombodef(this.comboBox4);
+                this.comboBox6.Enabled = true;
+                this.Fak.SetCombodef(this.comboBox6);
             }
-
-            igazivaltozas = elozoigazi;
+            this.igazivaltozas = igazivaltozas;
         }
 
         private void dateTimePicker_Changed(object sender, EventArgs e)
         {
-            bool elozoigazi = igazivaltozas;
-            if(igazivaltozas)
+            bool igazivaltozas = this.igazivaltozas;
+            if (this.igazivaltozas)
             {
-                DateTime dat;
-                igazivaltozas = false;
-                DateTimePicker kuldo = (DateTimePicker)sender;
-                Fak.ErrorProvider.SetError(kuldo, "");
-                if (kuldo == dateTimePicker3)
+                DateTime time;
+                this.igazivaltozas = false;
+                DateTimePicker control = (DateTimePicker)sender;
+                this.Fak.ErrorProvider.SetError(control, "");
+                if (control == this.dateTimePicker3)
                 {
-                    dateTimePicker3.Value = Convert.ToDateTime(dateTimePicker3.Value.Year.ToString() + "." + dateTimePicker3.Value.Month.ToString() + ".01");
-                    dat = Convert.ToDateTime(dateTimePicker3.Value.Year.ToString() + "." + dateTimePicker3.Value.Month.ToString() + ".01");
-                    dateTimePicker4.Value = Convert.ToDateTime(dateTimePicker3.Value.AddMonths(1).AddDays(-1));
+                    this.dateTimePicker3.Value = Convert.ToDateTime(this.dateTimePicker3.Value.Year.ToString() + "." + this.dateTimePicker3.Value.Month.ToString() + ".01");
+                    time = Convert.ToDateTime(this.dateTimePicker3.Value.Year.ToString() + "." + this.dateTimePicker3.Value.Month.ToString() + ".01");
+                    this.dateTimePicker4.Value = Convert.ToDateTime(this.dateTimePicker3.Value.AddMonths(1).AddDays(-1.0));
                 }
                 else
                 {
-                    dat = Convert.ToDateTime(dateTimePicker4.Value.Year.ToString() + "." + dateTimePicker4.Value.Month.ToString() + ".01");
-                    dateTimePicker4.Value = Convert.ToDateTime(dat.AddMonths(1).AddDays(-1));
-                    if (dateTimePicker3.Value.CompareTo(dateTimePicker4.Value) > 0)
-                        dateTimePicker3.Value=Convert.ToDateTime(dateTimePicker4.Value.Year.ToString()+"."+dateTimePicker4.Value.Month.ToString()+".01");
+                    time = Convert.ToDateTime(this.dateTimePicker4.Value.Year.ToString() + "." + this.dateTimePicker4.Value.Month.ToString() + ".01");
+                    this.dateTimePicker4.Value = Convert.ToDateTime(time.AddMonths(1).AddDays(-1.0));
+                    if (this.dateTimePicker3.Value.CompareTo(this.dateTimePicker4.Value) > 0)
+                    {
+                        this.dateTimePicker3.Value = Convert.ToDateTime(this.dateTimePicker4.Value.Year.ToString() + "." + this.dateTimePicker4.Value.Month.ToString() + ".01");
+                    }
                 }
-                //dat = Convert.ToDateTime(dateTimePicker4.Value.Year.ToString() + "." + dateTimePicker4.Value.Month.ToString() + ".01");
-                //dateTimePicker4.Value=Convert.ToDateTime(dat.AddMonths(1).AddDays(-1));
-                //dateSzamla.MinDate = dateTimePicker3.Value;
-                //dateSzamla.MaxDate = dateTimePicker4.Value;
-                szamlaadatok = Fak.Adatoktolt("C", Fak.Aktintervallum, szamlaadatok,
-                                " where VS='" + jel + "'" +
-                                " AND DATUM between cast('" + dateTimePicker3.Value.ToShortDateString() + "' as datetime)" +
-                                " AND cast('" + dateTimePicker4.Value.ToShortDateString() + "' as datetime)" +
-                                " and fizetve = 'N'", false);
-                if (dateTimePicker3.Value.Year != dateTimePicker4.Value.Year || dateTimePicker3.Value.Year == dateTimePicker4.Value.Year &&
-                    dateTimePicker3.Value.Month != dateTimePicker4.Value.Month)
-                    tobbhonap = true;
+                this.szamlaadatok = this.Fak.Adatoktolt("C", this.Fak.Aktintervallum, this.szamlaadatok, " where VS='" + this.jel + "' AND DATUM between cast('" + this.dateTimePicker3.Value.ToShortDateString() + "' as datetime) AND cast('" + this.dateTimePicker4.Value.ToShortDateString() + "' as datetime) and fizetve = 'N'", false);
+                if ((this.dateTimePicker3.Value.Year != this.dateTimePicker4.Value.Year) || ((this.dateTimePicker3.Value.Year == this.dateTimePicker4.Value.Year) && (this.dateTimePicker3.Value.Month != this.dateTimePicker4.Value.Month)))
+                {
+                    this.tobbhonap = true;
+                }
                 else
-                    tobbhonap = false;
-                if (dataViewSzamla.Count == 0)
-                     Szamlaaktgridrowind = -1;
+                {
+                    this.tobbhonap = false;
+                }
+                if (this.dataViewSzamla.Count == 0)
+                {
+                    this.Szamlaaktgridrowind = -1;
+                }
                 else
-                     Szamlaaktgridrowind = 0;
-                Szamla_beallit(Szamlaaktgridrowind);
+                {
+                    this.Szamlaaktgridrowind = 0;
+                }
+                this.Szamla_beallit(this.Szamlaaktgridrowind);
             }
-            igazivaltozas = elozoigazi;
+            this.igazivaltozas = igazivaltozas;
         }
 
         private void dateSzamla_Changed(object sender, EventArgs e)
         {
-            bool elozoigazi = igazivaltozas;
-            DateTimePicker kuldo = (DateTimePicker)sender;
-            if (igazivaltozas)
+            bool igazivaltozas = this.igazivaltozas;
+            DateTimePicker picker = (DateTimePicker)sender;
+            if (this.igazivaltozas)
             {
-                igazivaltozas = false;
-                if (kuldo == dateSzamla)
+                this.igazivaltozas = false;
+                if (picker == this.dateSzamla)
                 {
-                    dateTimePicker1.MinDate = tol;
-                    if (dateTimePicker1.Value.CompareTo(dateSzamla.Value) < 0)
-                        dateTimePicker1.Value = dateSzamla.Value;
-                    dateTimePicker1.MinDate = dateSzamla.Value;
+                    this.dateTimePicker1.MinDate = this.tol;
+                    if (this.dateTimePicker1.Value.CompareTo(this.dateSzamla.Value) < 0)
+                    {
+                        this.dateTimePicker1.Value = this.dateSzamla.Value;
+                    }
+                    this.dateTimePicker1.MinDate = this.dateSzamla.Value;
                 }
-                dateTeljesit.MinDate = tol;
-                if (dateTeljesit.Value.CompareTo(dateTimePicker1.Value) < 0)
-                    dateTeljesit.Value = dateTimePicker1.Value;
-                dateTeljesit.MinDate = dateTimePicker1.Value;
+                this.dateTeljesit.MinDate = this.tol;
+                if (this.dateTeljesit.Value.CompareTo(this.dateTimePicker1.Value) < 0)
+                {
+                    this.dateTeljesit.Value = this.dateTimePicker1.Value;
+                }
+                this.dateTeljesit.MinDate = this.dateTimePicker1.Value;
             }
-
-            igazivaltozas = elozoigazi;
+            this.igazivaltozas = igazivaltozas;
         }
+
         private void buttonNyomtat_Click(object sender, EventArgs e)
         {
-            nyomtat = new PrintForm();
-            string[] parNev = { "cim", "DATUM_TOL", "DATUM_IG" };
-            string[] parVal = { "", dateTimePicker3.Value.ToShortDateString(), dateTimePicker3.Value.ToShortDateString() };
-            string[] parTip = { "string", "string", "string" };
-
-            if (jel == "V")
-                parVal[0] = "Vevöi kintlevőség lista";
-            else
-                parVal[0] = "Szállító tartozások lista";
-
-            DataSet dS = new MainProgramm.virDataSet();
-            DataRow r;
-            string osszeg = "0";    
-            dS.Tables["Kintlevöseg"].Clear();
-            for (int i = 0; i < dataViewSzamla.Count; i++)
+            this.nyomtat = new PrintForm();
+            string[] parName = new string[] { "cim", "DATUM_TOL", "DATUM_IG" };
+            string[] parValue = new string[] { "", this.dateTimePicker3.Value.ToShortDateString(), this.dateTimePicker3.Value.ToShortDateString() };
+            string[] parTyp = new string[] { "string", "string", "string" };
+            if (this.jel == "V")
             {
-                Szamlaaktsorindex = SzamlaAdattabla.Rows.IndexOf(dataViewSzamla[i].Row);
-                Szamlainfo.Aktsorindex = Szamlaaktsorindex;
-                Szamlaaktid = Convert.ToInt32(SzamlaAdattabla.Rows[Szamlaaktsorindex][Szamlaidcol].ToString());
-                Szamlainfo.Aktidentity = Szamlaaktid;
-                r = dS.Tables["Kintlevöseg"].NewRow();
-                r["azonosito"] = dataViewSzamla[i]["azonosito"];
-                r["partner"] = dataViewSzamla[i]["pid_k"];
-                r["datum_telj"] = dataViewSzamla[i]["datum_telj"];
-                r["datum_fiz"] = dataViewSzamla[i]["datum_fiz"];
-                r["datum"] = dataViewSzamla[i]["datum"];
-                osszeg = "0";
-                teteladatok = Fak.Adatoktolt("T", Fak.Aktintervallum, teteladatok, "", false);
-                for (int j = 0; j < this.SzamlatetelAdattabla.Rows.Count; j++)
-                    osszeg = Convert.ToString(Convert.ToDecimal(osszeg) + Convert.ToDecimal(SzamlatetelAdattabla.Rows[j]["brutto"].ToString()));
-                r["osszeg"] = osszeg;
-                dS.Tables["Kintlevöseg"].Rows.Add(r);
+                parValue[0] = "Vevői kintlevőség lista";
             }
-
-            nyomtat.PrintParams(parNev, parVal, parTip);
-            kintlevösegLista.SetDataSource(dS);
-            this.kintlevösegLista.SetParameterValue("cim", parVal[0]);
-            this.kintlevösegLista.SetParameterValue("DATUM_TOL", parVal[1]);
-            this.kintlevösegLista.SetParameterValue("DATUM_IG", parVal[2]);
-
-            nyomtat.reportSource = kintlevösegLista;
-            nyomtat.DoPreview(mainForm.defPageSettings);
+            else
+            {
+                parValue[0] = "Szállító tartozások lista";
+            }
+            DataSet dataSet = new MainProgramm.virDataSet();
+            string str = "0";
+            dataSet.Tables["Kintlevőseg"].Clear();
+            for (int i = 0; i < this.dataViewSzamla.Count; i++)
+            {
+                this.Szamlaaktsorindex = this.SzamlaAdattabla.Rows.IndexOf(this.dataViewSzamla[i].Row);
+                this.Szamlainfo.Aktsorindex = this.Szamlaaktsorindex;
+                this.Szamlaaktid = Convert.ToInt32(this.SzamlaAdattabla.Rows[this.Szamlaaktsorindex][this.Szamlaidcol].ToString());
+                this.Szamlainfo.Aktidentity = this.Szamlaaktid;
+                DataRow row = dataSet.Tables["Kintlevőseg"].NewRow();
+                row["azonosito"] = this.dataViewSzamla[i]["azonosito"];
+                row["partner"] = this.dataViewSzamla[i]["pid_k"];
+                row["datum_telj"] = this.dataViewSzamla[i]["datum_telj"];
+                row["datum_fiz"] = this.dataViewSzamla[i]["datum_fiz"];
+                row["datum"] = this.dataViewSzamla[i]["datum"];
+                str = "0";
+                this.teteladatok = this.Fak.Adatoktolt("T", this.Fak.Aktintervallum, this.teteladatok, "", false);
+                for (int j = 0; j < this.SzamlatetelAdattabla.Rows.Count; j++)
+                {
+                    str = Convert.ToString((decimal)(Convert.ToDecimal(str) + Convert.ToDecimal(this.SzamlatetelAdattabla.Rows[j]["brutto"].ToString())));
+                }
+                row["osszeg"] = str;
+                dataSet.Tables["Kintlevőseg"].Rows.Add(row);
+            }
+            this.nyomtat.PrintParams(parName, parValue, parTyp);
+            this.kintlevösegLista.SetDataSource(dataSet);
+            this.kintlevösegLista.SetParameterValue("cim", parValue[0]);
+            this.kintlevösegLista.SetParameterValue("DATUM_TOL", parValue[1]);
+            this.kintlevösegLista.SetParameterValue("DATUM_IG", parValue[2]);
+            this.nyomtat.reportSource = this.kintlevösegLista;
+            this.nyomtat.DoPreview(this.mainForm.defPageSettings);
         }
 
         private void Kiegyenlites_Load(object sender, EventArgs e)

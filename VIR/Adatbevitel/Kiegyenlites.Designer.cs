@@ -37,6 +37,7 @@
             this.buttonUjtetel = new System.Windows.Forms.ToolStripButton();
             this.buttonTeteltorol = new System.Windows.Forms.ToolStripButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dateFizetve = new System.Windows.Forms.DateTimePicker();
             this.label6 = new System.Windows.Forms.Label();
             this.osszesen = new FormattedTextBox.FormattedTextBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
@@ -147,6 +148,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.dateFizetve);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.osszesen);
             this.groupBox2.Controls.Add(this.checkBox1);
@@ -177,6 +179,14 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Tag = "C,SZAMLA";
             this.groupBox2.Text = "Számla";
+
+            this.dateFizetve.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateFizetve.Location = new System.Drawing.Point(9, 0xa3);
+            this.dateFizetve.Name = "dateFizetve";
+            this.dateFizetve.Size = new System.Drawing.Size(0x5d, 0x15);
+            this.dateFizetve.TabIndex = 0x2a;
+            this.dateFizetve.Tag = "DATUM_FIZETVE";
+            this.dateFizetve.Visible = false;
             // 
             // label6
             // 
@@ -593,6 +603,7 @@
         private System.Windows.Forms.ToolStripButton buttonMentes;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.DateTimePicker dateSzamla;
+        private System.Windows.Forms.DateTimePicker dateFizetve;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DateTimePicker dateTeljesit;
