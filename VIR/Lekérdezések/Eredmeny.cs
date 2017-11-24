@@ -677,7 +677,7 @@ namespace Lekerdezesek
             }
             else
             {
-                parValue[0] = "\x00c9ves: " + this.ev.Text.ToString();
+                parValue[0] = "Éves: " + this.ev.Text.ToString();
             }
             string[] parTyp = new string[] { "string" };
             DataSet dataSet = new MainProgramm.virDataSet();

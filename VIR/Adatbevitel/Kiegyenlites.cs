@@ -1,22 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+/*using System;
 using System.Collections;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using System.Globalization;
-using System.Threading;
-using TableInfo;
+using Könyvtar.ClassGyujtemeny;
 using Könyvtar.Printlib;
+using TableInfo;
+using System.Data.SqlClient;
 using MainProgramm.Listák;
+*/
+
+using FormattedTextBox;
+using Könyvtar.Printlib;
+using MainProgramm;
+using MainProgramm.Listák;
+using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Resources;
+using System.Windows.Forms;
+using TableInfo;
+using VIR;
 
 namespace Adatbevitel
 {
     public partial class Kiegyenlites : UserControl
     {
         private VIR.MainForm mainForm;
+        private DataSet ds = new DataSet();
+
+        private PrintForm nyomtat = new PrintForm();
+        private Kintlevöseg kintlevösegLista = new Kintlevöseg();
 
         private Tablainfo Szamlainfo;
         private Tablainfo Szamlatetelinfo;
@@ -52,9 +71,6 @@ namespace Adatbevitel
         private DataGridViewColumn[] szlatetelgridcols;// = Szamlatetelinfo.GetGridColumns();
         private Egyallapotinfo Szamlaegyallapot;
         private Egyallapotinfo Tetelegyallapot;
-
-        private PrintForm nyomtat = new PrintForm();
-        private Kintlevöseg kintlevösegLista = new Kintlevöseg();
 
         public Kiegyenlites(string szoveg, object[] obj)
         {
@@ -167,6 +183,11 @@ namespace Adatbevitel
                     this.Szamla_beallit(this.Szamlaaktgridrowind);
                 }
             }
+        }
+
+        private void Kiegyenlites_Load(object sender, EventArgs e)
+        {
+            this.mainForm = (VIR.MainForm)base.ParentForm;
         }
 
         private void Szamla_beallit(int gridind)
@@ -337,7 +358,7 @@ namespace Adatbevitel
 
         private void Vissza(object sender, EventArgs e)
         {
-            if (!(this.buttonMentes.Enabled && (MessageBox.Show("A v\x00e1ltoz\x00e1sok elvesszenek?", "", System.Windows.Forms.MessageBoxButtons.OKCancel) != System.Windows.Forms.DialogResult.OK)))
+            if (!(this.buttonMentes.Enabled && (MessageBox.Show("A változások elvesszenek?", "", System.Windows.Forms.MessageBoxButtons.OKCancel) != System.Windows.Forms.DialogResult.OK)))
             {
                 this.igazivaltozas = false;
                 this.Fak.ForceAdattolt(this.Szamlainfo);
@@ -507,6 +528,7 @@ namespace Adatbevitel
 
         private void buttonNyomtat_Click(object sender, EventArgs e)
         {
+            /*
             this.nyomtat = new PrintForm();
             string[] parName = new string[] { "cim", "DATUM_TOL", "DATUM_IG" };
             string[] parValue = new string[] { "", this.dateTimePicker3.Value.ToShortDateString(), this.dateTimePicker3.Value.ToShortDateString() };
@@ -550,11 +572,58 @@ namespace Adatbevitel
             this.kintlevösegLista.SetParameterValue("DATUM_IG", parValue[2]);
             this.nyomtat.reportSource = this.kintlevösegLista;
             this.nyomtat.DoPreview(this.mainForm.defPageSettings);
-        }
+            */
+            this.nyomtat = new PrintForm();
+            string[] shortDateString = new string[] { "cim", "DATUM_TOL", "DATUM_IG" };
+            string[] strArrays = shortDateString;
+            shortDateString = new string[] { "", null, null };
+            DateTime value = this.dateTimePicker3.Value;
+            shortDateString[1] = value.ToShortDateString();
+            value = this.dateTimePicker3.Value;
+            shortDateString[2] = value.ToShortDateString();
+            string[] strArrays1 = shortDateString;
+            shortDateString = new string[] { "string", "string", "string" };
+            string[] strArrays2 = shortDateString;
+            if (!(this.jel == "V"))
+            {
+                strArrays1[0] = "Szállító tartozások lista";
+            }
+            else
+            {
+                strArrays1[0] = "Vevöi kintlevőség lista";
+            }
+            DataSet _virDataSet = new virDataSet();
+            string str = "0";
+            _virDataSet.Tables["Kintlevöseg"].Clear();
+            for (int i = 0; i < this.dataViewSzamla.Count; i++)
+            {
+                this.Szamlaaktsorindex = this.SzamlaAdattabla.Rows.IndexOf(this.dataViewSzamla[i].Row);
+                this.Szamlainfo.Aktsorindex = this.Szamlaaktsorindex;
+                this.Szamlaaktid = Convert.ToInt32(this.SzamlaAdattabla.Rows[this.Szamlaaktsorindex][this.Szamlaidcol].ToString());
+                this.Szamlainfo.Aktidentity = this.Szamlaaktid;
+                DataRow item = _virDataSet.Tables["Kintlevöseg"].NewRow();
+                item["azonosito"] = this.dataViewSzamla[i]["azonosito"];
+                item["partner"] = this.dataViewSzamla[i]["pid_k"];
+                item["datum_telj"] = this.dataViewSzamla[i]["datum_telj"];
+                item["datum_fiz"] = this.dataViewSzamla[i]["datum_fiz"];
+                item["datum"] = this.dataViewSzamla[i]["datum"];
+                str = "0";
+                this.teteladatok = this.Fak.Adatoktolt("T", this.Fak.Aktintervallum, this.teteladatok, "", false);
+                for (int j = 0; j < this.SzamlatetelAdattabla.Rows.Count; j++)
+                {
+                    str = Convert.ToString(Convert.ToDecimal(str) + Convert.ToDecimal(this.SzamlatetelAdattabla.Rows[j]["brutto"].ToString()));
+                }
+                item["osszeg"] = str;
+                _virDataSet.Tables["Kintlevöseg"].Rows.Add(item);
+            }
+            this.nyomtat.PrintParams(strArrays, strArrays1, strArrays2);
+            this.kintlevösegLista.SetDataSource(_virDataSet);
+            this.kintlevösegLista.SetParameterValue("cim", strArrays1[0]);
+            this.kintlevösegLista.SetParameterValue("DATUM_TOL", strArrays1[1]);
+            this.kintlevösegLista.SetParameterValue("DATUM_IG", strArrays1[2]);
+            this.nyomtat.reportSource = this.kintlevösegLista;
+            this.nyomtat.DoPreview(this.mainForm.defPageSettings);
 
-        private void Kiegyenlites_Load(object sender, EventArgs e)
-        {
-            mainForm = (VIR.MainForm)this.ParentForm;
         }
     }
 }
